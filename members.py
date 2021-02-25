@@ -6,28 +6,19 @@ from configparser import ConfigParser
 import re 
 
 id_team = ''
-'''
-if len(re.findall("s.py$", sys.argv[-1])) == 0:
-    id_team = sys.argv[-1]
-else: 
-    parser = ConfigParser()
-    parser.read("parameter.ini")
-    configObject = parser["TEAM-CONFIG"]
-    id_team = configObject["TeamID"]  
 
-
-if len(id_team) == 0:
-    id_team = input("Team:")
-'''
 def getfaulty(id_team):
     data = getdata(id_team)
-    faultys = splitdata(data)
+    if data:
+        faultys = splitdata(data)
+    else:
+        faultys = 1
     return faultys
 
 def getdata(id_team):
     url = "https://lichess.org/api/team/" + id_team + "/users"
     param = dict()
-    resp = requests.get(url=url,params=param)
+    resp = requests.get(url=url, params=param)
     list_resp = resp.text.splitlines()
     data = list(map(lambda x: json.loads(x), list_resp))
     return data
