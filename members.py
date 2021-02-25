@@ -40,6 +40,7 @@ def splitdata(data):
             user = i.get("username")
             fault_users.append(user)
     print(fault_users)
+    fault_users.sort()
     if fault_users:
         trennzeichen = "\n"
         userlist = trennzeichen.join(fault_users)
