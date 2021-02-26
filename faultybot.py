@@ -24,7 +24,7 @@ async def on_reaction_add(reaction, user):
     pass
 
 
-# Ab hier Commands
+# Ab here Commands
 
 @bot.command()
 async def ping(ctx):
@@ -45,6 +45,7 @@ async def faulty(ctx, arg):
     await faultyhandle(ctx, arg, user)
     await ctx.send("Vorgang für das Team **" + arg + "** abgeschlossen!")
 
+
 async def faultyhandle(ctx, arg, user):
     data = members.getfaulty(arg)
     if data == 1:
@@ -53,8 +54,5 @@ async def faultyhandle(ctx, arg, user):
         await user.send("- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nIn dem Team **" + arg + "** wurden folgende User von Lichess markiert, dass sie gegen die Nutzungsbedingungen verstoßen haben:\n" + data + "\nEnde der Mitteilung! \n - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
     else:
         await user.send("- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDas abgefragte Team **" + arg + "** beinhaltet keine geflaggten User!\nEnde der Mitteilung! \n- - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-
-
-
 
 bot.run(token)

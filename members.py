@@ -5,7 +5,6 @@ from os import sys
 from configparser import ConfigParser
 import re 
 
-id_team = ''
 
 def getfaulty(id_team):
     data = getdata(id_team)
@@ -15,6 +14,7 @@ def getfaulty(id_team):
         faultys = 1
     return faultys
 
+
 def getdata(id_team):
     url = "https://lichess.org/api/team/" + id_team + "/users"
     param = dict()
@@ -22,6 +22,7 @@ def getdata(id_team):
     list_resp = resp.text.splitlines()
     data = list(map(lambda x: json.loads(x), list_resp))
     return data
+
 
 def splitdata(data):
     fault_users = []
