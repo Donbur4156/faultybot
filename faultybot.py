@@ -55,7 +55,7 @@ async def faultyhandle(ctx, arg, user):
         await user.send("- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDas abgefragte Team **" + arg + "** existiert offenbar nicht!\nEnde der Mitteilung! \n- - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
     elif data:
         uuidID = await getID()
-        filename = uuidID + ".txt"
+        filename = uuidID + ".flag"
         file = open(filename, 'w')
         file.write("In dem Team " + arg + " wurden folgende User von Lichess geflaggt:\n")
         file.write(data)
