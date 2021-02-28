@@ -42,6 +42,7 @@ async def returnmsg(ctx, arg):
 async def faulty(ctx, arg):
     user = ctx.message.author
     print(user)
+    arg = arg.lower()
     print(arg)
     text = "Lade die Daten des Teams **" + arg + "** herunter! Die Liste, mit den von Lichess geflaggten Usern, wird im Anschluss erstellt und dir per PN zur Verfügung gestellt! Dies kann je nach Größe des Teams mehrere Minuten dauern. Als Beispiel benötigt ein Team mit 10.000 Mitglieder ca. 10 Minuten!"
     await ctx.send(text)
