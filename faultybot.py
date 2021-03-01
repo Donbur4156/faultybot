@@ -40,9 +40,9 @@ async def returnmsg(ctx, arg):
 
 @bot.command()
 async def faulty(ctx, arg):
+    arg = arg.lower()
     user = ctx.message.author
     print(user)
-    arg = arg.lower()
     print(arg)
     text = "Lade die Daten des Teams **" + arg + "** herunter! Die Liste, mit den von Lichess geflaggten Usern, wird im Anschluss erstellt und dir per PN zur Verfügung gestellt! Dies kann je nach Größe des Teams mehrere Minuten dauern. Als Beispiel benötigt ein Team mit 10.000 Mitglieder ca. 10 Minuten!"
     await ctx.send(text)
@@ -55,14 +55,15 @@ async def faultyhandle(ctx, arg, user):
     if data == 1:
         await user.send("- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDas abgefragte Team **" + arg + "** existiert offenbar nicht!\nEnde der Mitteilung! \n- - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
     elif data:
-        uuidID = await getID()
-        filename = uuidID + ".flag"
+        uuidid = await getid()
+        print(uuidid)
+        filename = uuidid + ".flag"
         file = open(filename, 'w')
-        file.write("In dem Team " + arg + " wurden folgende User von Lichess geflaggt:\n")
+        file.write("In dem Team " + arg + " wurden folgende User von Lichess geflaggt:\n\n")
         file.write(data)
         file.close()
-        await upload(uuidID)
-        link = "http://www.zeyecx.com/Donbotti/?token=" + uuidID
+        await upload(uuidid)
+        link = "http://www.zeyecx.com/Donbotti/?token=" + uuidid
         await user.send("- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nIn dem Team **" + arg + "** wurden User von Lichess markiert, dass sie gegen die Nutzungsbedingungen verstoßen haben. Du findest die Liste als Text Datei über diesen Link:\n" + link + "\nEnde der Mitteilung! \n - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
         if os.path.isfile(filename):
             os.remove(filename)
@@ -70,11 +71,11 @@ async def faultyhandle(ctx, arg, user):
         await user.send("- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDas abgefragte Team **" + arg + "** beinhaltet keine geflaggten User!\nEnde der Mitteilung! \n- - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
 
 
-async def getID():
+async def getid():
     return str(uuid.uuid4().hex)[0:8]
 
 
-async def upload(uuid_id):
+async def upload(uuidid):
     ftp = ftplib.FTP()
     host = "zeyecx.lima-ftp.de"
     port = 21
@@ -85,7 +86,7 @@ async def upload(uuid_id):
         ftpuser = ftpdata.user
         ftppwd = ftpdata.pwd
         ftp.login(ftpuser, ftppwd)
-        filename = uuid_id + ".txt"
+        filename = uuidid + ".flag"
         with open(filename, "rb") as file:
             ftp.storbinary(f"STOR {filename}", file)
     except:
