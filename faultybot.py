@@ -42,6 +42,7 @@ async def returnmsg(ctx, arg):
 async def faulty(ctx, arg):
     user = ctx.message.author
     print(user)
+    arg = arg.lower()
     print(arg)
     text = "Lade die Daten des Teams **" + arg + "** herunter! Die Liste, mit den von Lichess geflaggten Usern, wird im Anschluss erstellt und dir per PN zur Verfügung gestellt! Dies kann je nach Größe des Teams mehrere Minuten dauern. Als Beispiel benötigt ein Team mit 10.000 Mitglieder ca. 10 Minuten!"
     await ctx.send(text)
@@ -55,13 +56,13 @@ async def faultyhandle(ctx, arg, user):
         await user.send("- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDas abgefragte Team **" + arg + "** existiert offenbar nicht!\nEnde der Mitteilung! \n- - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
     elif data:
         uuidID = await getID()
-        filename = str(uuidID) + ".txt"
+        filename = uuidID + ".flag"
         file = open(filename, 'w')
         file.write("In dem Team " + arg + " wurden folgende User von Lichess geflaggt:\n")
         file.write(data)
         file.close()
         await upload(uuidID)
-        link = "http://www.zeyecx.com/Donbotti/index.php?token=" + uuidID
+        link = "http://www.zeyecx.com/Donbotti/?token=" + uuidID
         await user.send("- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nIn dem Team **" + arg + "** wurden User von Lichess markiert, dass sie gegen die Nutzungsbedingungen verstoßen haben. Du findest die Liste als Text Datei über diesen Link:\n" + link + "\nEnde der Mitteilung! \n - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
         if os.path.isfile(filename):
             os.remove(filename)
@@ -70,7 +71,7 @@ async def faultyhandle(ctx, arg, user):
 
 
 async def getID():
-    return uuid.uuid4().hex
+    return str(uuid.uuid4().hex)[0:8]
 
 
 async def upload(uuid_id):
