@@ -91,6 +91,8 @@ async def upload(uuidid):
         filename = uuidid + ".flag"
         with open(filename, "rb") as file:
             ftp.storbinary(f"STOR {filename}", file)
+    except:
+        print("kein Logging möglich!")
     ftp.quit()
 
 
