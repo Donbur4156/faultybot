@@ -6,6 +6,9 @@ import uuid
 import ftplib
 import ftpdata
 import os
+import csv
+
+
 
 parser = ConfigParser()
 parser.read("Parameter.ini")
@@ -44,7 +47,7 @@ async def faulty(ctx, arg):
     user = ctx.message.author
     print(user)
     print(arg)
-    text = "Lade die Daten des Teams **" + arg + "** herunter! Die Liste, mit den von Lichess geflaggten Usern, wird im Anschluss erstellt und dir per PN zur Verfügung gestellt! Dies kann je nach Größe des Teams mehrere Minuten dauern. Als Beispiel benötigt ein Team mit 10.000 Mitglieder ca. 10 Minuten!"
+    text = "Die Daten des Teams **" + arg + "** werden heruntergeladen und überprüft! Dies kann je nach Größe des Teams mehrere Minuten dauern. Pro 1000 Mitglieder ca. 1 Minute!"
     await ctx.send(text)
     await faultyhandle(ctx, arg, user)
     #await ctx.send("Vorgang für das Team **" + arg + "** abgeschlossen!")
@@ -88,8 +91,6 @@ async def upload(uuidid):
         filename = uuidid + ".flag"
         with open(filename, "rb") as file:
             ftp.storbinary(f"STOR {filename}", file)
-    except:
-        "failed to login"
     ftp.quit()
 
 
