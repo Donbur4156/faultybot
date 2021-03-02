@@ -1,9 +1,7 @@
 import requests
 import json
-import datetime
 from os import sys
 from configparser import ConfigParser
-import re 
 
 
 def getfaulty(id_team):
@@ -31,7 +29,7 @@ def splitdata(data):
         if is_faulti:
             user = i.get("username")
             fault_users.append(user)
-    fault_users.sort()
+    fault_users.sort(key=str.lower)
     if fault_users:
         trennzeichen = "\n"
         userlist = trennzeichen.join(fault_users)
