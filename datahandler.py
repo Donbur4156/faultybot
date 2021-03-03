@@ -10,7 +10,7 @@ def newbase():
 
 async def datahandle(team, id):
     await cleandata()
-    proof = await prüfedata(team)
+    proof = await pruefedata(team)
     if proof:
         return proof
     await newdata(team, id)
@@ -26,7 +26,7 @@ async def cleandata():
             id_ref.remove(i)
 
 
-async def prüfedata(team):
+async def pruefedata(team):
     for i in id_ref:
         print(i)
         if i[1] == team:
