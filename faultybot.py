@@ -18,7 +18,6 @@ token = configObject["token"]
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='>', intents=intents)
 #
-global id_ref
 id_ref = []
 
 
@@ -33,29 +32,32 @@ async def ping(ctx):
 
 
 @bot.command()
-async def faulty(ctx, arg):
-    team = arg.lower()
+async def faulty(ctx, *args):
+    new = False
+    team = args[0].lower()
+    if len(args) > 1 and args[1] == "new":
+        new = True
     file_id = str(uuid.uuid4().hex)[0:8]
-    handle = await datahandle(team, file_id)
+    handle = await datahandle(team, file_id, new)
     # handle = [now, team, file_id, status]
     if id_ref[handle][3] == 1:  # team neu
-        text = "Die Daten des Teams **" + arg + "** werden heruntergeladen und überprüft! Dies kann je nach Größe " \
+        text = "Die Daten des Teams **" + args[0] + "** werden heruntergeladen und überprüft! Dies kann je nach Größe " \
                 "des Teams mehrere Minuten dauern. Pro 1000 Mitglieder ca. 1 Minute!"
         await ctx.send(text)
-        await faultyhandle(ctx, team, arg, handle)
+        await faultyhandle(ctx, team, args[0], handle)
     elif id_ref[handle][3] == 2:  # Team mit faulty user
         link = "http://www.zeyecx.com/Donbotti/?token=" + id_ref[handle][2]
-        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDie Abfrage des Teams " + arg + \
+        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDie Abfrage des Teams " + args[0] + \
                " wurde in den letzten 4 Stunden bereits getätigt. Du findest die Liste über diesen Link:\n---> " \
                + link + " <---\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
     elif id_ref[handle][3] == 3:  # Team ohne faulty user
-        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDie Abfrage des Teams " + arg + \
+        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDie Abfrage des Teams " + args[0] + \
                " wurde in den letzten 4 Stunden bereits getätigt. Dabei wurden keine geflaggten user gefunden!" \
                "\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
     elif id_ref[handle][3] == 4:  # Team existierte bei letzter Abfrage nicht
-        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDas abgefragte Team **" + arg + \
+        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDas abgefragte Team **" + args[0] + \
                "** existiert offenbar nicht! \n- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
 
@@ -137,15 +139,14 @@ def findfaulty(data):
         return userlist
 
 
-async def datahandle(team, file_id):
+async def datahandle(team, file_id, new):
     now = datetime.datetime.utcnow()
     for i in id_ref:
         delta = now - i[0]
-        if delta.seconds > 14400:
+        print(delta.seconds)
+        if delta.seconds > 10 or i[1] == team and new:
             id_ref.remove(i)
-    for i in id_ref:
-        print(i)
-        if i[1] == team:
+        elif i[1] == team:
             return id_ref.index(i)
     now = datetime.datetime.utcnow()
     status = 1
