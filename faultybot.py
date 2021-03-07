@@ -144,7 +144,7 @@ async def datahandle(team, file_id, new):
     for i in id_ref:
         delta = now - i[0]
         print(delta.seconds)
-        if delta.seconds > 10 or i[1] == team and new:
+        if delta.seconds > 14400 or i[1] == team and new:
             id_ref.remove(i)
         elif i[1] == team:
             return id_ref.index(i)
