@@ -69,7 +69,7 @@ async def faultyhandle(ctx, team, arg, handle):
         if data:
             filename = id_ref[handle][2] + ".flag"
             file = open(filename, 'w')
-            file.write("In dem Team " + arg + " wurden folgende User von Lichess geflaggt:\n\n")
+            file.write(id_ref[handle][2] + "\n" + id_ref[handle][1] + "\n")
             file.write(data)
             file.close()
             await upload(id_ref[handle][2])
