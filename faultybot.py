@@ -73,7 +73,7 @@ async def faultyhandle(ctx, team, arg, handle):
             file.write(data)
             file.close()
             await upload(id_ref[handle][2])
-            link = "http://www.zeyecx.com/Donbotti/?token=" + id_ref[handle][2]
+            link = "http://www.zeyecx.com/p/Donbotti/?token=" + id_ref[handle][2]
             text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nIn dem Team **" + arg + \
                    "** wurden User von Lichess markiert, dass sie gegen die Nutzungsbedingungen verstoßen haben. " \
                    "Du findest die Liste über diesen Link:\n---> " + link + \
