@@ -41,8 +41,8 @@ async def faulty(ctx, *args):
     handle = await datahandle(team, file_id, new)
     # handle = [now, team, file_id, status]
     if id_ref[handle][3] == 1:  # team neu
-        text = "Die Daten des Teams **" + args[0] + "** werden heruntergeladen und überprüft! Dies kann je nach Größe " \
-                "des Teams mehrere Minuten dauern. Pro 1000 Mitglieder ca. 1 Minute!"
+        text = "Die Daten des Teams **" + args[0] + "** werden heruntergeladen und überprüft! Dies kann je nach " \
+                "Größe des Teams mehrere Minuten dauern. Pro 1000 Mitglieder ca. 1 Minute!"
         await ctx.send(text)
         await faultyhandle(ctx, team, args[0], handle)
     elif id_ref[handle][3] == 2:  # Team mit faulty user
@@ -103,13 +103,13 @@ async def upload(file_id):
         print(ftp.getwelcome())
         print("Logging in...")
         ftpuser = ftpdata.user
-        ftppwd = ftpdata.pwd
-        ftp.login(ftpuser, ftppwd)
+        ftp_pw = ftpdata.pwd
+        ftp.login(ftpuser, ftp_pw)
         filename = file_id + ".flag"
         with open(filename, "rb") as file:
             ftp.storbinary(f"STOR {filename}", file)
         ftp.quit()
-    except BaseException:
+    except ftplib.all_errors:
         print("Kein Logging möglich!")
 
 
