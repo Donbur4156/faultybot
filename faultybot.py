@@ -98,9 +98,9 @@ async def upload(file_id):
     ftp = ftplib.FTP()
     host = "zeyecx.lima-ftp.de"
     port = 21
-    ftp.connect(host, port)
-    print(ftp.getwelcome())
     try:
+        ftp.connect(host, port)
+        print(ftp.getwelcome())
         print("Logging in...")
         ftpuser = ftpdata.user
         ftppwd = ftpdata.pwd
@@ -108,9 +108,9 @@ async def upload(file_id):
         filename = file_id + ".flag"
         with open(filename, "rb") as file:
             ftp.storbinary(f"STOR {filename}", file)
+        ftp.quit()
     except BaseException:
         print("Kein Logging möglich!")
-    ftp.quit()
 
 
 def getdata(id_team):
