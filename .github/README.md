@@ -1,3 +1,4 @@
+```
 Auflistung faultybot
 faultybot:.
 |   .gitignore
@@ -134,5 +135,4 @@ faultybot:.
             pic01.jpg
             pic02.jpg
             pic03.jpg
-            
- 
+            ```
