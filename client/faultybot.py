@@ -14,10 +14,10 @@ parser = ConfigParser()
 parser.read("Parameter.ini")
 configObject = parser["PARAMS"]
 token = configObject["token"]
-#
+
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='>', intents=intents)
-#
+
 id_ref = []
 
 

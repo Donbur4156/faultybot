@@ -1,17 +1,5 @@
 import setup
-import lichess.api
+from system.function import analyse_team
 
-
-user = lichess.api.users_by_team('spielplatzrabauken')
-
-# Set Flag
-flag = False
-
-# Dummy
-users = lichess.api.users_by_team("the-big-greek-subscriber")
-for i in users:
-    username = i.get('username')
-    print(username)
-
-# Output
-print(flag)
+# Example
+analyse_team("team-huschi") 
