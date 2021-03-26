@@ -2,7 +2,6 @@
 Auflistung faultybot
 faultybot:.
 |   .gitignore
-|   tree.txt
 |   
 +---.github
 |       FUNDING.yml
