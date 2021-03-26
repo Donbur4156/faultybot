@@ -1,18 +1,17 @@
 import setup
-from wrapper.api import *
+import lichess.api
 
 
-user = wrapper.api.user('Gambit-troll')
+user = lichess.api.users_by_team('spielplatzrabauken')
 
 # Set Flag
 flag = False
 
-
-# IF-ELSE Statement
-try:
-  flag = user['tosViolation']
-except:
-  flag = False
+# Dummy
+users = lichess.api.users_by_team("the-big-greek-subscriber")
+for i in users:
+    username = i.get('username')
+    print(username)
 
 # Output
 print(flag)
