@@ -27,23 +27,14 @@ faultybot:.
 |   |   |   auth.py
 |   |   |   format.py
 |   |   |   pgn.py
-|   |   |   
-|   |   \---__pycache__
-|   |           api.cpython-39.pyc
-|   |           auth.cpython-39.pyc
-|   |           format.cpython-39.pyc
 |   |           
 |   +---setup
-|   |       install.py
-|   |       uninstall.cmd
+|           install.py
+|           uninstall.cmd
 |   |       
 |   \---system
-|       |   botfunction.py
-|       |   function.py
-|       |   
-|       \---__pycache__
-|               function.cpython-39.pyc
-|               var.cpython-39.pyc
+|           botfunction.py
+|           function.py
 |               
 \---server
     |   .htaccess
@@ -126,7 +117,6 @@ faultybot:.
     |           
     +---flag
     |       .htaccess
-    |       032ca500.flag
     |       
     \---images
             bg.jpg
@@ -134,4 +124,4 @@ faultybot:.
             pic01.jpg
             pic02.jpg
             pic03.jpg
-            ```
+```
