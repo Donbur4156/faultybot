@@ -3,11 +3,12 @@ from discord.ext import commands
 from configparser import ConfigParser
 import uuid
 import ftplib
-import ftpdata
+from client import ftpdata
 import os
 import json
 import requests
 import datetime
+from lichess import api
 
 
 parser = ConfigParser()
@@ -46,7 +47,7 @@ async def faulty(ctx, *args):
         await ctx.send(text)
         await faultyhandle(ctx, team, args[0], handle)
     elif id_ref[handle][3] == 2:  # Team mit faulty user
-        link = "http://www.zeyecx.com/Donbotti/?token=" + id_ref[handle][2]
+        link = "http://www.zeyecx.com/p/Donbotti/?token=" + id_ref[handle][2]
         text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDie Abfrage des Teams " + args[0] + \
                " wurde in den letzten 4 Stunden bereits getätigt. Du findest die Liste über diesen Link:\n---> " \
                + link + " <---\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
@@ -63,7 +64,7 @@ async def faulty(ctx, *args):
 
 
 async def faultyhandle(ctx, team, arg, handle):
-    data = getdata(team)
+    data = api.users_by_team(team)
     if data:
         data = findfaulty(data)
         if data:
@@ -74,7 +75,7 @@ async def faultyhandle(ctx, team, arg, handle):
             file.close()
             await upload(id_ref[handle][2])
             link = "http://www.zeyecx.com/p/Donbotti/?token=" + id_ref[handle][2]
-            text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nIn dem Team **" + arg + \
+            text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\ntemp - In dem Team **" + arg + \
                    "** wurden User von Lichess markiert, dass sie gegen die Nutzungsbedingungen verstoßen haben. " \
                    "Du findest die Liste über diesen Link:\n---> " + link + \
                    " <---\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
@@ -125,9 +126,9 @@ def getdata(id_team):
 def findfaulty(data):
     fault_users = []
     for i in data:
+        user = i.get("username")
         is_faulti = i.get("tosViolation")
         if is_faulti:
-            user = i.get("username")
             fault_users.append(user)
     fault_users.sort(key=str.lower)
     if fault_users:

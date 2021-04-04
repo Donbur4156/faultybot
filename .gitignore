@@ -1,4 +1,4 @@
 *.ini
 __pycache__
-ftpdata.py
+client/ftpdata.py
 get-pip.py
