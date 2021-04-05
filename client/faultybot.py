@@ -47,7 +47,7 @@ async def faulty(ctx, *args):
         await ctx.send(text)
         await faultyhandle(ctx, team, args[0], handle)
     elif id_ref[handle][3] == 2:  # Team mit faulty user
-        link = "http://www.zeyecx.com/p/Donbotti/?token=" + id_ref[handle][2]
+        link = "http://www.donbotti.de/?token=" + id_ref[handle][2]
         text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDie Abfrage des Teams " + args[0] + \
                " wurde in den letzten 4 Stunden bereits getätigt. Du findest die Liste über diesen Link:\n---> " \
                + link + " <---\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
@@ -74,7 +74,7 @@ async def faultyhandle(ctx, team, arg, handle):
             file.write(data)
             file.close()
             await upload(id_ref[handle][2])
-            link = "http://www.zeyecx.com/p/Donbotti/?token=" + id_ref[handle][2]
+            link = "http://www.donbotti.de/?token=" + id_ref[handle][2]
             text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\ntemp - In dem Team **" + arg + \
                    "** wurden User von Lichess markiert, dass sie gegen die Nutzungsbedingungen verstoßen haben. " \
                    "Du findest die Liste über diesen Link:\n---> " + link + \
