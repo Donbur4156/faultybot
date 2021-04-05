@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-from configparser import ConfigParser
 import uuid
 import ftplib
 import ftpdata
@@ -11,10 +10,7 @@ import datetime
 from lichess import api
 
 
-parser = ConfigParser()
-parser.read("Parameter.ini")
-configObject = parser["PARAMS"]
-token = configObject["token"]
+token = ftpdata.token
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='>', intents=intents)
@@ -144,7 +140,6 @@ async def datahandle(team, file_id, new):
     now = datetime.datetime.utcnow()
     for i in id_ref:
         delta = now - i[0]
-        print(delta.seconds)
         if delta.seconds > 14400 or i[1] == team and new:
             id_ref.remove(i)
         elif i[1] == team:
