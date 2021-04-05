@@ -3,7 +3,7 @@ from discord.ext import commands
 from configparser import ConfigParser
 import uuid
 import ftplib
-from client import ftpdata
+import ftpdata
 import os
 import json
 import requests
