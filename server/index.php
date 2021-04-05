@@ -1,6 +1,6 @@
 <?
 		if(isset($_GET['token']) && $_GET['r'] != "0"){
-			$url = "https://www.zeyecx.com/p/Donbotti/index.php?token=".$_GET['token']."&r=0#donbotti";
+			$url = "https://www.donbotti.de/index.php?token=".$_GET['token']."&r=0#donbotti";
 			header("Location: ".$url);
 		}
 ?>
@@ -8,10 +8,7 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-	
-
-
-		<title>Zeyecx</title>
+		<title>Donbotti</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -42,7 +39,6 @@
 						</div>
 						<nav>
 							<ul>
-								<li><a href="https://www.zeyecx.com">Zeyecx</a></li>
 								<li><a href="#id">Token</a></li>
 								<li><a href="#author">Author</a></li>
 								<li><a href="https://github.com/jplight/faultybot" target="_blank">Code</a></li>
@@ -63,7 +59,7 @@
 							<article id="id">
 								<h2 class="major">Token</h2>
 								<span class="image main"><img src="images/pic02.jpg" alt="" /></span>
-								<form action="https://www.zeyecx.com/p/Donbotti/index.php#donbotti" id="token">				
+								<form action="https://www.donbotti.de/index.php#donbotti" id="token">				
 								<label for="token">Bitte geben Sie einen Token ein:</label>  
 								<input type="text" name="token" id="token" maxlength="8" minlength="8">
 								<button type="reset">Eingaben zurücksetzen</button>
