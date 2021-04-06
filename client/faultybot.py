@@ -60,35 +60,36 @@ async def faulty(ctx, *args):
 
 
 async def faultyhandle(ctx, team, arg, handle):
-    data = api.users_by_team(team)
-    if data:
-        data = findfaulty(data)
-        if data:
-            filename = id_ref[handle][2] + ".flag"
-            file = open(filename, 'w')
-            file.write(id_ref[handle][2] + "\n" + id_ref[handle][1] + "\n")
-            file.write(data)
-            file.close()
-            await upload(id_ref[handle][2])
-            link = "http://www.donbotti.de/?token=" + id_ref[handle][2]
-            text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\ntemp - In dem Team **" + arg + \
-                   "** wurden User von Lichess markiert, dass sie gegen die Nutzungsbedingungen verstoßen haben. " \
-                   "Du findest die Liste über diesen Link:\n---> " + link + \
-                   " <---\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
-            await ctx.send(text)
-            if os.path.isfile(filename):
-                os.remove(filename)
-            id_ref[handle][3] = 2
-        else:
-            text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDas abgefragte Team **" + arg + \
-                   "** beinhaltet keine geflaggten User!\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
-            await ctx.send(text)
-            id_ref[handle][3] = 3
-    else:
+    try:
+        data = api.users_by_team(team)
+    except api.ApiHttpError:
         text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDas abgefragte Team **" + arg + \
                "** existiert offenbar nicht! \n- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
         id_ref[handle][3] = 4
+        return False
+    data = findfaulty(data)
+    if not data:
+        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDas abgefragte Team **" + arg + \
+               "** beinhaltet keine geflaggten User!\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+        await ctx.send(text)
+        id_ref[handle][3] = 3
+        return False
+    filename = id_ref[handle][2] + ".flag"
+    file = open(filename, 'w')
+    file.write(id_ref[handle][2] + "\n" + id_ref[handle][1] + "\n")
+    file.write(data)
+    file.close()
+    await upload(id_ref[handle][2])
+    link = "http://www.donbotti.de/?token=" + id_ref[handle][2]
+    text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\ntemp - In dem Team **" + arg + \
+           "** wurden User von Lichess markiert, dass sie gegen die Nutzungsbedingungen verstoßen haben. " \
+           "Du findest die Liste über diesen Link:\n---> " + link + \
+           " <---\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+    await ctx.send(text)
+    if os.path.isfile(filename):
+        os.remove(filename)
+    id_ref[handle][3] = 2
 
 
 async def upload(file_id):
@@ -127,13 +128,11 @@ def findfaulty(data):
         if is_faulti:
             fault_users.append(user)
     fault_users.sort(key=str.lower)
+    userlist = ""
     if fault_users:
         trennzeichen = "\n"
         userlist = trennzeichen.join(fault_users)
-        return userlist
-    else:
-        userlist = ""
-        return userlist
+    return userlist
 
 
 async def datahandle(team, file_id, new):
