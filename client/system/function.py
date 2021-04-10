@@ -26,4 +26,17 @@ def analyse_team(teamname):
         username = i.get('username')
         if check_user(username):
             cheaters.append(username)
-    print(cheaters)        
+    return cheaters        
+    
+# kick User
+def kick(team, user, token):
+    user = user.lower()
+    url = 'https://lichess.org/team/'+team+'/kick/'+user
+    header = {'Authorization': 'Bearer ' + token}
+    r = requests.post(url,headers=header)
+    print(r) 
+
+# Kick User  
+def runner(team, token):
+    for c in analyse_team(team.lower()):
+                kick(team.lower(), c.lower(), token)        
