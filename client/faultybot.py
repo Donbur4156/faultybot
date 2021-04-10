@@ -4,14 +4,12 @@ import uuid
 import ftplib
 import ftpdata
 import os
-import json
-import requests
 import datetime
 from lichess import api
+from system import function
 
-
-token = ftpdata.token
-
+#  build bot
+bot_token = ftpdata.bot_token
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='>', intents=intents)
 
@@ -24,8 +22,26 @@ async def on_ready():
 
 
 @bot.command()
-async def ping(ctx):
-    await ctx.send('pong')
+async def kickfaulty(ctx, *args):
+    channel = ctx.guild
+    if channel:
+        text = "Dieser Command steht nur per Privater Nachricht zur Verfügung. " \
+               "Der Lichess Token sollte niemals öffentlich benutzt werden!"
+        await ctx.send(text)
+        await ctx.message.delete()
+        return False
+    if len(args) != 2:
+        await ctx.send("Der Command >kickfaulty benötigt 2 Argumente: 1. Teamname; 2. OAuth Token")
+        return False
+    team = args[0].lower()
+    lichess_token = args[1]
+    file_id = str(uuid.uuid4().hex)[0:8]
+    new = True
+    handle = await datahandle(team, file_id, new)
+    text = "Die Daten des Teams **" + args[0] + "** werden heruntergeladen und überprüft! Dies kann je nach " \
+           "Größe des Teams mehrere Minuten dauern. Pro 1000 Mitglieder ca. 1 Minute!"
+    await ctx.send(text)
+    await faultyhandle(ctx, team, args[0], handle, lichess_token)
 
 
 @bot.command()
@@ -41,7 +57,8 @@ async def faulty(ctx, *args):
         text = "Die Daten des Teams **" + args[0] + "** werden heruntergeladen und überprüft! Dies kann je nach " \
                 "Größe des Teams mehrere Minuten dauern. Pro 1000 Mitglieder ca. 1 Minute!"
         await ctx.send(text)
-        await faultyhandle(ctx, team, args[0], handle)
+        token = False
+        await faultyhandle(ctx, team, args[0], handle, token)
     elif id_ref[handle][3] == 2:  # Team mit faulty user
         link = "http://www.donbotti.de/?token=" + id_ref[handle][2]
         text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDie Abfrage des Teams " + args[0] + \
@@ -59,22 +76,23 @@ async def faulty(ctx, *args):
         await ctx.send(text)
 
 
-async def faultyhandle(ctx, team, arg, handle):
+async def faultyhandle(ctx, team, arg, handle, token):
     try:
-        data = api.users_by_team(team)
+        cheater = function.analyse_team(team)
     except api.ApiHttpError:
         text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDas abgefragte Team **" + arg + \
                "** existiert offenbar nicht! \n- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
         id_ref[handle][3] = 4
         return False
-    data = findfaulty(data)
-    if not data:
+    if not cheater:
         text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDas abgefragte Team **" + arg + \
                "** beinhaltet keine geflaggten User!\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
         id_ref[handle][3] = 3
         return False
+    marker = "\n"
+    data = marker.join(cheater)
     filename = id_ref[handle][2] + ".flag"
     file = open(filename, 'w')
     file.write(id_ref[handle][2] + "\n" + id_ref[handle][1] + "\n")
@@ -89,6 +107,20 @@ async def faultyhandle(ctx, team, arg, handle):
     await ctx.send(text)
     if os.path.isfile(filename):
         os.remove(filename)
+    if token:
+        count_cheater = 0
+        for c in cheater:
+            if function.kick(team.lower(), c, token) != "<Response [200]>":
+                await ctx.send("Der Token funktioniert nicht!")
+                return False
+            count_cheater += 1
+        if count_cheater == 1:
+            text = "Es wurde 1 geflaggter User gekickt"
+        else:
+            text = "Es wurden " + str(count_cheater) + " geflaggte User gekickt"
+        await ctx.send(text)
+        id_ref.__delitem__(handle)
+        return False
     id_ref[handle][3] = 2
 
 
@@ -111,30 +143,6 @@ async def upload(file_id):
         print("Kein Logging möglich!")
 
 
-def getdata(id_team):
-    url = "https://lichess.org/api/team/" + id_team + "/users"
-    param = dict()
-    resp = requests.get(url=url, params=param)
-    list_resp = resp.text.splitlines()
-    data = list(map(lambda x: json.loads(x), list_resp))
-    return data
-
-
-def findfaulty(data):
-    fault_users = []
-    for i in data:
-        user = i.get("username")
-        is_faulti = i.get("tosViolation")
-        if is_faulti:
-            fault_users.append(user)
-    fault_users.sort(key=str.lower)
-    userlist = ""
-    if fault_users:
-        trennzeichen = "\n"
-        userlist = trennzeichen.join(fault_users)
-    return userlist
-
-
 async def datahandle(team, file_id, new):
     now = datetime.datetime.utcnow()
     for i in id_ref:
@@ -150,4 +158,4 @@ async def datahandle(team, file_id, new):
     return id_ref.index(newline)
 
 
-bot.run(token)
+bot.run(bot_token)
