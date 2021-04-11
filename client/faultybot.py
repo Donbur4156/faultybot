@@ -112,7 +112,7 @@ async def faultyhandle(ctx, team, arg, handle, token):
         for c in cheater:
             r = function.kick(team.lower(), c, token)
             print("found " + str(len(cheater)) + " Cheater in Team " + str(team))
-            print("Request for Cheater " + str(count_cheater) + " '" + c + "' returns " + str(r))
+            print("Request for Cheater " + str(count_cheater + 1) + " '" + c + "' returns " + str(r))
             if not function.check(r):
                 status = function.status(r)
                 text = "Der Kick Vorgang wurde aufgrund folgendem Fehler abgebrochen:\n" \
