@@ -46,4 +46,26 @@ def kick(team, user, token):
 # Kick User  
 def runner(team, token):
     for c in analyse_team(team.lower()):
-                kick(team.lower(), c, token)
+        kick(team.lower(), c, token)
+
+
+# check request
+def check(level):
+    print("check:" + level.text)
+    if "true" in level.text:
+        return True
+    else:
+        return False
+
+
+# status request
+def status(level):
+    print("status: " + level.text)
+    if "true" not in level.text:
+        if "No such token" in level.text:
+            print("Invalid Token")
+            return "Invalid Token!"
+        print("Unkown Token")
+        return "Unkown Error!"
+    print("No Error")
+    return "No Error"

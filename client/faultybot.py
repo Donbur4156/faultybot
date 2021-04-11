@@ -110,14 +110,23 @@ async def faultyhandle(ctx, team, arg, handle, token):
     if token:
         count_cheater = 0
         for c in cheater:
-            if function.kick(team.lower(), c, token) != "<Response [200]>":
-                await ctx.send("Der Token funktioniert nicht!")
+            r = function.kick(team.lower(), c, token)
+            print("found " + str(len(cheater)) + " Cheater in Team " + str(team))
+            print("Request for Cheater " + str(count_cheater) + " '" + c + "' returns " + str(r))
+            if not function.check(r):
+                status = function.status(r)
+                text = "Der Kick Vorgang wurde aufgrund folgendem Fehler abgebrochen:\n" \
+                       "**" + status + "**\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+                print("Request failed with " + status)
+                await ctx.send(text)
                 return False
+            print("with success")
             count_cheater += 1
         if count_cheater == 1:
-            text = "Es wurde 1 geflaggter User gekickt"
+            text = "Es wurde 1 geflaggter User gekickt\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         else:
-            text = "Es wurden " + str(count_cheater) + " geflaggte User gekickt"
+            text = "Es wurden " + str(count_cheater) + " geflaggte User gekickt" \
+                                                       "\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
         id_ref.__delitem__(handle)
         return False
