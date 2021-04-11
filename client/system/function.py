@@ -63,8 +63,8 @@ def status(level):
     print("status: " + level.text)
     if "true" not in level.text:
         if "No such token" in level.text:
-            print("Invalid Token")
-            return "Invalid Token!"
+            print("Invalid Token (Wrong Token or not authorized)")
+            return "Invalid Token! (Wrong Token or not authorized)"
         print("Unkown Token")
         return "Unkown Error!"
     print("No Error")
