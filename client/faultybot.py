@@ -7,6 +7,8 @@ import os
 import datetime
 from lichess import api
 from system import function
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
 
 #  build bot
 bot_token = ftpdata.bot_token
@@ -59,6 +61,7 @@ async def faulty(ctx, *args):
         await ctx.send(text)
         token = False
         await faultyhandle(ctx, team, args[0], handle, token)
+        return True
     elif id_ref[handle][3] == 2:  # Team mit faulty user
         link = "http://www.donbotti.de/?token=" + id_ref[handle][2]
         text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDie Abfrage des Teams " + args[0] + \
@@ -74,11 +77,14 @@ async def faulty(ctx, *args):
         text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDas abgefragte Team **" + args[0] + \
                "** existiert offenbar nicht! \n- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
+    return False
 
 
 async def faultyhandle(ctx, team, arg, handle, token):
     try:
-        cheater = function.analyse_team(team)
+        loop = asyncio.get_event_loop()
+        cheater = await loop.run_in_executor(ThreadPoolExecutor(), function.analyse_team, team)
+        #  cheater = function.analyse_team(team)
     except api.ApiHttpError:
         text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDas abgefragte Team **" + arg + \
                "** existiert offenbar nicht! \n- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
