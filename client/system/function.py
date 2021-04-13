@@ -1,7 +1,7 @@
 # Function
 import lichess.api
 import requests
-
+import time
 
 # check_user() : bool 
 def check_user(username):
@@ -69,3 +69,16 @@ def status(level):
         return "Unkown Error!"
     print("No Error")
     return "No Error"
+
+# Clear Team
+def clear_team(team, token):
+    try:
+        for i in lichess.api.users_by_team(team):
+            username = i.get('username').lower()   
+            url = 'https://lichess.org/team/'+team+'/kick/'+user
+            header = {'Authorization': 'Bearer ' + token}
+            r = requests.post(url, headers=header)
+            time.sleep(1) # without delta
+    except:
+        return False
+    return True
