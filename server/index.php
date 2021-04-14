@@ -61,7 +61,7 @@
 								<span class="image main"><img src="images/pic02.jpg" alt="" /></span>
 								<form action="https://www.donbotti.de/index.php#donbotti" id="token">				
 								<label for="token">Bitte geben Sie einen Token ein:</label>  
-								<input type="text" name="token" id="token" maxlength="8" minlength="8">
+								<input type="text" name="token" id="token" maxlength="32" minlength="32">
 								<button type="reset">Eingaben zurücksetzen</button>
 								<button type="submit">Eingaben absenden</button>
 							</form>

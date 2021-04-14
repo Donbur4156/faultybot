@@ -37,7 +37,7 @@ async def kickfaulty(ctx, *args):
         return False
     team = args[0].lower()
     lichess_token = args[1]
-    file_id = str(uuid.uuid4().hex)[0:8]
+    file_id = str(uuid.uuid4().hex)
     new = True
     handle = await datahandle(team, file_id, new)
     text = "Die Daten des Teams **" + args[0] + "** werden heruntergeladen und überprüft! Dies kann je nach " \
@@ -52,7 +52,7 @@ async def faulty(ctx, *args):
     team = args[0].lower()
     if len(args) > 1 and args[1] == "new":
         new = True
-    file_id = str(uuid.uuid4().hex)[0:8]
+    file_id = str(uuid.uuid4().hex)
     handle = await datahandle(team, file_id, new)
     # handle = [now, team, file_id, status]
     if id_ref[handle][3] == 1:  # team neu
