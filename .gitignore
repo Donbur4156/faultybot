@@ -1,4 +1,15 @@
+# PyCharm
+.idea/
+
+# VSCode
+.vscode/
+
+# Config
 *.ini
-__pycache__
 client/ftpdata.py
+
+# Runner
 get-pip.py
+
+# Chache
+__pycache__
