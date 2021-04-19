@@ -8,8 +8,11 @@
 *.ini
 client/ftpdata.py
 
-# Runner
+# PIP Installer
 get-pip.py
 
 # Chache
 __pycache__
+
+# Ruby
+*.rb
