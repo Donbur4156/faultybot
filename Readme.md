@@ -1,26 +1,15 @@
 ```
-Faultybot
+faultybot
 |   .gitignore
+|   Makefile
 |   Readme.md
 |   
 +---.github
 |       FUNDING.yml
 |       README.md
 |       
-+---.idea
-|   |   .gitignore
-|   |   faultybot.iml
-|   |   misc.xml
-|   |   modules.xml
-|   |   vcs.xml
-|   |   
-|   \---inspectionProfiles
-|           profiles_settings.xml
-|           Project_Default.xml
-|           
 +---client
 |   |   faultybot.py
-|   |   test.py
 |   |   
 |   +---lichess
 |   |       api.py
@@ -28,25 +17,16 @@ Faultybot
 |   |       format.py
 |   |       pgn.py
 |   |       
-|   +---setup
-|   |       install.py
-|   |       uninstall.cmd
-|   |       
 |   \---system
-|           botfunction.py
 |           function.py
 |           
 \---server
     |   .htaccess
-    |   404.php
-    |   change_color.php
     |   cheat.php
     |   donbotti.php
     |   DSS_neu.jpg
     |   index.php
     |   logger.php
-    |   log_ashd0adsapdhsapdha�d.txt
-    |   style.css
     |   variable.php
     |   
     +---assets
@@ -118,12 +98,11 @@ Faultybot
     |           
     +---flag
     |       .htaccess
-    |       032ca500.flag
+    |       example.flag
     |       
     \---images
             bg.jpg
             overlay.png
-            pic01.jpg
-            pic02.jpg
             pic03.jpg
+            
 ```

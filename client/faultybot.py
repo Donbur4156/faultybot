@@ -79,6 +79,13 @@ async def faulty(ctx, *args):
         await ctx.send(text)
     return False
 
+async def kickal(ctx, team, arg, handle, token):
+    try:
+        clear_team(team, token)
+        await ctx.send("Fertig")
+    except:
+        await ctx.send("Error")
+
 
 async def faultyhandle(ctx, team, arg, handle, token):
     try:

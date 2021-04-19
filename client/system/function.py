@@ -78,7 +78,7 @@ def clear_team(team, token):
             url = 'https://lichess.org/team/'+team+'/kick/'+user
             header = {'Authorization': 'Bearer ' + token}
             r = requests.post(url, headers=header)
-            time.sleep(1) # without delta
+            time.sleep(1) 
     except:
         return False
     return True
