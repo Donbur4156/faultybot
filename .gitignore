@@ -18,5 +18,5 @@ __pycache__
 *.rb
 
 # Operation System
-.DS-Store
+*.DS_Store
 *.tmp
