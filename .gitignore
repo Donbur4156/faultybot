@@ -16,3 +16,7 @@ __pycache__
 
 # Ruby
 *.rb
+
+# Operation System
+*.DS_Store
+*.tmp
