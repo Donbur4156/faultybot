@@ -33,7 +33,7 @@ function create_logger_file(){
     if (!file_exists('log.txt')) {   
       // touch('log.txt');
       $datei = fopen("log.txt", "a+");
-      $data =  "IP; Host; Datum; Uhrzeit; Token; Team \n"   ;
+      $data =  "IP; Host; Date; Time; Token; Team \n"   ;
       fwrite($datei, $data);
       fclose($datei);
         }

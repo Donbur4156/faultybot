@@ -4,18 +4,18 @@
  * User Info
  */
 function user_info($token,$format_date,$formmat_time,$team){
-    //print("<h1> Donbotti Cheating System </h1>");
     print("Token: ".$token."<br>"); 
     print("Tag: ".$format_date."<br>");
     print("Zeit: ".$formmat_time."<br>");
     print("Team: ".$team."<br>");
-    echo "<br><h2> Cheater aus dem Team ". $team ."</h2>";
+    echo "<br><h2> Cheaters from the team ". $team ."</h2>";
 }
 
 /**
  *  Content
  */
 function content($zitate,$team){
+    $blocked = true;
     for($i=2;$i < count($zitate); $i++){
             $user = $zitate[$i];
             if($user != "Zeyecx" &&  $user != "Eight_tlmes_ate"){

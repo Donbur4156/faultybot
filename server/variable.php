@@ -1,11 +1,11 @@
 <?
 /**
- * Token von dem Donbotti
+ * Token from the Donbotti
  */
   $token = $_GET['token']; 
   
   /**
-   * Path zur *.flag Datei
+   * Path to the *.flag file
    */
   $flag_file = dirname(__FILE__)."/flag/".$token.".flag";
   
@@ -27,17 +27,12 @@
   $blocked = false;
 
   /**
-   * Lese Datei als Array ein
+   * Read file as array
    */
   $zitate = file($flag_file);
 
   /**
-   * Liest Teamname aus Datei ein. 
+   * Reads team name from file. 
    */
   $team = $zitate[1];
-
-  /**
-   * gibt die neue Farbe an
-   */
-  $new_color = random_color();
 ?>

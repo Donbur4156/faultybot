@@ -14,7 +14,7 @@
     <title>404 Page</title>
 </head>
 <body style="background-color: #<? echo $new_color ?>">      
-    <center><h1>Sie haben hier nichts verloren.
+    <center><h1>You have no business here.
    </h1></center>
     
 </body>

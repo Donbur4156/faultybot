@@ -1,1 +1,1 @@
-IP; Host; Datum; Uhrzeit; Token; Team 
+IP; Host; Date; Time; Token; Team
