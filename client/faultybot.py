@@ -83,7 +83,7 @@ async def faulty(ctx, *args):
 async def kickal(ctx, team, arg, handle, token):
     try:
         function.clear_team(team, token)
-        await ctx.send("Fertig")
+        await ctx.send("Ready")
     except:
         await ctx.send("Error")
 
@@ -94,14 +94,14 @@ async def faultyhandle(ctx, team, arg, handle, token):
         cheater = await loop.run_in_executor(ThreadPoolExecutor(), function.analyse_team, team)
         #  cheater = function.analyse_team(team)
     except api.ApiHttpError:
-        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDas abgefragte Team **" + arg + \
-               "** existiert offenbar nicht! \n- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe queried team **" + arg + \
+               "** apparently does not exist! \n- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
         id_ref[handle][3] = 4
         return False
     if not cheater:
-        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDas abgefragte Team **" + arg + \
-               "** beinhaltet keine geflaggten User!\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe queried team **" + arg + \
+               "** does not include flagged users!\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
         id_ref[handle][3] = 3
         return False
@@ -114,9 +114,9 @@ async def faultyhandle(ctx, team, arg, handle, token):
     file.close()
     await upload(id_ref[handle][2])
     link = "http://www.donbotti.de/?token=" + id_ref[handle][2]
-    text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nIn dem Team **" + arg + \
-           "** wurden User von Lichess markiert, dass sie gegen die Nutzungsbedingungen verstoßen haben. " \
-           "Du findest die Liste über diesen Link:\n---> " + link + \
+    text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nIn the team **" + arg + \
+           "** , users were marked by Lichess as having violated the terms of use. " \
+           "You can find the list via this link:\n---> " + link + \
            " <---\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
     await ctx.send(text)
     if os.path.isfile(filename):
@@ -129,7 +129,7 @@ async def faultyhandle(ctx, team, arg, handle, token):
             print_log("Request for Cheater " + str(count_cheater + 1) + " '" + c + "' returns " + str(r))
             if not function.check(r):
                 status = function.status(r)
-                text = "Der Kick Vorgang wurde aufgrund folgendem Fehler abgebrochen:\n" \
+                text = "The kick process was cancelled due to the following error:\n" \
                        "**" + status + "**\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
                 print_log("Request failed with " + status)
                 await ctx.send(text)
@@ -137,9 +137,9 @@ async def faultyhandle(ctx, team, arg, handle, token):
             print_log("with success")
             count_cheater += 1
         if count_cheater == 1:
-            text = "Es wurde 1 geflaggter User gekickt\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+            text = "There was 1 flagged user kicked\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         else:
-            text = "Es wurden " + str(count_cheater) + " geflaggte User gekickt" \
+            text = "There were " + str(count_cheater) + " flagged users kicked" \
                                                        "\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
         id_ref.__delitem__(handle)
