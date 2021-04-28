@@ -44,3 +44,33 @@ url = "DATA"
 bot_token = "DATA"
 ```
 
+## Server Config
+I assume at this point that you own a web server and know how to use it.
+
+### Upload Files
+Please upload the files from the Server folder to the Web Server.  PHP7 (, JavaScript and CSS as well as SCSS) are required there. However, this is by far not a special feature. I write the JS files here because there are hosters who reject these file formats. I am aware that CSS and JS are executed locally. 
+
+
+### FTP scope
+Create another FTP account. This should only have access to the flag folder. 
+This data is important for the config file created earlier. The bot then creates a *.txt file and writes it to the server via FTP. This would otherwise be too much for the output.
+That's about it. The bot automatically generates the links and then sends them to the user via a message.
+
+
+## How to use the bot
+To view all players who have violated the TOS, write the following in the chat with the bot.
+The bot only searches for new cheaters every 4 hours after the last call. That would otherwise generate too much traffic. The flag "new" can be used to circumvent this.
+
+```PowerShell
+>faulty >>TEAM-ID<< 
+```
+
+However, if they want to kick players, write the following:
+
+```PowerShell
+>kickfaulty >>TEAM-ID<< >>TOKEN<< 
+```
+
+Please note that only one token can be uniquely assigned to a bot at a time. This bot must then also be TeamLeader in the desired team. This means that you cannot kick people all over the place. You can only do that in your teams.
+
+## Have Fun
