@@ -35,7 +35,7 @@ async def kickfaulty(ctx, *args):
     if len(args) != 2:
         await ctx.send("Der Command >kickfaulty benötigt 2 Argumente: 1. Teamname; 2. OAuth Token")
         return False
-    team = args[0].lower()
+    team = function.check_team_name(args[0].lower())
     lichess_token = args[1]
     file_id = str(uuid.uuid4().hex)
     new = True
@@ -49,7 +49,7 @@ async def kickfaulty(ctx, *args):
 @bot.command()
 async def faulty(ctx, *args):
     new = False
-    team = args[0].lower()
+    team = function.check_team_name(args[0].lower())
     if len(args) > 1 and args[1] == "new":
         new = True
     file_id = str(uuid.uuid4().hex)
@@ -57,7 +57,7 @@ async def faulty(ctx, *args):
     # handle = [now, team, file_id, status]
     if id_ref[handle][3] == 1:  # team neu
         text = "Die Daten des Teams **" + args[0] + "** werden heruntergeladen und überprüft! Dies kann je nach " \
-                "Größe des Teams mehrere Minuten dauern. Pro 1000 Mitglieder ca. 1 Minute!"
+            "Größe des Teams mehrere Minuten dauern. Pro 1000 Mitglieder ca. 1 Minute!"
         await ctx.send(text)
         token = False
         await faultyhandle(ctx, team, args[0], handle, token)
@@ -78,6 +78,7 @@ async def faulty(ctx, *args):
                "** existiert offenbar nicht! \n- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
     return False
+
 
 async def kickal(ctx, team, arg, handle, token):
     try:
@@ -124,8 +125,10 @@ async def faultyhandle(ctx, team, arg, handle, token):
         count_cheater = 0
         for c in cheater:
             r = function.kick(team.lower(), c, token)
-            print("found " + str(len(cheater)) + " Cheater in Team " + str(team))
-            print("Request for Cheater " + str(count_cheater + 1) + " '" + c + "' returns " + str(r))
+            print("found " + str(len(cheater)) +
+                  " Cheater in Team " + str(team))
+            print("Request for Cheater " + str(count_cheater + 1) +
+                  " '" + c + "' returns " + str(r))
             if not function.check(r):
                 status = function.status(r)
                 text = "Der Kick Vorgang wurde aufgrund folgendem Fehler abgebrochen:\n" \
