@@ -45,7 +45,7 @@
 								<li><a href="https://github.com/jplight/faultybot/archive/refs/heads/main.zip" target="_blank">Download</a></li>
 								<?
 									if(isset($_GET['token']) && $_GET['token'] != ""){
-										print("<li><a href='#donbotti'>Übersicht</a></li>");
+										print("<li><a href='#donbotti'>Overview</a></li>");
 									}
 
 								?>
@@ -83,7 +83,7 @@
 									include __DIR__.'/logger.php';
 									include __DIR__.'/variable.php';
 									include __DIR__.'/donbotti.php';
-									print("<h3> Cheater aus dem Team:".$team."</h3><br>");
+									print("<h3> Cheaters from the team:  ".$team."</h3><br>");
 									logger($team);
 									content($zitate,$team);
 								?>
