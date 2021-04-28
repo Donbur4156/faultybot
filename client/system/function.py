@@ -3,7 +3,7 @@ import lichess.api
 import requests
 import time
 
-# check_user() : bool 
+# check_user() : bool
 def check_user(username):
     flag = False
     try:
@@ -17,7 +17,7 @@ def check_user(username):
 def check_user_ausgabe(username):
     if check_user(username):
         return "True"
-    else: 
+    else:
         return "False"
 
 
@@ -43,7 +43,7 @@ def kick(team, user, token):
     return r
 
 
-# Kick User  
+# Kick User
 def runner(team, token):
     for c in analyse_team(team.lower()):
         kick(team.lower(), c, token)
@@ -71,14 +71,16 @@ def status(level):
     return "No Error"
 
 # Clear Team
+
+
 def clear_team(team, token):
     try:
         for i in lichess.api.users_by_team(team):
-            username = i.get('username').lower()   
+            username = i.get('username').lower()
             url = 'https://lichess.org/team/'+team+'/kick/'+user
             header = {'Authorization': 'Bearer ' + token}
             r = requests.post(url, headers=header)
-            time.sleep(1) 
+            time.sleep(1)
     except:
         return False
     return True
@@ -89,9 +91,10 @@ def check_team_name(team):
     if "/team/" in team:
         x = len(team)
         while x > 0:
-            # Lichess cannot process teams with the "/" character for syntax reasons. 
-            # Therefore there are no such teams.  
+            # Lichess cannot process teams with the "/" character for syntax reasons.
+            # Therefore there are no such teams.
             if "/" in team[-x::]:
+                print(teamteam[-x::])
                 x = x - 1
             else:
                 return team[-x::]
