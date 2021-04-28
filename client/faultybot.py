@@ -20,7 +20,7 @@ id_ref = []
 
 @bot.event
 async def on_ready():
-    print("I am online!")
+    print_log("I am online!")
 
 
 @bot.command()
@@ -82,7 +82,7 @@ async def faulty(ctx, *args):
 
 async def kickal(ctx, team, arg, handle, token):
     try:
-        clear_team(team, token)
+        function.clear_team(team, token)
         await ctx.send("Fertig")
     except:
         await ctx.send("Error")
@@ -122,21 +122,19 @@ async def faultyhandle(ctx, team, arg, handle, token):
     if os.path.isfile(filename):
         os.remove(filename)
     if token:
+        print_log("found " + str(len(cheater)) + " Cheater in Team " + str(team))
         count_cheater = 0
         for c in cheater:
             r = function.kick(team.lower(), c, token)
-            print("found " + str(len(cheater)) +
-                  " Cheater in Team " + str(team))
-            print("Request for Cheater " + str(count_cheater + 1) +
-                  " '" + c + "' returns " + str(r))
+            print_log("Request for Cheater " + str(count_cheater + 1) + " '" + c + "' returns " + str(r))
             if not function.check(r):
                 status = function.status(r)
                 text = "Der Kick Vorgang wurde aufgrund folgendem Fehler abgebrochen:\n" \
                        "**" + status + "**\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
-                print("Request failed with " + status)
+                print_log("Request failed with " + status)
                 await ctx.send(text)
                 return False
-            print("with success")
+            print_log("with success")
             count_cheater += 1
         if count_cheater == 1:
             text = "Es wurde 1 geflaggter User gekickt\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
@@ -155,14 +153,13 @@ async def upload(file_id):
     port = 21
     try:
         ftp.connect(host, port)
-        print(ftp.getwelcome())
-        print("Logging in...")
         ftpuser = ftpdata.user
         ftp_pw = ftpdata.pwd
         ftp.login(ftpuser, ftp_pw)
         filename = file_id + ".flag"
         with open(filename, "rb") as file:
             ftp.storbinary(f"STOR {filename}", file)
+            print_log("Upload der Datei " + filename + " erfolgreich.")
         ftp.quit()
     except ftplib.all_errors:
         print("Kein Logging möglich!")
@@ -181,6 +178,12 @@ async def datahandle(team, file_id, new):
     newline = [now, team, file_id, status]
     id_ref.append(newline)
     return id_ref.index(newline)
+
+
+def print_log(text):
+    now = datetime.datetime.now()
+    now = now.strftime("%Y-%m-%d %H:%M:%S")
+    print(now + ": " + text)
 
 
 bot.run(bot_token)
