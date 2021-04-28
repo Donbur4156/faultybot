@@ -38,4 +38,3 @@ function create_logger_file(){
       fclose($datei);
         }
 }
-?>

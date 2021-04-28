@@ -12,5 +12,3 @@
     if($team != ""  && $id != ""){
         logger($team);
     }
-    
-    ?>
