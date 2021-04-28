@@ -82,3 +82,21 @@ def clear_team(team, token):
     except:
         return False
     return True
+
+# If anyone operates the bot incorrectly, it will be checked again for errors here.
+def check_team_name(team):
+    # The program uses the static links from lichess
+    if "/team/" in team:
+        x = len(team)
+        while x > 0:
+            # Lichess cannot process teams with the "/" character for syntax reasons. 
+            # Therefore there are no such teams.  
+            if "/" in team[-x::]:
+                x = x - 1
+            else:
+                return team[-x::]
+                break
+    else:
+        return team
+    # The false can never be reached. It stands so that it looks better
+    return False

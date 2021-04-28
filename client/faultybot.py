@@ -35,7 +35,7 @@ async def kickfaulty(ctx, *args):
     if len(args) != 2:
         await ctx.send("Der Command >kickfaulty benötigt 2 Argumente: 1. Teamname; 2. OAuth Token")
         return False
-    team = args[0].lower()
+    team = check_team_name(args[0].lower())
     lichess_token = args[1]
     file_id = str(uuid.uuid4().hex)
     new = True
@@ -49,7 +49,7 @@ async def kickfaulty(ctx, *args):
 @bot.command()
 async def faulty(ctx, *args):
     new = False
-    team = args[0].lower()
+    team = check_team_name(args[0].lower())
     if len(args) > 1 and args[1] == "new":
         new = True
     file_id = str(uuid.uuid4().hex)
