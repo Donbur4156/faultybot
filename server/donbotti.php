@@ -34,8 +34,8 @@ function content($zitate,$team){
 
 
         if($blocked){
-            print("<div style='color: yellow'>Die Akte wurde geschwärzt</div>");
-            print("<div style='color:black'>Es wurden keine User geflaggt</div>");
+            print("<div style='color: yellow'>The file was redacted</div>");
+            print("<div style='color:black'>No users have been flagged</div>");
         }
 
 
