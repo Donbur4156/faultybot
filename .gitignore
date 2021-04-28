@@ -1,5 +1,7 @@
 # PyCharm
 .idea/
+output/
+src/
 
 # VSCode
 .vscode/
@@ -7,6 +9,7 @@
 # Config
 *.ini
 client/ftpdata.py
+*data*
 
 # PIP Installer
 get-pip.py
@@ -14,9 +17,6 @@ get-pip.py
 # Chache
 __pycache__
 
-# Ruby
-*.rb
-
-# Operation System
+# Temp Files
 *.DS_Store
 *.tmp
