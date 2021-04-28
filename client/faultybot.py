@@ -27,21 +27,21 @@ async def on_ready():
 async def kickfaulty(ctx, *args):
     channel = ctx.guild
     if channel:
-        text = "Dieser Command steht nur per Privater Nachricht zur Verfügung. " \
-               "Der Lichess Token sollte niemals öffentlich benutzt werden!"
+        text = "This command is only available via private message.. " \
+               "The Lichess Token should never be used publicly!"
         await ctx.send(text)
         await ctx.message.delete()
         return False
     if len(args) != 2:
-        await ctx.send("Der Command >kickfaulty benötigt 2 Argumente: 1. Teamname; 2. OAuth Token")
+        await ctx.send("The command >kickfaulty requires 2 arguments: 1. team name; 2. OAuth token")
         return False
     team = function.check_team_name(args[0].lower())
     lichess_token = args[1]
     file_id = str(uuid.uuid4().hex)
     new = True
     handle = await datahandle(team, file_id, new)
-    text = "Die Daten des Teams **" + args[0] + "** werden heruntergeladen und überprüft! Dies kann je nach " \
-           "Größe des Teams mehrere Minuten dauern. Pro 1000 Mitglieder ca. 1 Minute!"
+    text = "The data of the team **" + args[0] + "** is downloaded and checked! This can take several minutes" \
+           " depending on the size of the team. Per 1000 members approx 1 minute!"
     await ctx.send(text)
     await faultyhandle(ctx, team, args[0], handle, lichess_token)
 
@@ -56,26 +56,26 @@ async def faulty(ctx, *args):
     handle = await datahandle(team, file_id, new)
     # handle = [now, team, file_id, status]
     if id_ref[handle][3] == 1:  # team neu
-        text = "Die Daten des Teams **" + args[0] + "** werden heruntergeladen und überprüft! Dies kann je nach " \
-            "Größe des Teams mehrere Minuten dauern. Pro 1000 Mitglieder ca. 1 Minute!"
+        text = "The data of the team **" + args[0] + "** is downloaded and checked! This can take several minutes" \
+               " depending on the size of the team. Per 1000 members approx 1 minute!"
         await ctx.send(text)
         token = False
         await faultyhandle(ctx, team, args[0], handle, token)
         return True
     elif id_ref[handle][3] == 2:  # Team mit faulty user
         link = "http://www.donbotti.de/?token=" + id_ref[handle][2]
-        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDie Abfrage des Teams " + args[0] + \
-               " wurde in den letzten 4 Stunden bereits getätigt. Du findest die Liste über diesen Link:\n---> " \
+        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe query of the team " + args[0] + \
+               "has already been made in the last 4 hours. You can find the list via this link:\n---> " \
                + link + " <---\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
     elif id_ref[handle][3] == 3:  # Team ohne faulty user
-        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDie Abfrage des Teams " + args[0] + \
-               " wurde in den letzten 4 Stunden bereits getätigt. Dabei wurden keine geflaggten user gefunden!" \
+        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe query of the team " + args[0] + \
+               "has already been made in the last 4 hours. No flagged users were found!" \
                "\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
     elif id_ref[handle][3] == 4:  # Team existierte bei letzter Abfrage nicht
-        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDas abgefragte Team **" + args[0] + \
-               "** existiert offenbar nicht! \n- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe query of the team **" + args[0] + \
+               "**  apparently does not exist! \n- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
     return False
 
@@ -159,10 +159,10 @@ async def upload(file_id):
         filename = file_id + ".flag"
         with open(filename, "rb") as file:
             ftp.storbinary(f"STOR {filename}", file)
-            print_log("Upload der Datei " + filename + " erfolgreich.")
+            print_log("Upload of the file  " + filename + " is successfully completed.")
         ftp.quit()
     except ftplib.all_errors:
-        print("Kein Logging möglich!")
+        print("No logging possible!")
 
 
 async def datahandle(team, file_id, new):
