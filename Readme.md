@@ -23,4 +23,25 @@ curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 python get-pip.py
 ```
 
-### 
+### Installation of the pip suspensions
+This is also done with a simple console input. 
+```PowerShell
+pip install -r client\requirements.txt 
+```
+Please note that the requirements file is located in the subfolder client.
+
+### Creating the Config File
+Create a file named ftpdata.py in the subfolder client. Please use the syntax below and enter your values. You can obtain the FTP data from your website hoster. They are needed to transfer the cheater lists to the server.
+
+```Python
+# FTP 
+user = "DATA"
+pwd = "DATA"
+port = "DATA"
+url = "DATA"
+
+# Lichess
+bot_token = "DATA"
+```
+
+
