@@ -1,6 +1,6 @@
 <?
 /**
-* Mail
+* asdas
  */
 
 function($content, $adress) mail_senden{

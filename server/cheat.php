@@ -2,6 +2,10 @@
 // Error Handling
     ini_set('display_errors', 0);
     error_reporting(E_ALL);
+
+// new Header
+    // $url = "https://zeyecx.com/p/?token=".$_GET["token"]."#donbotti";
+   // header("Location: ".$url);
      
 
 // import Lib
@@ -15,4 +19,4 @@
         logger($team);
     }
     
-?>
+    ?>

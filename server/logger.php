@@ -13,9 +13,7 @@ function logger($team){
    $token = $_GET['token'];
 
    
-/**
- *  rewrite logger stats
- */
+
    if($token == ""){
       $token = "Invalid Token";
       $team = "Invalid Team";
