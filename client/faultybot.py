@@ -65,12 +65,12 @@ async def faulty(ctx, *args):
     elif id_ref[handle][3] == 2:  # Team mit faulty user
         link = "http://www.donbotti.de/?token=" + id_ref[handle][2]
         text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe query of the team " + team + \
-               "has already been made in the last 4 hours. You can find the list via this link:\n---> " \
+               " has already been made in the last 4 hours. You can find the list via this link:\n---> " \
                + link + " <---\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
     elif id_ref[handle][3] == 3:  # Team ohne faulty user
         text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe query of the team " + team + \
-               "has already been made in the last 4 hours. No flagged users were found!" \
+               " has already been made in the last 4 hours. No flagged users were found!" \
                "\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
     elif id_ref[handle][3] == 4:  # Team existierte bei letzter Abfrage nicht
@@ -115,7 +115,7 @@ async def faultyhandle(ctx, team, arg, handle, token):
     await upload(id_ref[handle][2])
     link = "http://www.donbotti.de/?token=" + id_ref[handle][2]
     text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nIn the team **" + arg + \
-           "** , users were marked by Lichess as having violated the terms of use. " \
+           "**, users were marked by Lichess as having violated the terms of use. " \
            "You can find the list via this link:\n---> " + link + \
            " <---\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
     await ctx.send(text)
