@@ -17,6 +17,7 @@ bot = commands.Bot(command_prefix='>', intents=intents)
 
 id_ref = []
 
+
 # Test function to see if the bot is online. 
 @bot.event
 async def on_ready():
@@ -94,13 +95,13 @@ async def faultyhandle(ctx, team, arg, handle, token):
         cheater = await loop.run_in_executor(ThreadPoolExecutor(), function.analyse_team, team)
         #  cheater = function.analyse_team(team)
     except api.ApiHttpError:
-        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe queried team **" + function.check_team_name(arg) + \
+        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe queried team **" + team + \
                "** apparently does not exist! \n- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
         id_ref[handle][3] = 4
         return False
     if not cheater:
-        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe queried team **" + function.check_team_name(arg) + \
+        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe queried team **" + team + \
                "** does not include flagged users!\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
         id_ref[handle][3] = 3
@@ -114,7 +115,7 @@ async def faultyhandle(ctx, team, arg, handle, token):
     file.close()
     await upload(id_ref[handle][2])
     link = "http://www.donbotti.de/?token=" + id_ref[handle][2]
-    text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nIn the team **" + arg + \
+    text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nIn the team **" + team + \
            "**, users were marked by Lichess as having violated the terms of use. " \
            "You can find the list via this link:\n---> " + link + \
            " <---\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
@@ -147,6 +148,7 @@ async def faultyhandle(ctx, team, arg, handle, token):
         id_ref.__delitem__(handle)
         return False
     id_ref[handle][3] = 2
+
 
 # Uploads the files to the FTP server. 
 async def upload(file_id):
@@ -183,11 +185,12 @@ async def datahandle(team, file_id, new):
     id_ref.append(newline)
     return id_ref.index(newline)
 
+
 # Creates a logger and works with it.
 def print_log(text):
     now = datetime.datetime.now()
     now = now.strftime("%Y-%m-%d %H:%M:%S")
-    print(now + ": " + text)
+    print(str(now) + ": " + str(text))
 
 
 # Starting from the Await Client
