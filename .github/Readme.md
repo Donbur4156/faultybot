@@ -17,7 +17,7 @@ team:write
 
 ### Pip install 
 Actually, pip should already be there. If this is not the case, I will give a short instruction here. Simply copy the following commands into a shell or CMD. The instructions are only for Windows users. Linux and Mac users know everything better and therefore don't need them. 
-![Arch User](https://pbs.twimg.com/media/DplToN8UwAAVKrG?format=jpg&name=small)
+
 ```PowerShell
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 python get-pip.py
