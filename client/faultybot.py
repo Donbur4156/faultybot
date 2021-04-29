@@ -40,7 +40,7 @@ async def kickfaulty(ctx, *args):
     file_id = str(uuid.uuid4().hex)
     new = True
     handle = await datahandle(team, file_id, new)
-    text = "The data of the team **" + args[0] + "** is downloaded and checked! This can take several minutes" \
+    text = "The data of the team **" + team + "** is downloaded and checked! This can take several minutes" \
            " depending on the size of the team. Per 1000 members approx 1 minute!"
     await ctx.send(text)
     await faultyhandle(ctx, team, args[0], handle, lichess_token)
@@ -56,7 +56,7 @@ async def faulty(ctx, *args):
     handle = await datahandle(team, file_id, new)
     # handle = [now, team, file_id, status]
     if id_ref[handle][3] == 1:  # team neu
-        text = "The data of the team **" + args[0] + "** is downloaded and checked! This can take several minutes" \
+        text = "The data of the team **" + team + "** is downloaded and checked! This can take several minutes" \
                " depending on the size of the team. Per 1000 members approx 1 minute!"
         await ctx.send(text)
         token = False
