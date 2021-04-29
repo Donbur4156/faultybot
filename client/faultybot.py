@@ -10,7 +10,7 @@ from system import function
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
-#  build bot
+# Build the bot according to the Discord syntax
 bot_token = ftpdata.bot_token
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='>', intents=intents)
@@ -69,7 +69,7 @@ async def faulty(ctx, *args):
                + link + " <---\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
     elif id_ref[handle][3] == 3:  # Team ohne faulty user
-        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe query of the team " +team + \
+        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe query of the team " + team + \
                "has already been made in the last 4 hours. No flagged users were found!" \
                "\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
@@ -122,11 +122,13 @@ async def faultyhandle(ctx, team, arg, handle, token):
     if os.path.isfile(filename):
         os.remove(filename)
     if token:
-        print_log("found " + str(len(cheater)) + " Cheater in Team " + str(team))
+        print_log("found " + str(len(cheater)) +
+                  " Cheater in Team " + str(team))
         count_cheater = 0
         for c in cheater:
             r = function.kick(team.lower(), c, token)
-            print_log("Request for Cheater " + str(count_cheater + 1) + " '" + c + "' returns " + str(r))
+            print_log("Request for Cheater " + str(count_cheater +
+                      1) + " '" + c + "' returns " + str(r))
             if not function.check(r):
                 status = function.status(r)
                 text = "The kick process was cancelled due to the following error:\n" \
@@ -140,7 +142,7 @@ async def faultyhandle(ctx, team, arg, handle, token):
             text = "There was 1 flagged user kicked\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         else:
             text = "There were " + str(count_cheater) + " flagged users kicked" \
-                                                       "\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+                "\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
         id_ref.__delitem__(handle)
         return False
@@ -159,7 +161,8 @@ async def upload(file_id):
         filename = file_id + ".flag"
         with open(filename, "rb") as file:
             ftp.storbinary(f"STOR {filename}", file)
-            print_log("Upload of the file  " + filename + " is successfully completed.")
+            print_log("Upload of the file  " + filename +
+                      " is successfully completed.")
         ftp.quit()
     except ftplib.all_errors:
         print("No logging possible!")
