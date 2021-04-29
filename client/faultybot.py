@@ -64,17 +64,17 @@ async def faulty(ctx, *args):
         return True
     elif id_ref[handle][3] == 2:  # Team mit faulty user
         link = "http://www.donbotti.de/?token=" + id_ref[handle][2]
-        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe query of the team " + args[0] + \
+        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe query of the team " + team + \
                "has already been made in the last 4 hours. You can find the list via this link:\n---> " \
                + link + " <---\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
     elif id_ref[handle][3] == 3:  # Team ohne faulty user
-        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe query of the team " + args[0] + \
+        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe query of the team " +team + \
                "has already been made in the last 4 hours. No flagged users were found!" \
                "\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
     elif id_ref[handle][3] == 4:  # Team existierte bei letzter Abfrage nicht
-        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe query of the team **" + args[0] + \
+        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe query of the team **" + team + \
                "**  apparently does not exist! \n- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
     return False
