@@ -1,4 +1,14 @@
 # Faultybot
+![Python](https://img.shields.io/badge/-Python-3776AB?logo=python&logoColor=ffffff) ![JavaScript](https://img.shields.io/badge/-JavaScript-F7DF1E?&logo=javascript&logoColor=000000) ![PHP](https://img.shields.io/badge/-PHP-BB4444?logo=PHP&logoColor=000000)
+
+![VS Code](https://img.shields.io/badge/VSCode-%23007ACC?logo=Visual-studio-code) ![Pycharm](https://img.shields.io/badge/PyCharm-green?logo=PyCharm) 
+
+![Git](https://img.shields.io/badge/-Git-%23F05032?logo=git&logoColor=%23ffffff)
+
+<a href="https://github.com/jplight/faultybot">
+  <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=jplight&repo=faultybot&theme=algolia" />
+</a>
+
 
 ## Technical fundamentals
 To use the bot you need a Discord bot and a Lichess account.
