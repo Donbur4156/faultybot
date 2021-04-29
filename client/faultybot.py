@@ -10,14 +10,14 @@ from system import function
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
-#  build bot
+# Build the bot according to the Discord syntax
 bot_token = ftpdata.bot_token
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='>', intents=intents)
 
 id_ref = []
 
-
+# Test function to see if the bot is online. 
 @bot.event
 async def on_ready():
     print_log("I am online!")
@@ -27,21 +27,21 @@ async def on_ready():
 async def kickfaulty(ctx, *args):
     channel = ctx.guild
     if channel:
-        text = "Dieser Command steht nur per Privater Nachricht zur Verfügung. " \
-               "Der Lichess Token sollte niemals öffentlich benutzt werden!"
+        text = "This command is only available via private message.. " \
+               "The Lichess Token should never be used publicly!"
         await ctx.send(text)
         await ctx.message.delete()
         return False
     if len(args) != 2:
-        await ctx.send("Der Command >kickfaulty benötigt 2 Argumente: 1. Teamname; 2. OAuth Token")
+        await ctx.send("The command >kickfaulty requires 2 arguments: 1. team name; 2. OAuth token")
         return False
     team = function.check_team_name(args[0].lower())
     lichess_token = args[1]
     file_id = str(uuid.uuid4().hex)
     new = True
     handle = await datahandle(team, file_id, new)
-    text = "Die Daten des Teams **" + args[0] + "** werden heruntergeladen und überprüft! Dies kann je nach " \
-           "Größe des Teams mehrere Minuten dauern. Pro 1000 Mitglieder ca. 1 Minute!"
+    text = "The data of the team **" + team + "** is downloaded and checked! This can take several minutes" \
+           " depending on the size of the team. Per 1000 members approx 1 minute!"
     await ctx.send(text)
     await faultyhandle(ctx, team, args[0], handle, lichess_token)
 
@@ -56,26 +56,26 @@ async def faulty(ctx, *args):
     handle = await datahandle(team, file_id, new)
     # handle = [now, team, file_id, status]
     if id_ref[handle][3] == 1:  # team neu
-        text = "Die Daten des Teams **" + args[0] + "** werden heruntergeladen und überprüft! Dies kann je nach " \
-            "Größe des Teams mehrere Minuten dauern. Pro 1000 Mitglieder ca. 1 Minute!"
+        text = "The data of the team **" + team + "** is downloaded and checked! This can take several minutes" \
+               " depending on the size of the team. Per 1000 members approx 1 minute!"
         await ctx.send(text)
         token = False
         await faultyhandle(ctx, team, args[0], handle, token)
         return True
     elif id_ref[handle][3] == 2:  # Team mit faulty user
         link = "http://www.donbotti.de/?token=" + id_ref[handle][2]
-        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDie Abfrage des Teams " + args[0] + \
-               " wurde in den letzten 4 Stunden bereits getätigt. Du findest die Liste über diesen Link:\n---> " \
+        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe query of the team " + team + \
+               "has already been made in the last 4 hours. You can find the list via this link:\n---> " \
                + link + " <---\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
     elif id_ref[handle][3] == 3:  # Team ohne faulty user
-        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDie Abfrage des Teams " + args[0] + \
-               " wurde in den letzten 4 Stunden bereits getätigt. Dabei wurden keine geflaggten user gefunden!" \
+        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe query of the team " + team + \
+               "has already been made in the last 4 hours. No flagged users were found!" \
                "\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
     elif id_ref[handle][3] == 4:  # Team existierte bei letzter Abfrage nicht
-        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDas abgefragte Team **" + args[0] + \
-               "** existiert offenbar nicht! \n- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe query of the team **" + team + \
+               "**  apparently does not exist! \n- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
     return False
 
@@ -83,7 +83,7 @@ async def faulty(ctx, *args):
 async def kickal(ctx, team, arg, handle, token):
     try:
         function.clear_team(team, token)
-        await ctx.send("Fertig")
+        await ctx.send("Ready")
     except:
         await ctx.send("Error")
 
@@ -94,14 +94,14 @@ async def faultyhandle(ctx, team, arg, handle, token):
         cheater = await loop.run_in_executor(ThreadPoolExecutor(), function.analyse_team, team)
         #  cheater = function.analyse_team(team)
     except api.ApiHttpError:
-        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDas abgefragte Team **" + arg + \
-               "** existiert offenbar nicht! \n- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe queried team **" + arg + \
+               "** apparently does not exist! \n- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
         id_ref[handle][3] = 4
         return False
     if not cheater:
-        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nDas abgefragte Team **" + arg + \
-               "** beinhaltet keine geflaggten User!\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe queried team **" + arg + \
+               "** does not include flagged users!\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
         id_ref[handle][3] = 3
         return False
@@ -114,22 +114,24 @@ async def faultyhandle(ctx, team, arg, handle, token):
     file.close()
     await upload(id_ref[handle][2])
     link = "http://www.donbotti.de/?token=" + id_ref[handle][2]
-    text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nIn dem Team **" + arg + \
-           "** wurden User von Lichess markiert, dass sie gegen die Nutzungsbedingungen verstoßen haben. " \
-           "Du findest die Liste über diesen Link:\n---> " + link + \
+    text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nIn the team **" + arg + \
+           "** , users were marked by Lichess as having violated the terms of use. " \
+           "You can find the list via this link:\n---> " + link + \
            " <---\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
     await ctx.send(text)
     if os.path.isfile(filename):
         os.remove(filename)
     if token:
-        print_log("found " + str(len(cheater)) + " Cheater in Team " + str(team))
+        print_log("found " + str(len(cheater)) +
+                  " Cheater in Team " + str(team))
         count_cheater = 0
         for c in cheater:
             r = function.kick(team.lower(), c, token)
-            print_log("Request for Cheater " + str(count_cheater + 1) + " '" + c + "' returns " + str(r))
+            print_log("Request for Cheater " + str(count_cheater +
+                      1) + " '" + c + "' returns " + str(r))
             if not function.check(r):
                 status = function.status(r)
-                text = "Der Kick Vorgang wurde aufgrund folgendem Fehler abgebrochen:\n" \
+                text = "The kick process was cancelled due to the following error:\n" \
                        "**" + status + "**\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
                 print_log("Request failed with " + status)
                 await ctx.send(text)
@@ -137,17 +139,18 @@ async def faultyhandle(ctx, team, arg, handle, token):
             print_log("with success")
             count_cheater += 1
         if count_cheater == 1:
-            text = "Es wurde 1 geflaggter User gekickt\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+            text = "There was 1 flagged user kicked\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         else:
-            text = "Es wurden " + str(count_cheater) + " geflaggte User gekickt" \
-                                                       "\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+            text = "There were " + str(count_cheater) + " flagged users kicked" \
+                "\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
         id_ref.__delitem__(handle)
         return False
     id_ref[handle][3] = 2
 
-
+# Uploads the files to the FTP server. 
 async def upload(file_id):
+    # Lima City hosts the server for us. But you can also use another provider.
     ftp = ftplib.FTP()
     host = "zeyecx.lima-ftp.de"
     port = 21
@@ -159,10 +162,11 @@ async def upload(file_id):
         filename = file_id + ".flag"
         with open(filename, "rb") as file:
             ftp.storbinary(f"STOR {filename}", file)
-            print_log("Upload der Datei " + filename + " erfolgreich.")
+            print_log("Upload of the file  " + filename +
+                      " is successfully completed.")
         ftp.quit()
     except ftplib.all_errors:
-        print("Kein Logging möglich!")
+        print("No logging possible!")
 
 
 async def datahandle(team, file_id, new):
@@ -179,11 +183,12 @@ async def datahandle(team, file_id, new):
     id_ref.append(newline)
     return id_ref.index(newline)
 
-
+# Creates a logger and works with it.
 def print_log(text):
     now = datetime.datetime.now()
     now = now.strftime("%Y-%m-%d %H:%M:%S")
     print(now + ": " + text)
 
 
+# Starting from the Await Client
 bot.run(bot_token)

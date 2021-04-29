@@ -12,19 +12,10 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
-		<link rel="shortcut icon"  href="DSS_neu.jpg">
+		<link rel="shortcut icon" href="DSS_neu.jpg">
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>	
 	</head>
-	<?
-	if($mobile){
-		print("<body class='is-preload' style='margin-top: 0px'>");
-	}else{
-		print("<body class='is-preload'>");
-	}
-	?>	
-	
-
-		<!-- Wrapper -->
+	<!-- Wrapper -->
 			<div id="wrapper">
 				<!-- Header -->
 					<header id="header">
@@ -45,7 +36,7 @@
 								<li><a href="https://github.com/jplight/faultybot/archive/refs/heads/main.zip" target="_blank">Download</a></li>
 								<?
 									if(isset($_GET['token']) && $_GET['token'] != ""){
-										print("<li><a href='#donbotti'>Übersicht</a></li>");
+										print("<li><a href='#donbotti'>Overview</a></li>");
 									}
 
 								?>
@@ -60,10 +51,10 @@
 								<h2 class="major">Token</h2>
 								<span class="image main"><img src="images/pic02.jpg" alt="" /></span>
 								<form action="https://www.donbotti.de/index.php#donbotti" id="token">				
-								<label for="token">Bitte geben Sie einen Token ein:</label>  
+								<label for="token">Please enter a token:</label>  
 								<input type="text" name="token" id="token" maxlength="32" minlength="32">
-								<button type="reset">Eingaben zurücksetzen</button>
-								<button type="submit">Eingaben absenden</button>
+								<button type="reset">Reset</button>
+								<button type="submit">Send</button>
 							</form>
 							</article>
 
@@ -79,13 +70,11 @@
 								<h2 class="major">Donbotti</h2>
 								<span class="image main"><img src="images/pic03.jpg" alt="" /></span>
 								<p>
-								<? 
-									include __DIR__.'/change_color.php';
+								<?
 									include __DIR__.'/logger.php';
 									include __DIR__.'/variable.php';
 									include __DIR__.'/donbotti.php';
-									//user_info($token,$format_date,$formmat_time,$team);
-									print("<h3> Cheater aus dem Team:".$team."</h3><br>");
+									print("<h3> Cheaters from the team:  ".$team."</h3><br>");
 									logger($team);
 									content($zitate,$team);
 								?>

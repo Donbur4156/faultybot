@@ -1,11 +1,9 @@
 <?
-// Error Handling
+    // Error Handling
     ini_set('display_errors', 0);
     error_reporting(E_ALL);
-     
 
-// import Lib
-    include __DIR__.'/change_color.php';
+    // import Lib
     include __DIR__.'/logger.php';
     include __DIR__.'/variable.php';
     include __DIR__.'/donbotti.php';
@@ -14,5 +12,3 @@
     if($team != ""  && $id != ""){
         logger($team);
     }
-    
-?>
