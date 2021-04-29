@@ -94,13 +94,13 @@ async def faultyhandle(ctx, team, arg, handle, token):
         cheater = await loop.run_in_executor(ThreadPoolExecutor(), function.analyse_team, team)
         #  cheater = function.analyse_team(team)
     except api.ApiHttpError:
-        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe queried team **" + arg + \
+        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe queried team **" + function.check_team_name(arg) + \
                "** apparently does not exist! \n- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
         id_ref[handle][3] = 4
         return False
     if not cheater:
-        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe queried team **" + arg + \
+        text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe queried team **" + function.check_team_name(arg) + \
                "** does not include flagged users!\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
         id_ref[handle][3] = 3
