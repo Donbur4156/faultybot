@@ -1,5 +1,9 @@
 # Faultybot
-![Python](https://img.shields.io/badge/-Python-3776AB?logo=python&logoColor=ffffff) ![JavaScript](https://img.shields.io/badge/-JavaScript-F7DF1E?&logo=javascript&logoColor=000000) ![VS Code](https://img.shields.io/badge/VSCode-%23007ACC?logo=Visual-studio-code) ![Pycharm](https://img.shields.io/badge/PyCharm-green?logo=PyCharm) ![Git](https://img.shields.io/badge/-Git-%23F05032?logo=git&logoColor=%23ffffff)
+![Python](https://img.shields.io/badge/-Python-3776AB?logo=python&logoColor=ffffff) ![JavaScript](https://img.shields.io/badge/-JavaScript-F7DF1E?&logo=javascript&logoColor=000000) ![PHP](https://img.shields.io/badge/-PHP-EE1111?logo=PHP&logoColor=0000FF)
+
+![VS Code](https://img.shields.io/badge/VSCode-%23007ACC?logo=Visual-studio-code) ![Pycharm](https://img.shields.io/badge/PyCharm-green?logo=PyCharm) 
+
+![Git](https://img.shields.io/badge/-Git-%23F05032?logo=git&logoColor=%23ffffff)
 
 
 ## Technical fundamentals
