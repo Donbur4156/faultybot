@@ -8,9 +8,7 @@
 <a href="https://github.com/jplight/faultybot">
   <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=jplight&repo=faultybot&theme=algolia" />
 </a>
-<a href="https://github.com/jplight/faultybot">
-  <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=jplight&repo=faultybot&show_owner=true&theme=algolia" />
-</a>
+
 
 ## Technical fundamentals
 To use the bot you need a Discord bot and a Lichess account.
