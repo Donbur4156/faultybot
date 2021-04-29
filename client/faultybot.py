@@ -17,7 +17,7 @@ bot = commands.Bot(command_prefix='>', intents=intents)
 
 id_ref = []
 
-
+# Test function to see if the bot is online. 
 @bot.event
 async def on_ready():
     print_log("I am online!")
@@ -148,8 +148,9 @@ async def faultyhandle(ctx, team, arg, handle, token):
         return False
     id_ref[handle][3] = 2
 
-
+# Uploads the files to the FTP server. 
 async def upload(file_id):
+    # Lima City hosts the server for us. But you can also use another provider.
     ftp = ftplib.FTP()
     host = "zeyecx.lima-ftp.de"
     port = 21
@@ -182,11 +183,12 @@ async def datahandle(team, file_id, new):
     id_ref.append(newline)
     return id_ref.index(newline)
 
-
+# Creates a logger and works with it.
 def print_log(text):
     now = datetime.datetime.now()
     now = now.strftime("%Y-%m-%d %H:%M:%S")
     print(now + ": " + text)
 
 
+# Starting from the Await Client
 bot.run(bot_token)
