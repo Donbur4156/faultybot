@@ -25,6 +25,13 @@ team:write
 
 ## Installing the bot
 
+## Clone git
+You can download the git simply by using the command git clone. Please use the master branch
+
+```GIT
+git clone https://github.com/jplight/faultybot.git
+```
+
 ### Pip install 
 Actually, pip should already be there. If this is not the case, I will give a short instruction here. Simply copy the following commands into a shell or CMD. The instructions are only for Windows users. Linux and Mac users know everything better and therefore don't need them. 
 
