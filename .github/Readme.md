@@ -19,11 +19,19 @@ Lichess bots can be created on the [Discord Developer](https://discord.com/devel
 
 ### Lichess Bot
 If you decide to use a Lichess bot, you will need to generate an OAuth2 token or an API token. Actually it doesn't matter what rights it has. However, for the project at hand, it must have the right to act in the team.
+
 ```Lichess
 team:write
 ```
 
 ## Installing the bot
+
+### Clone git
+You can download the git simply by using the command git clone. Please use the master branch
+
+```GIT
+git clone https://github.com/jplight/faultybot.git
+```
 
 ### Pip install 
 Actually, pip should already be there. If this is not the case, I will give a short instruction here. Simply copy the following commands into a shell or CMD. The instructions are only for Windows users. Linux and Mac users know everything better and therefore don't need them. 
