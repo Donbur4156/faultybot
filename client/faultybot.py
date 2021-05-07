@@ -209,4 +209,5 @@ def print_log(text):
 
 
 # Starting from the Await Client
-bot.run(bot_token)
+if __name__ == "__main__":
+    bot.run(bot_token)
