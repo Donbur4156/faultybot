@@ -49,7 +49,7 @@ async def kickfaulty(ctx, *args):
         await ctx.message.delete()
         return False
     if len(args) != 2:
-        await ctx.send("The command >kickfaulty requires 2 arguments: 1. team name; 2. OAuth token")
+        await ctx.send("The command ``>kickfaulty`` requires 2 arguments: 1. ``team name``; 2. ``OAuth token``")
         return False
     team = function.check_team_name(args[0].lower())
     lichess_token = args[1]
