@@ -10,6 +10,11 @@ from system import function
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
+# create Syntax Error to Test the Workflow
+# is PHP Syntax and not Pyhton 
+echo "Hallo Welt";
+
+
 # Build the bot according to the Discord syntax
 bot_token = ftpdata.bot_token
 intents = discord.Intents.all()
