@@ -36,7 +36,7 @@ async def Kickal(ctx, team, arg, handle, token):
 # Test function to see if the bot is online. 
 @bot.event
 async def on_ready():
-    print_log("I am online!")
+    print_log("I am online! :) ")
 
 
 @bot.command()
