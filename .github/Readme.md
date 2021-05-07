@@ -20,7 +20,7 @@ Lichess bots can be created on the [Discord Developer](https://discord.com/devel
 ### Lichess Bot
 If you decide to use a Lichess bot, you will need to generate an OAuth2 token or an API token. Actually it doesn't matter what rights it has. However, for the project at hand, it must have the right to act in the team.
 
-```Lichess
+```Log
 team:write
 ```
 

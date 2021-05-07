@@ -1,10 +1,9 @@
-# Imports 
+# Imports
 import lichess.api
 import requests
 import time
 
-
-# Checks if a player has violated the rules of Lichess. 
+# Checks if a player has violated the rules of Lichess.
 def check_user(username):
     flag = False
     try:
@@ -29,7 +28,7 @@ def check_user_ausgabe(username):
 def analyse_team(teamname):
     cheaters = []
     # The wrapper classes are used, because the PyPi functions have a wrong scope.
-    # Please note the commit time. 
+    # Please note the commit time.
     users = lichess.api.users_by_team(teamname)
     for i in users:
         username = i.get('username')
@@ -39,15 +38,15 @@ def analyse_team(teamname):
     return cheaters
 
 
-# The function kicks the specified player from the team. 
+# The function kicks the specified player from the team.
 # The bot token is required for this.
 def kick(team, user, token):
     user = user.lower()
-    # The token is the one from the bot account. 
+    # The token is the one from the bot account.
     # The bot must also be a team leader to be able to kick people.
     url = 'https://lichess.org/team/'+team+'/kick/'+user
     header = {'Authorization': 'Bearer ' + token}
-    # The Lichess API accepts the request as a POST request. 
+    # The Lichess API accepts the request as a POST request.
     # Therefore all data must be in the header.
     r = requests.post(url, headers=header)
     return r
@@ -60,7 +59,7 @@ def runner(team, token):
         kick(team.lower(), c, token)
 
 
-# Unfortunately, the API returns only an array. 
+# Unfortunately, the API returns only an array.
 # This is checked here.
 def check(level):
     # Since it is a request response, it cannot be interpreted as a string.
@@ -74,14 +73,14 @@ def check(level):
 def status(level):
     if "true" not in level.text:
         # The Lichess API actually works very well.
-        # Therefore either the token is wrong or the error is about one meter behind the screen.        
+        # Therefore either the token is wrong or the error is about one meter behind the screen.
         if "No such token" in level.text:
             return "Invalid Token! (Wrong Token or not authorized)"
         return "Unkown Error!"
     return "No Error"
 
 
-# This function kicks all people out of the team. No matter if they cheat or not. 
+# This function kicks all people out of the team. No matter if they cheat or not.
 # This function is usually only used for YouTube teams.
 def clear_team(team, token):
     try:
