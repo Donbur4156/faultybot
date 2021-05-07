@@ -18,6 +18,21 @@ bot = commands.Bot(command_prefix='>', intents=intents)
 id_ref = []
 
 
+# Mobile content
+@bot.command()
+async def Kickfaulty(ctx, *args):
+    await kickfaulty(ctx, *args)
+
+@bot.command()
+async def Faulty(ctx, *args):
+    await faulty(ctx, *args)
+
+@bot.command()
+async def Kickal(ctx, team, arg, handle, token):
+    await kickal(ctx, team, arg, handle, token)
+# End Mobile
+
+
 # Test function to see if the bot is online. 
 @bot.event
 async def on_ready():

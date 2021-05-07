@@ -36,3 +36,4 @@ $zitate = file($flag_file);
  * Reads team name from file. 
  */
 $team = $zitate[1];
+?>

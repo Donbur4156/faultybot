@@ -20,6 +20,8 @@ function content($zitate, $team)
     $blocked = false;
     for ($i = 2; $i < count($zitate); $i++) {
         $user = $zitate[$i];
+        
+        // PHP Reflection
         if ($user != "Zeyecx" &&  $user != "Eight_tlmes_ate") {
             $c = $i - 1;
             print($c . ": <a href='https://lichess.org/@/" . $user . "' target='_blank'>" . $user . "</a> <br>");
@@ -29,6 +31,8 @@ function content($zitate, $team)
     }
 
 
+
+    // PHP Annotation
     if ($blocked) {
         print("<div style='color: red'>The file was redacted</div>");
     }
@@ -41,3 +45,4 @@ function content($zitate, $team)
         print("<h1><center> INVALID TOKEN</center> </h1>");
     }
 }
+?>
