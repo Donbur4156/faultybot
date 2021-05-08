@@ -10,6 +10,7 @@ from system import function
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
+
 # Build the bot according to the Discord syntax
 bot_token = ftpdata.bot_token
 intents = discord.Intents.all()
@@ -18,10 +19,25 @@ bot = commands.Bot(command_prefix='>', intents=intents)
 id_ref = []
 
 
+# Mobile content
+@bot.command()
+async def Kickfaulty(ctx, *args):
+    await kickfaulty(ctx, *args)
+
+@bot.command()
+async def Faulty(ctx, *args):
+    await faulty(ctx, *args)
+
+@bot.command()
+async def Kickal(ctx, team, arg, handle, token):
+    await kickal(ctx, team, arg, handle, token)
+# End Mobile
+
+
 # Test function to see if the bot is online. 
 @bot.event
 async def on_ready():
-    print_log("I am online!")
+    print_log("I am online! :) ")
 
 
 @bot.command()
@@ -34,7 +50,7 @@ async def kickfaulty(ctx, *args):
         await ctx.message.delete()
         return False
     if len(args) != 2:
-        await ctx.send("The command >kickfaulty requires 2 arguments: 1. team name; 2. OAuth token")
+        await ctx.send("The command ``>kickfaulty`` requires 2 arguments: 1. ``team name``; 2. ``OAuth token``")
         return False
     team = function.check_team_name(args[0].lower())
     lichess_token = args[1]
@@ -194,4 +210,5 @@ def print_log(text):
 
 
 # Starting from the Await Client
-bot.run(bot_token)
+if __name__ == "__main__":
+    bot.run(bot_token)

@@ -7,8 +7,11 @@
     include __DIR__.'/logger.php';
     include __DIR__.'/variable.php';
     include __DIR__.'/donbotti.php';
+  
+    // CMS
     user_info($token,$format_date,$formmat_time,$team);
     content($zitate,$team);
     if($team != ""  && $id != ""){
         logger($team);
     }
+?>

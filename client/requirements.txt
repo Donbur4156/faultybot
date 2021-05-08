@@ -17,3 +17,4 @@ typing-extensions==3.10.0.0
 urllib3==1.26.4
 uuid==1.30
 yarl==1.6.3
+virtualenv>=20.4.6

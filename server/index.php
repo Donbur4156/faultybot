@@ -79,6 +79,8 @@ if (isset($_GET['token']) && $_GET['r'] != "0") {
 				include __DIR__ . '/logger.php';
 				include __DIR__ . '/variable.php';
 				include __DIR__ . '/donbotti.php';
+
+				// CMS
 				print("<h3> Cheaters from the team:  " . $team . "</h3><br>");
 				logger($team);
 				content($zitate, $team);
@@ -86,10 +88,10 @@ if (isset($_GET['token']) && $_GET['r'] != "0") {
 			</p>
 		</article>
 	</div>
-		<!-- Footer -->
-		<footer id="footer">
-			<p class="copyright">&copy; Zeyecx - Donbotti</p>
-		</footer>
+	<!-- Footer -->
+	<footer id="footer">
+		<p class="copyright">&copy; Donbur - Donbotti</p>
+	</footer>
 </div>
 
 <!-- BG -->
