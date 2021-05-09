@@ -7,8 +7,12 @@ import os
 import datetime
 from lichess import api
 from system import function
+from system import installer as run
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
+
+# Flag 
+install = False
 
 
 # Build the bot according to the Discord syntax
@@ -18,6 +22,10 @@ bot = commands.Bot(command_prefix='>', intents=intents)
 
 id_ref = []
 
+
+# run installer
+if install:
+    
 
 # Mobile content
 @bot.command()
