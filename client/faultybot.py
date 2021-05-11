@@ -1,5 +1,3 @@
-from sys import float_repr_style
-from client.system.installer import connect, install, test_pip
 import discord
 from discord.ext import commands
 import uuid
@@ -8,8 +6,8 @@ import ftpdata
 import os
 import datetime
 from lichess import api
-from system import function
-from system import installer
+from function import *
+from installer import *
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
@@ -41,8 +39,6 @@ bot = commands.Bot(command_prefix='>', intents=intents)
 id_ref = []
 
 
-# run installer
-if install:
     
 
 # Mobile content
