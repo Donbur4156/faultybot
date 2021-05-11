@@ -1,3 +1,5 @@
+from sys import float_repr_style
+from client.system.installer import connect, install, test_pip
 import discord
 from discord.ext import commands
 import uuid
@@ -7,12 +9,28 @@ import os
 import datetime
 from lichess import api
 from system import function
-from system import installer as run
+from system import installer
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
-# Flag 
-install = False
+# Test Connection
+if connect() == False:
+    print("Connection Error")
+    quit()
+
+# install
+if test_pip() == False:
+    print("PIP ERROR")
+    quit()
+
+# install
+if install() == False:
+    print("Dependencie Error")
+    quit()
+
+
+
+
 
 
 # Build the bot according to the Discord syntax
@@ -178,8 +196,7 @@ async def faultyhandle(ctx, team, arg, handle, token):
 async def upload(file_id):
     # Lima City hosts the server for us. But you can also use another provider.
     ftp = ftplib.FTP()
-    host = "zeyecx.lima-ftp.de"
-    port = 21
+    port = 21 # Standart Port 
     try:
         ftp.connect(host, port)
         ftpuser = ftpdata.user

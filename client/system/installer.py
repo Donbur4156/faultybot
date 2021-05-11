@@ -1,10 +1,6 @@
 import subprocess
 import sys
-try:
-    import urllib
-except:
-    test_pip()
-    import urllib
+import urllib
 
 
 # Test Network
@@ -30,7 +26,7 @@ def test_pip():
         return True
     except:
     # Install pip 
-        subprocess.run("curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py")
+        # subprocess.run("curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py")
         subprocess.run("python get-pip.py")
         return True
 
@@ -64,3 +60,14 @@ def delete_lib():
         print("Library could not be uninstalled")
         return False
     return False
+
+# install Module
+def install_module(modul):
+    try:
+        subprocess.run("pip install "+modul)    
+        return True
+    except: 
+        return False
+    return False
+
+
