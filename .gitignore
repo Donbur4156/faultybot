@@ -15,7 +15,7 @@ client/ftpdata.py
 *data*
 
 # PIP Installer
-get-pip.py
+# get-pip.py
 
 # Chache
 __pycache__
