@@ -14,7 +14,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 
 # Test Version
-if test_version() == False:
+if test_version(3,9) == False:
     print("Test Failed")
     sys.exit(0)
 
