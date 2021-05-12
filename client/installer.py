@@ -2,14 +2,15 @@ import subprocess
 import sys
 import urllib
 
-
+# Test Version
 def test_version(kernel, version):
     if sys.version_info[:2][0] < kernel or kernel == 2:
         print("Please update Python")
-        sys.exit(0)
+        return False
     if sys.version_info[:2][1] < version:
         print("Python does not meet the required conditions.")
-        sys.exit(0)
+        return False
+    return True
 
 # Test Network
 def connect():

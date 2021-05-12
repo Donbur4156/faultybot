@@ -1,34 +1,37 @@
 import discord
 from discord.ext import commands
+import sys
 import uuid
 import ftplib
 import ftpdata
 import os
 import datetime
-from lichess import api
+import api
 from function import *
 from installer import *
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
+
+# Test Version
+if test_version() == False:
+    print("Test Failed")
+    sys.exit(0)
+
 # Test Connection
 if connect() == False:
     print("Connection Error")
-    quit()
+    sys.exit(0)
 
 # install
 if test_pip() == False:
     print("PIP ERROR")
-    quit()
+    sys.exit(0)
 
 # install
 if install() == False:
     print("Dependencie Error")
-    quit()
-
-
-
-
+    sys.exit(0)
 
 
 # Build the bot according to the Discord syntax
@@ -203,7 +206,7 @@ async def upload(file_id):
             ftp.storbinary(f"STOR {filename}", file)
             print_log("Upload of the file  " + filename +
                       " is successfully completed.")
-        ftp.quit()
+        ftp.sys.exit(0)
     except ftplib.all_errors:
         print("No logging possible!")
 
