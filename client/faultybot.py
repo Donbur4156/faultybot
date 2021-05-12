@@ -1,14 +1,37 @@
 import discord
 from discord.ext import commands
+import sys
 import uuid
 import ftplib
 import ftpdata
 import os
 import datetime
-from lichess import api
-from system import function
+import api
+from function import *
+from installer import *
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
+
+
+# Test Version
+if test_version() == False:
+    print("Test Failed")
+    sys.exit(0)
+
+# Test Connection
+if connect() == False:
+    print("Connection Error")
+    sys.exit(0)
+
+# install
+if test_pip() == False:
+    print("PIP ERROR")
+    sys.exit(0)
+
+# install
+if install() == False:
+    print("Dependencie Error")
+    sys.exit(0)
 
 
 # Build the bot according to the Discord syntax
@@ -18,6 +41,8 @@ bot = commands.Bot(command_prefix='>', intents=intents)
 
 id_ref = []
 
+
+    
 
 # Mobile content
 @bot.command()
@@ -170,8 +195,7 @@ async def faultyhandle(ctx, team, arg, handle, token):
 async def upload(file_id):
     # Lima City hosts the server for us. But you can also use another provider.
     ftp = ftplib.FTP()
-    host = "zeyecx.lima-ftp.de"
-    port = 21
+    port = 21 # Standart Port 
     try:
         ftp.connect(host, port)
         ftpuser = ftpdata.user
@@ -182,7 +206,7 @@ async def upload(file_id):
             ftp.storbinary(f"STOR {filename}", file)
             print_log("Upload of the file  " + filename +
                       " is successfully completed.")
-        ftp.quit()
+        ftp.sys.exit(0)
     except ftplib.all_errors:
         print("No logging possible!")
 
