@@ -1,7 +1,10 @@
 import subprocess
 import sys
-import urllib
 import os
+try:
+    import httplib
+except:
+    import http.client as httplib
 
 
 def post_install():
@@ -14,8 +17,10 @@ def post_install():
             sys.exit(0)
     print("Python is up to date")
     try:
-        urllib.request.urlopen('http://google.com')
-    except Exception as x:
+        conn = httplib.HTTPConnection("https://www.google.com", timeout=3)
+        conn.request("HEAD", "/")
+        conn.close()
+    except Exception as x:   
         print(x)
         sys.exit(0)
     print("You are online")
@@ -36,3 +41,5 @@ def post_install():
         print(x)
         sys.exit(0)
     print("All necessary packages have been installed.")
+
+post_install()
