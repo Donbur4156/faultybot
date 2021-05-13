@@ -3,7 +3,7 @@ from discord.ext import commands
 import sys
 import uuid
 import ftplib
-import ftpdata
+from ftpdata import *
 import os
 import datetime
 import api
@@ -222,7 +222,7 @@ def print_log(text):
 if __name__ == "__main__":
 
     # Build the bot according to the Discord syntax
-    bot_token = ftpdata.bot_token
+    bot_token = bot_token
     intents = discord.Intents.all()
     bot = commands.Bot(command_prefix='>', intents=intents)
 
