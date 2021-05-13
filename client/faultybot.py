@@ -11,28 +11,7 @@ from function import *
 from installer import *
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
-
-
-# Test Version
-if test_version() == False:
-    print("Test Failed")
-    sys.exit(0)
-
-# Test Connection
-if connect() == False:
-    print("Connection Error")
-    sys.exit(0)
-
-# install
-if test_pip() == False:
-    print("PIP ERROR")
-    sys.exit(0)
-
-# install
-if install() == False:
-    print("Dependencie Error")
-    sys.exit(0)
-
+ 
 
 # Build the bot according to the Discord syntax
 bot_token = ftpdata.bot_token
@@ -40,9 +19,7 @@ intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='>', intents=intents)
 
 id_ref = []
-
-
-    
+ 
 
 # Mobile content
 @bot.command()
