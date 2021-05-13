@@ -11,10 +11,10 @@ from function import *
 from installer import *
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
-from flag import install_flag as iflag
+from flag import *
 
 
-if iflag:
+if install_flag:
     try: 
         # Test Version
         if test_version(3,9) == False:
@@ -238,5 +238,5 @@ def print_log(text):
 
 
 # Starting from the Await Client
-if __name__ == "__main__":
+if __name__ == "__main__" and discord_flag:
     bot.run(bot_token)
