@@ -12,12 +12,14 @@ from installer import post_install as pdb
 import asyncios
 from concurrent.futures import ThreadPoolExecutor
 
+
 # Mobile content
 
 
 @bot.command()
 async def Kickfaulty(ctx, *args):
     await kickfaulty(ctx, *args)
+
 
 @bot.command()
 async def Install(ctx):
@@ -32,16 +34,15 @@ async def Faulty(ctx, *args):
 @bot.command()
 async def Kickal(ctx, team, arg, handle, token):
     await kickal(ctx, team, arg, handle, token)
-# End Mobile
 
+
+# End Mobile
 
 
 # POST SCRIPT
 @bot.event
 async def install(ctx):
     pdb()
-
-
 
 
 # Test function to see if the bot is online.
@@ -68,7 +69,7 @@ async def kickfaulty(ctx, *args):
     new = True
     handle = await datahandle(team, file_id, new)
     text = "The data of the team **" + team + "** is downloaded and checked! This can take several minutes" \
-           " depending on the size of the team. Per 1000 members approx 1 minute!"
+                                              " depending on the size of the team. Per 1000 members approx 1 minute!"
     await ctx.send(text)
     await faultyhandle(ctx, team, args[0], handle, lichess_token)
 
@@ -84,7 +85,7 @@ async def faulty(ctx, *args):
     # handle = [now, team, file_id, status]
     if id_ref[handle][3] == 1:  # team neu
         text = "The data of the team **" + team + "** is downloaded and checked! This can take several minutes" \
-               " depending on the size of the team. Per 1000 members approx 1 minute!"
+                                                  " depending on the size of the team. Per 1000 members approx 1 minute!"
         await ctx.send(text)
         token = False
         await faultyhandle(ctx, team, args[0], handle, token)
@@ -169,7 +170,7 @@ async def faultyhandle(ctx, team, arg, handle, token):
             text = "There was 1 flagged user kicked\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         else:
             text = "There were " + str(count_cheater) + " flagged users kicked" \
-                "\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+                                                        "\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
         id_ref.__delitem__(handle)
         return False
@@ -180,11 +181,10 @@ async def faultyhandle(ctx, team, arg, handle, token):
 async def upload(file_id):
     # Lima City hosts the server for us. But you can also use another provider.
     ftp = ftplib.FTP()
-    port = 21  # Standart Port
     try:
         ftp.connect(host, port)
-        ftpuser = ftpdata.user
-        ftp_pw = ftpdata.pwd
+        ftpuser = user
+        ftp_pw = pwd
         ftp.login(ftpuser, ftp_pw)
         filename = file_id + ".flag"
         with open(filename, "rb") as file:
@@ -220,7 +220,6 @@ def print_log(text):
 
 # Starting from the Await Client
 if __name__ == "__main__":
-
     # Build the bot according to the Discord syntax
     bot_token = bot_token
     intents = discord.Intents.all()
