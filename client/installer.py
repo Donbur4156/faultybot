@@ -1,82 +1,38 @@
 import subprocess
 import sys
-import urllib
+import os
 
-# Test Version
-def test_version(kernel, version):
-    if sys.version_info[:2][0] < kernel or kernel == 2:
-        print("Please update Python")
-        return False
-    if sys.version_info[:2][1] < version:
-        print("Python does not meet the required conditions.")
-        return False
-    return True
 
-# Test Network
-def connect():
+def post_install():
     try:
-        urllib.request.urlopen('http://google.com')
-        return True
-    except:
-        return False
-
-# Teste pip
-def test_pip():
-    # Test
-    if connect():
-        tdl = False
-    else:
-        tdl = True
-        return False
-
-    # Test if pip is installed
-    try:
-        result = subprocess.run("pip install -U pip")
-        print("PIP was updated")
-        return True
-    except:
-        # Install pip
-        # subprocess.run("curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py")
-        subprocess.run("python get-pip.py")
-        return True
-
-# Install Skript
-def install():
-    test_pip()
-    try:
-        subprocess.run("pip install -U -r requirements.txt")
-        return True
-    except:
-        return False
-
- # Delete PIP
-
-
-# Delete Pip
-def delete_pip():
-    try:
-        subprocess.run("pip uninstall pip -y")
-        return True
-    except:
-        return False
-
-
-# Delete all libarys
-def delete_lib():
-    subprocess.run("pip freeze > delete_pip_libary.txt")
-    try:
-        subprocess.run("pip uninstall -r delete_pip_libary.txt -y")
-        return True
-    except:
-        print("Library could not be uninstalled")
-        return False
-    return False
-
-# install Module
-def install_module(modul):
-    try:
-        subprocess.run("pip install "+modul)
-        return True
-    except:
-        return False
-    return False
+        if sys.version_info[:2][0] < 3:
+            print("Please update Python")
+            sys.exit(0)
+        else:
+            if sys.version_info[:2][1] < 8:
+                print("Please update Python")
+                sys.exit(0)
+        print("Python is up to date")
+        try:
+            subprocess.run("pip install -U pip")
+        except Exception as x:
+            print("Pip was not found. It will now be reinstalled. ")
+            print(x)
+            try:
+                subprocess.run("curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py")
+            except Exception as e:
+                print("The PIP script could not be downloaded")     
+            if os.system == "nt":
+                subprocess.run("python get-pip.py")
+            else:
+                subprocess.run("python3 get-pip.py")
+        print("Pip has now been installed and can be used")
+        try:
+            subprocess.run("pip install -r requirements.txt")
+        except Exception as x:
+            print(x)
+            sys.exit(0)
+        print("All necessary packages have been installed.")
+    except Exception as e:
+        print(e)
+        print("Install")

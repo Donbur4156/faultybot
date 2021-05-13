@@ -1,3 +1,7 @@
+new 
+# Shell Commands
+*.txt
+
 # Neuronal Network
 .ipynb_checkpoints
 

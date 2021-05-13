@@ -1,4 +1,5 @@
 aiohttp
+asyncios
 async-lichess-sdk
 async-timeout
 attrs
