@@ -221,9 +221,14 @@ def print_log(text):
 # Starting from the Await Client
 if __name__ == "__main__":
     # Build the bot according to the Discord syntax
-    bot_token = bot_token
     intents = discord.Intents.all()
     bot = commands.Bot(command_prefix='>', intents=intents)
-
+    if sys.version_info[:2][0] < 3:
+        print("Please update Python")
+        sys.exit(0)
+    else:
+        if sys.version_info[:2][1] < 8:
+            print("Please update Python")
+            sys.exit(0)
     id_ref = []
     bot.run(bot_token)

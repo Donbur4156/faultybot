@@ -35,4 +35,4 @@ def post_install():
         print("All necessary packages have been installed.")
     except Exception as e:
         print(e)
-        print("Installation went wrong")
+        print("Install")
