@@ -8,8 +8,8 @@ import os
 import datetime
 import api
 from function import *
-from install_faultybot import post_db as pdb
-import asyncio
+from installer import post_install as pdb
+import asyncios
 from concurrent.futures import ThreadPoolExecutor
 
 # Mobile content
