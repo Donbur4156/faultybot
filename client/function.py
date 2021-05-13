@@ -1,5 +1,5 @@
 # Imports
-import lichess.api
+import api
 import requests
 import time
 
