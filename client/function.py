@@ -8,7 +8,7 @@ def check_user(username):
     flag = False
     try:
         # The system marks such players with a TOS mark. This can be obtained as an array from the API.
-        flag = lichess.api.user(username)['tosViolation']
+        flag = api.user(username)['tosViolation']
     except:
         # Since it is either there or not, the try catch block is misused as an if statement
         flag = False
@@ -29,7 +29,7 @@ def analyse_team(teamname):
     cheaters = []
     # The wrapper classes are used, because the PyPi functions have a wrong scope.
     # Please note the commit time.
-    users = lichess.api.users_by_team(teamname)
+    users = api.users_by_team(teamname)
     for i in users:
         username = i.get('username')
         is_cheater = i.get('tosViolation')
@@ -44,7 +44,7 @@ def kick(team, user, token):
     user = user.lower()
     # The token is the one from the bot account.
     # The bot must also be a team leader to be able to kick people.
-    url = 'https://lichess.org/team/'+team+'/kick/'+user
+    url = 'https://org/team/'+team+'/kick/'+user
     header = {'Authorization': 'Bearer ' + token}
     # The Lichess API accepts the request as a POST request.
     # Therefore all data must be in the header.
@@ -85,9 +85,9 @@ def status(level):
 def clear_team(team, token):
     try:
         # The bot just goes through them all. With normal teams, lichess does not block the IP address either.
-        for i in lichess.api.users_by_team(team):
+        for i in api.users_by_team(team):
             username = i.get('username').lower()
-            url = 'https://lichess.org/team/' + team + '/kick/' + username
+            url = 'https://org/team/' + team + '/kick/' + username
             header = {'Authorization': 'Bearer ' + token}
             r = requests.post(url, headers=header)
             # So that lichess doesn't think we're about to launch a DDOS attack,
