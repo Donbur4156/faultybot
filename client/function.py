@@ -3,7 +3,7 @@ import api
 import requests
 import time
 
-# Checks if a player has violated the rules of Lichess.
+# Checks if a player has violated the rules of Lichess. 
 def check_user(username):
     flag = False
     try:

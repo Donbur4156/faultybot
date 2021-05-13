@@ -3,7 +3,7 @@ from discord.ext import commands
 import sys
 import uuid
 import ftplib
-import ftpdata
+from ftpdata import bot_token
 import os
 import datetime
 import api
@@ -11,31 +11,35 @@ from function import *
 from installer import *
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
+from flag import install_flag as iflag
 
 
-# Test Version
-if test_version(3,9) == False:
-    print("Test Failed")
-    sys.exit(0)
+if iflag:
+    try: 
+        # Test Version
+        if test_version(3,9) == False:
+            print("Test Failed")
+            sys.exit(0)
 
-# Test Connection
-if connect() == False:
-    print("Connection Error")
-    sys.exit(0)
+        # Test Connection
+        if connect() == False:
+            print("Connection Error")
+            sys.exit(0)
 
-# install
-if test_pip() == False:
-    print("PIP ERROR")
-    sys.exit(0)
+        # install
+        if test_pip() == False:
+            print("PIP ERROR")
+            sys.exit(0)
 
-# install
-if install() == False:
-    print("Dependencie Error")
-    sys.exit(0)
-
+        # install
+        if install() == False:
+            print("Dependencie Error")
+            sys.exit(0)
+    except:
+        print("The install script could not be executed.")
 
 # Build the bot according to the Discord syntax
-bot_token = ftpdata.bot_token
+bot_token = bot_token
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='>', intents=intents)
 
