@@ -13,40 +13,12 @@ import asyncio
 from concurrent.futures import ThreadPoolExecutor
 from flag import *
 
-
-if install_flag:
-    try: 
-        # Test Version
-        if test_version(3,9) == False:
-            print("Test Failed")
-            sys.exit(0)
-
-        # Test Connection
-        if connect() == False:
-            print("Connection Error")
-            sys.exit(0)
-
-        # install
-        if test_pip() == False:
-            print("PIP ERROR")
-            sys.exit(0)
-
-        # install
-        if install() == False:
-            print("Dependencie Error")
-            sys.exit(0)
-    except:
-        print("The install script could not be executed.")
-
 # Build the bot according to the Discord syntax
 bot_token = bot_token
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='>', intents=intents)
 
 id_ref = []
-
-
-    
 
 # Mobile content
 @bot.command()

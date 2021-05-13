@@ -1,16 +1,31 @@
 import subprocess
 import sys
 import urllib
+import os 
+
+
+# Analyse OS
+def os_system():
+    if os.system == "nt":
+        return "Windows"
+    else:
+        return "Linux"
+    return False
 
 # Test Version
-def test_version(kernel, version):
-    if sys.version_info[:2][0] < kernel or kernel == 2:
-        print("Please update Python")
+def test_version(pyv):
+    if isinstance(pyv[0], int) and isinstance(pyv[1], int) and len(pyv) == 2: 
+        if sys.version_info[:2][0] < pyv[0] or pyv[0] == 2:
+            print("Please update Python")
+            return False
+        if sys.version_info[:2][1] < pyv[1]:
+            print("Python does not meet the required conditions.")
+            return False
+        return True    
+    else:
+        print("Unknown Python Version")
         return False
-    if sys.version_info[:2][1] < version:
-        print("Python does not meet the required conditions.")
-        return False
-    return True
+    return False
 
 # Test Network
 def connect():
@@ -31,13 +46,17 @@ def test_pip():
 
     # Test if pip is installed
     try:
-        result = subprocess.run("pip install -U pip")
+        subprocess.run("pip install -U pip")
         print("PIP was updated")
         return True
     except:
         # Install pip
         # subprocess.run("curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py")
-        subprocess.run("python get-pip.py")
+        if os_system() == "Windows":
+            subprocess.run("python get-pip.py")
+        else:
+            subprocess.run("python3 get-pip.py")
+        subprocess.run("pip install -U pip")
         return True
 
 # Install Skript
@@ -49,7 +68,6 @@ def install():
     except:
         return False
 
- # Delete PIP
 
 
 # Delete Pip
