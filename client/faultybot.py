@@ -9,7 +9,7 @@ import datetime
 import api
 from function import *
 from installer import post_install as pdb
-import asyncios
+import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
 
