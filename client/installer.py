@@ -1,7 +1,7 @@
 import subprocess
 import sys
+import platform
 import os
-
 
 def post_install():
     try:
@@ -22,13 +22,16 @@ def post_install():
                 subprocess.run("curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py")
             except Exception as e:
                 print("The PIP script could not be downloaded")     
-            if os.system == "nt":
+            if "Windows" in platform.platform():
                 subprocess.run("python get-pip.py")
-            else:
-                subprocess.run("python3 get-pip.py")
+            elif "Ubuntu" in platform.platform() or "Linux" in platform.platform():
+                subprocess.run("sudo apt-get install python3-pip -y")
         print("Pip has now been installed and can be used")
         try:
-            subprocess.run("pip install -r requirements.txt")
+            if "client" in os.getcwd():
+                subprocess.run("pip install -r "+os.getcwd()+"\\requirements.txt")
+            else:
+                subprocess.run("pip install -r "+os.getcwd()+"\\client\\requirements.txt")
         except Exception as x:
             print(x)
             sys.exit(0)
@@ -36,3 +39,5 @@ def post_install():
     except Exception as e:
         print(e)
         print("Install")
+
+post_install()
