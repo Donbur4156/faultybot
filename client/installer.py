@@ -48,3 +48,22 @@ def post_install():
     except Exception as e:
         print(e)
         print("Install")
+    pip_test = True
+    try: 
+        import discord
+    except Exception as e: 
+        pip_test = False
+        print("PIP Test import discord")
+        print("Error: "+str(e))                
+    if sys.version_info[:2][0] < 3:
+            print("Please update Python")
+            pip_test = False
+    else:
+        if sys.version_info[:2][1] < 8:
+            print("Please update Python")
+            pip_test = False
+    if pip_test == False: 
+        print("test failed")
+        sys.exit(0)
+    if pip_test and version_check:
+        print("Test passed.")
