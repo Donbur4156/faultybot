@@ -34,7 +34,9 @@ def post_install():
             if "Windows" in platform.platform():
                 subprocess.run("python get-pip.py")
             elif "Ubuntu" in platform.platform() or "Linux" in platform.platform():
-                subprocess.run("sudo apt-get install python3-pip -y")
+                subprocess.run("sudo apt-get install python3-pip")
+                subprocess.run("sudo apt install python3-pip")
+                subprocess.run("sudo apt-get update")
         print("Pip has now been installed and can be used")
         try:
             if "client" in os.getcwd():
