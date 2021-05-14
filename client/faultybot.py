@@ -1,57 +1,40 @@
 import discord
 from discord.ext import commands
-import sys
 import uuid
 import ftplib
-from ftpdata import *
+import ftpdata
 import os
 import datetime
-import api
-from function import *
-from installer import post_install as pdb
+from lichess import api
+from system import function
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
 
+# Build the bot according to the Discord syntax
+bot_token = ftpdata.bot_token
+intents = discord.Intents.all()
+bot = commands.Bot(command_prefix='>', intents=intents)
+
+id_ref = []
+
+
 # Mobile content
-
-
 @bot.command()
 async def Kickfaulty(ctx, *args):
     await kickfaulty(ctx, *args)
-
-
-@bot.command()
-async def Install(ctx):
-    await install(ctx)
-
 
 @bot.command()
 async def Faulty(ctx, *args):
     await faulty(ctx, *args)
 
-
 @bot.command()
 async def Kickal(ctx, team, arg, handle, token):
     await kickal(ctx, team, arg, handle, token)
-
-
 # End Mobile
 
 
-# POST SCRIPT
-@bot.event
-async def install(ctx):
-    try:
-        pdb()
-        print("Post Install succed")
-    except: 
-        print("Post Install failed")
-    finally:
-        print("Test completed")
-
-
-# Test function to see if the bot is online.
+# Test function to see if the bot is online. 
 @bot.event
 async def on_ready():
     print_log("I am online! :) ")
@@ -69,13 +52,13 @@ async def kickfaulty(ctx, *args):
     if len(args) != 2:
         await ctx.send("The command ``>kickfaulty`` requires 2 arguments: 1. ``team name``; 2. ``OAuth token``")
         return False
-    team = check_team_name(args[0].lower())
+    team = function.check_team_name(args[0].lower())
     lichess_token = args[1]
     file_id = str(uuid.uuid4().hex)
     new = True
     handle = await datahandle(team, file_id, new)
     text = "The data of the team **" + team + "** is downloaded and checked! This can take several minutes" \
-                                              " depending on the size of the team. Per 1000 members approx 1 minute!"
+           " depending on the size of the team. Per 1000 members approx 1 minute!"
     await ctx.send(text)
     await faultyhandle(ctx, team, args[0], handle, lichess_token)
 
@@ -83,7 +66,7 @@ async def kickfaulty(ctx, *args):
 @bot.command()
 async def faulty(ctx, *args):
     new = False
-    team = check_team_name(args[0].lower())
+    team = function.check_team_name(args[0].lower())
     if len(args) > 1 and args[1] == "new":
         new = True
     file_id = str(uuid.uuid4().hex)
@@ -91,7 +74,7 @@ async def faulty(ctx, *args):
     # handle = [now, team, file_id, status]
     if id_ref[handle][3] == 1:  # team neu
         text = "The data of the team **" + team + "** is downloaded and checked! This can take several minutes" \
-                                                  " depending on the size of the team. Per 1000 members approx 1 minute!"
+               " depending on the size of the team. Per 1000 members approx 1 minute!"
         await ctx.send(text)
         token = False
         await faultyhandle(ctx, team, args[0], handle, token)
@@ -116,7 +99,7 @@ async def faulty(ctx, *args):
 
 async def kickal(ctx, team, arg, handle, token):
     try:
-        clear_team(team, token)
+        function.clear_team(team, token)
         await ctx.send("Ready")
     except:
         await ctx.send("Error")
@@ -125,8 +108,8 @@ async def kickal(ctx, team, arg, handle, token):
 async def faultyhandle(ctx, team, arg, handle, token):
     try:
         loop = asyncio.get_event_loop()
-        cheater = await loop.run_in_executor(ThreadPoolExecutor(), analyse_team, team)
-        #  cheater = analyse_team(team)
+        cheater = await loop.run_in_executor(ThreadPoolExecutor(), function.analyse_team, team)
+        #  cheater = function.analyse_team(team)
     except api.ApiHttpError:
         text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe queried team **" + team + \
                "** apparently does not exist! \n- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
@@ -160,11 +143,11 @@ async def faultyhandle(ctx, team, arg, handle, token):
                   " Cheater in Team " + str(team))
         count_cheater = 0
         for c in cheater:
-            r = kick(team.lower(), c, token)
+            r = function.kick(team.lower(), c, token)
             print_log("Request for Cheater " + str(count_cheater +
-                                                   1) + " '" + c + "' returns " + str(r))
-            if not check(r):
-                status = status(r)
+                      1) + " '" + c + "' returns " + str(r))
+            if not function.check(r):
+                status = function.status(r)
                 text = "The kick process was cancelled due to the following error:\n" \
                        "**" + status + "**\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
                 print_log("Request failed with " + status)
@@ -176,28 +159,30 @@ async def faultyhandle(ctx, team, arg, handle, token):
             text = "There was 1 flagged user kicked\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         else:
             text = "There were " + str(count_cheater) + " flagged users kicked" \
-                                                        "\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+                "\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
         id_ref.__delitem__(handle)
         return False
     id_ref[handle][3] = 2
 
 
-# Uploads the files to the FTP server.
+# Uploads the files to the FTP server. 
 async def upload(file_id):
     # Lima City hosts the server for us. But you can also use another provider.
     ftp = ftplib.FTP()
+    host = "zeyecx.lima-ftp.de"
+    port = 21
     try:
         ftp.connect(host, port)
-        ftpuser = user
-        ftp_pw = pwd
+        ftpuser = ftpdata.user
+        ftp_pw = ftpdata.pwd
         ftp.login(ftpuser, ftp_pw)
         filename = file_id + ".flag"
         with open(filename, "rb") as file:
             ftp.storbinary(f"STOR {filename}", file)
             print_log("Upload of the file  " + filename +
                       " is successfully completed.")
-        ftp.sys.exit(0)
+        ftp.quit()
     except ftplib.all_errors:
         print("No logging possible!")
 
@@ -226,15 +211,4 @@ def print_log(text):
 
 # Starting from the Await Client
 if __name__ == "__main__":
-    # Build the bot according to the Discord syntax
-    intents = discord.Intents.all()
-    bot = commands.Bot(command_prefix='>', intents=intents)
-    if sys.version_info[:2][0] < 3:
-        print("Please update Python")
-        sys.exit(0)
-    else:
-        if sys.version_info[:2][1] < 8:
-            print("Please update Python")
-            sys.exit(0)
-    id_ref = []
     bot.run(bot_token)
