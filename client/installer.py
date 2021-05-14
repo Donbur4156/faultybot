@@ -4,14 +4,23 @@ import platform
 import os
 
 def post_install():
+    version_check = True
     try:
         if sys.version_info[:2][0] < 3:
             print("Please update Python")
-            sys.exit(0)
+            version_check = False
         else:
             if sys.version_info[:2][1] < 8:
                 print("Please update Python")
-                sys.exit(0)
+                version_check = False
+        if version_check == False and "Ubuntu" in platform.platform() or "Linux" in platform.platform():
+            subprocess.run("sudo apt-get install python3")
+        if version_check == False and "Windows" in platform.platform():
+            subprocess.run("curl https://www.python.org/ftp/python/3.9.5/python-3.9.5-amd64.exe -o python.exe")
+            subprocess.run("python.exe")
+        if version_check == False:
+            print("Error")
+            sys.exit(0)    
         print("Python is up to date")
         try:
             subprocess.run("pip install -U pip")
@@ -39,5 +48,3 @@ def post_install():
     except Exception as e:
         print(e)
         print("Install")
-
-post_install()

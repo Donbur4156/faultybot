@@ -1,4 +1,8 @@
+# Traffic
 new 
+python.exe
+*.exe
+
 # Shell Commands
 *.txt
 
