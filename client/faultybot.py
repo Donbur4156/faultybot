@@ -9,7 +9,7 @@ import datetime
 import api
 from function import *
 from installer import post_install as pdb
-import asyncios
+import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
 
@@ -42,7 +42,13 @@ async def Kickal(ctx, team, arg, handle, token):
 # POST SCRIPT
 @bot.event
 async def install(ctx):
-    pdb()
+    try:
+        pdb()
+        print("Post Install succed")
+    except: 
+        print("Post Install failed")
+    finally:
+        print("Test completed")
 
 
 # Test function to see if the bot is online.
