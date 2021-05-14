@@ -37,6 +37,7 @@ def post_install():
                 subprocess.run("sudo apt-get install python3-pip")
                 subprocess.run("sudo apt install python3-pip")
                 subprocess.run("sudo apt-get update")
+                subprocess.run("pip install -U pip")
         print("Pip has now been installed and can be used")
         try:
             if "client" in os.getcwd():
