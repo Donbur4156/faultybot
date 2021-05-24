@@ -19,28 +19,13 @@ bot = commands.Bot(command_prefix='>', intents=intents)
 id_ref = []
 
 
-# Mobile content
-@bot.command()
-async def Kickfaulty(ctx, *args):
-    await kickfaulty(ctx, *args)
-
-@bot.command()
-async def Faulty(ctx, *args):
-    await faulty(ctx, *args)
-
-@bot.command()
-async def Kickal(ctx, team, arg, handle, token):
-    await kickal(ctx, team, arg, handle, token)
-# End Mobile
-
-
 # Test function to see if the bot is online. 
 @bot.event
 async def on_ready():
-    print_log("I am online! :) ")
+    print_log("I am online!")
 
 
-@bot.command()
+@bot.command(aliases=['Kickfaulty'])
 async def kickfaulty(ctx, *args):
     channel = ctx.guild
     if channel:
@@ -63,7 +48,7 @@ async def kickfaulty(ctx, *args):
     await faultyhandle(ctx, team, args[0], handle, lichess_token)
 
 
-@bot.command()
+@bot.command(aliases=['Faulty'])
 async def faulty(ctx, *args):
     new = False
     team = function.check_team_name(args[0].lower())
@@ -95,14 +80,6 @@ async def faulty(ctx, *args):
                "**  apparently does not exist! \n- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
     return False
-
-
-async def kickal(ctx, team, arg, handle, token):
-    try:
-        function.clear_team(team, token)
-        await ctx.send("Ready")
-    except:
-        await ctx.send("Error")
 
 
 async def faultyhandle(ctx, team, arg, handle, token):
