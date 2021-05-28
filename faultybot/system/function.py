@@ -1,7 +1,8 @@
 # Imports
+import time
 import lichess.api
 import requests
-import time
+
 
 # Checks if a player has violated the rules of Lichess.
 def check_user(username):
@@ -84,16 +85,18 @@ def status(level):
 # This function is usually only used for YouTube teams.
 def clear_team(team, token):
     try:
-        # The bot just goes through them all. With normal teams, lichess does not block the IP address either.
+        # The bot just goes through them all. With normal teams,
+        # lichess does not block the IP address either.
         for i in lichess.api.users_by_team(team):
             username = i.get('username').lower()
             url = 'https://lichess.org/team/' + team + '/kick/' + username
             header = {'Authorization': 'Bearer ' + token}
-            r = requests.post(url, headers=header)
+            requests.post(url, headers=header)
             # So that lichess doesn't think we're about to launch a DDOS attack,
             # we give them some time to catch their breath.
             time.sleep(1)
-    except:
+    except Exception as error:
+        print(error)
         return False
     return True
 
