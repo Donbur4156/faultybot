@@ -5,8 +5,8 @@ import ftplib
 import ftpdata
 import os
 import datetime
-from lichess import api
-from system import function
+from faultybot.lichess import api
+from faultybot.system import function
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
