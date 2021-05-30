@@ -2,11 +2,10 @@ import discord
 from discord.ext import commands
 import uuid
 import ftplib
-import client.system.ftpdata as ftpdata
+from system import ftpdata, function
 import os
 import datetime
-from lichess import api
-from system import function
+import lichesspy as api
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
@@ -87,17 +86,16 @@ async def faulty(ctx, *args):
 
 
 async def faultyhandle(ctx, team, arg, handle, token):
-    loop = asyncio.get_event_loop()
-    cheater = await loop.run_in_executor(ThreadPoolExecutor(), function.analyse_team, team)
-    '''try:
-    except api.ApiHttpError:
-        print(api.ApiHttpError.args)
+    try:
+        loop = asyncio.get_event_loop()
+        cheater = await loop.run_in_executor(ThreadPoolExecutor(), function.analyse_team, team)
+    except:
         text = f"- - - - - - - - - - - - - - - - - - - - - - - - - - - -\n" \
                f"The queried team **{team}** apparently does not exist! \n" \
                f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
         id_ref[handle][3] = 4
-        return False'''
+        return False
     if not cheater:
         text = f"- - - - - - - - - - - - - - - - - - - - - - - - - - - -\n" \
                f"The queried team **{team}** does not include flagged users!\n" \
