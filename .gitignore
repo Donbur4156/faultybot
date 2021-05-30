@@ -11,8 +11,7 @@ src/
 
 # Config
 *.ini
-client/ftpdata.py
-*data*
+client/system/ftpdata.py
 
 # PIP Installer
 get-pip.py
