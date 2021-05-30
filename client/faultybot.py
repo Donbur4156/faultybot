@@ -65,7 +65,6 @@ async def faulty(ctx, *args):
         await ctx.send(text)
         token = False
         await faultyhandle(ctx, team, handle, token)
-        return True
     elif id_ref[handle][3] == 2:  # Team mit faulty user
         link = "http://www.donbotti.de/?token=" + id_ref[handle][2]
         text = f"- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe query of the team " \
@@ -82,8 +81,6 @@ async def faulty(ctx, *args):
                f"The query of the team **{team}**  apparently does not exist! \n" \
                f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
-    else:
-        return False
 
 
 async def faultyhandle(ctx, team, handle, token):
