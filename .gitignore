@@ -6,6 +6,8 @@
 output/
 src/
 
+# VSCode
+.vscode/
 
 # Config
 *.ini
