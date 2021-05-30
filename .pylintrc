@@ -1,0 +1,7 @@
+[MASTER]
+disable=
+    C0114, # missing-module-docstring
+    C0116, # Missing function or method docstring
+    E0401, # import-error
+    R0914, # Too many local variables
+    E0611, # no-name-in-module
