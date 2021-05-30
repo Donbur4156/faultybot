@@ -1,0 +1,29 @@
+# Server
+*.flag
+
+# PyCharm
+.idea/
+output/
+src/
+
+# VSCode
+.vscode/
+
+# Config
+*.ini
+client/ftpdata.py
+*data*
+
+# PIP Installer
+get-pip.py
+
+# Chache
+__pycache__
+
+# Temp Files
+*.DS_Store
+*.tmp
+
+# Venv Enviroment
+venv
+venv/

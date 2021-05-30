@@ -18,6 +18,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install pylint
     - name: Analysing the code with pylint
-      working-directory: ./faultybot
+      working-directory: ./client
       run: |
-        pylint `ls -R|grep .py$|xargs`
+        wget https://raw.githubusercontent.com/jplight/faultybot/main/.pylintrc
+        pylint --rcfile=.pylintrc `ls -R|grep .py$|xargs`
