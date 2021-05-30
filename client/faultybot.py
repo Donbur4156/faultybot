@@ -1,13 +1,13 @@
-import discord
-from discord.ext import commands
 import uuid
 import ftplib
-from system import ftpdata, function
 import os
 import datetime
-import lichesspy as api
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
+import discord
+from discord.ext import commands
+import lichesspy.api as api
+from system import ftpdata, function
 
 
 # Build the bot according to the Discord syntax
@@ -46,7 +46,7 @@ async def kickfaulty(ctx, *args):
     text = f"The data of the team **{team}** is downloaded and checked! This can take several " \
            f"minutes depending on the size of the team. Per 1000 members approx 1 minute!"
     await ctx.send(text)
-    await faultyhandle(ctx, team, args[0], handle, lichess_token)
+    await faultyhandle(ctx, team, handle, lichess_token)
 
 
 @bot.command(aliases=['Faulty'])
@@ -64,7 +64,7 @@ async def faulty(ctx, *args):
                "Per 1000 members approx 1 minute!"
         await ctx.send(text)
         token = False
-        await faultyhandle(ctx, team, args[0], handle, token)
+        await faultyhandle(ctx, team, handle, token)
         return True
     elif id_ref[handle][3] == 2:  # Team mit faulty user
         link = "http://www.donbotti.de/?token=" + id_ref[handle][2]
@@ -82,21 +82,22 @@ async def faulty(ctx, *args):
                f"The query of the team **{team}**  apparently does not exist! \n" \
                f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
-    return False
+    else:
+        return False
 
 
-async def faultyhandle(ctx, team, arg, handle, token):
+async def faultyhandle(ctx, team, handle, token):
     try:
         loop = asyncio.get_event_loop()
-        cheater = await loop.run_in_executor(ThreadPoolExecutor(), function.analyse_team, team)
-    except:
+        cheaters = await loop.run_in_executor(ThreadPoolExecutor(), function.analyse_team, team)
+    except api.ApiHttpError:
         text = f"- - - - - - - - - - - - - - - - - - - - - - - - - - - -\n" \
                f"The queried team **{team}** apparently does not exist! \n" \
                f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
         id_ref[handle][3] = 4
         return False
-    if not cheater:
+    if not cheaters:
         text = f"- - - - - - - - - - - - - - - - - - - - - - - - - - - -\n" \
                f"The queried team **{team}** does not include flagged users!\n" \
                f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
@@ -104,12 +105,11 @@ async def faultyhandle(ctx, team, arg, handle, token):
         id_ref[handle][3] = 3
         return False
     marker = "\n"
-    data = marker.join(cheater)
+    data = marker.join(cheaters)
     filename = id_ref[handle][2] + ".flag"
-    file = open(filename, 'w')
-    file.write(f"{id_ref[handle][2]}\n{id_ref[handle][1]}\n")
-    file.write(data)
-    file.close()
+    with open(filename, 'w') as file:
+        file.write(f"{id_ref[handle][2]}\n{id_ref[handle][1]}\n")
+        file.write(data)
     await upload(id_ref[handle][2])
     link = f"http://www.donbotti.de/?token={id_ref[handle][2]}"
     text = f"- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nIn the team **{team}**, " \
@@ -120,14 +120,14 @@ async def faultyhandle(ctx, team, arg, handle, token):
     if os.path.isfile(filename):
         os.remove(filename)
     if token:
-        print_log(f"found {str(len(cheater))} Cheater in Team {str(team)}")
+        print_log(f"found {str(len(cheaters))} Cheater in Team {str(team)}")
         count_cheater = 0
-        for c in cheater:
-            r = function.kick(team.lower(), c, token)
+        for cheater in cheaters:
+            request = function.kick(team.lower(), cheater, token)
             print_log("Request for Cheater " + str(count_cheater +
-                      1) + " '" + c + "' returns " + str(r))
-            if not function.check(r):
-                status = function.status(r)
+                      1) + " '" + cheater + "' returns " + str(request))
+            if not function.check(request):
+                status = function.status(request)
                 text = f"The kick process was cancelled due to the following error:\n" \
                        f"**{status}**\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
                 print_log(f"Request failed with {status}")
@@ -147,7 +147,7 @@ async def faultyhandle(ctx, team, arg, handle, token):
     id_ref[handle][3] = 2
 
 
-# Uploads the files to the FTP server. 
+# Uploads the files to the FTP server.
 async def upload(file_id):
     # Lima City hosts the server for us. But you can also use another provider.
     ftp = ftplib.FTP()

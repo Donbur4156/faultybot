@@ -49,8 +49,8 @@ def kick(team, user, token):
     header = {'Authorization': 'Bearer ' + token}
     # The Lichess API accepts the request as a POST request.
     # Therefore all data must be in the header.
-    r = requests.post(url, headers=header)
-    return r
+    request = requests.post(url, headers=header)
+    return request
 
 
 # The function kicks all cheaters from the desired team.
