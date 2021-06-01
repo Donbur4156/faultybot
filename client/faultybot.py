@@ -7,8 +7,8 @@ from concurrent.futures import ThreadPoolExecutor
 import discord
 from discord.ext import commands
 import lichesspy.api as api
-from system import ftpdata, function
-
+import ftpdata
+import function
 
 # Build the bot according to the Discord syntax
 bot_token = ftpdata.bot_token

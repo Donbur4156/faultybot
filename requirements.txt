@@ -8,6 +8,7 @@ chess==1.5.0
 discord==1.0.1
 discord.py==1.7.2
 idna==2.10
+lichesspy==0.0.14
 multidict==5.1.0
 python-chess==1.999
 python-lichess==0.9
