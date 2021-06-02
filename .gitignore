@@ -1,3 +1,6 @@
+# Zeyecx
+*test*.py
+
 # Server
 *.flag
 
@@ -6,15 +9,14 @@
 output/
 src/
 
-# VSCode
-.vscode/
 
 # Config
+config.*
 *.ini
-client/ftpdata.py
+faultybot/ftpdata.py
 
 # PIP Installer
-get-pip.py
+*pip.py
 
 # Chache
 __pycache__
@@ -26,3 +28,6 @@ __pycache__
 # Venv Enviroment
 venv
 venv/
+
+# Example
+!*.example
