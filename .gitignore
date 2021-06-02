@@ -1,3 +1,6 @@
+# Zeyecx
+*test*.py
+
 # Server
 *.flag
 
@@ -8,11 +11,12 @@ src/
 
 
 # Config
+config.*
 *.ini
 faultybot/ftpdata.py
 
 # PIP Installer
-get-pip.py
+*pip.py
 
 # Chache
 __pycache__
@@ -24,3 +28,6 @@ __pycache__
 # Venv Enviroment
 venv
 venv/
+
+# Example
+!*.example

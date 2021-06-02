@@ -21,7 +21,7 @@ def read_pip():
 
 setuptools.setup(
     name="faultybot",
-    version='0.0.1',
+    version='0.0.2',
     description='Faultybot Discord Handler',
     long_description=read_description(),
     long_description_content_type="text/markdown",

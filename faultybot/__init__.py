@@ -6,9 +6,10 @@ import asyncio
 from concurrent.futures import ThreadPoolExecutor
 import discord
 from discord.ext import commands
-import lichesspy.api as api
+import lichesspy
+from lichesspy import api
 import ftpdata
-import function
+import faultybot.function
 
 # Build the bot according to the Discord syntax
 bot_token = ftpdata.bot_token
