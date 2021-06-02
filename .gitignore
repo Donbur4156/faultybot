@@ -6,12 +6,10 @@
 output/
 src/
 
-# VSCode
-.vscode/
 
 # Config
 *.ini
-client/ftpdata.py
+faultybot/ftpdata.py
 
 # PIP Installer
 get-pip.py
