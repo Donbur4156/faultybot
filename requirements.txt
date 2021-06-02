@@ -15,7 +15,7 @@ python-lichess==0.9
 requests==2.25.1
 six==1.15.0
 typing-extensions==3.10.0.0
-urllib3==1.26.4
+urllib3==1.26.5
 uuid==1.30
 yarl==1.6.3
 virtualenv>=20.4.6
