@@ -9,11 +9,8 @@
 output/
 src/
 
-
 # Config
 config.*
-*.ini
-faultybot/ftpdata.py
 
 # PIP Installer
 *pip.py
