@@ -6,13 +6,12 @@ import asyncio
 from concurrent.futures import ThreadPoolExecutor
 import discord
 from discord.ext import commands
-import lichesspy
-from lichesspy import api
-import ftpdata
-import faultybot.function
+import lichesspy.api as api
+import config
+import function
 
 # Build the bot according to the Discord syntax
-bot_token = ftpdata.bot_token
+bot_token = config.bot_token
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='>', intents=intents)
 
@@ -149,12 +148,12 @@ async def faultyhandle(ctx, team, handle, token):
 async def upload(file_id):
     # Lima City hosts the server for us. But you can also use another provider.
     ftp = ftplib.FTP()
-    host = ftpdata.url
-    port = ftpdata.port
+    host = config.url
+    port = config.port
     try:
         ftp.connect(host, port)
-        ftpuser = ftpdata.user
-        ftp_pw = ftpdata.pwd
+        ftpuser = config.user
+        ftp_pw = config.pwd
         ftp.login(ftpuser, ftp_pw)
         filename = f"{file_id}.flag"
         with open(filename, "rb") as file:
