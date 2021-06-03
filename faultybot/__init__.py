@@ -13,7 +13,7 @@ import function
 # Build the bot according to the Discord syntax
 bot_token = config.bot_token
 intents = discord.Intents.all()
-bot = commands.Bot(command_prefix='>', intents=intents)
+bot = commands.Bot(command_prefix='!', intents=intents)
 
 id_ref = []
 
@@ -46,11 +46,18 @@ async def kickfaulty(ctx, *args):
     text = f"The data of the team **{team}** is downloaded and checked! This can take several " \
            f"minutes depending on the size of the team. Per 1000 members approx 1 minute!"
     await ctx.send(text)
-    await faultyhandle(ctx, team, handle, lichess_token)
+    cheaters, handle = await faultyhandle(ctx, team, handle)
+    if cheaters:
+        await run_kick(ctx, team, handle, cheaters, lichess_token)
 
 
 @bot.command(aliases=['Faulty'])
 async def faulty(ctx, *args):
+    if len(args) <1 or len(args) >2:
+        text = "The command ``>faulty`` requires at least 1 argument: " \
+               "1. ``team name``; 2. ``optional: new [if you want a new request]``"
+        await ctx.send(text)
+        return False
     new = False
     team = function.check_team_name(args[0].lower())
     if len(args) > 1 and args[1] == "new":
@@ -63,8 +70,7 @@ async def faulty(ctx, *args):
                "This can take several minutes depending on the size of the team. " \
                "Per 1000 members approx 1 minute!"
         await ctx.send(text)
-        token = False
-        await faultyhandle(ctx, team, handle, token)
+        await faultyhandle(ctx, team, handle)
     elif id_ref[handle][3] == 2:  # Team mit faulty user
         link = "http://www.donbotti.de/?token=" + id_ref[handle][2]
         text = f"- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe query of the team " \
@@ -83,7 +89,7 @@ async def faulty(ctx, *args):
         await ctx.send(text)
 
 
-async def faultyhandle(ctx, team, handle, token):
+async def faultyhandle(ctx, team, handle):
     try:
         loop = asyncio.get_event_loop()
         cheaters = await loop.run_in_executor(ThreadPoolExecutor(), function.analyse_team, team)
@@ -116,32 +122,35 @@ async def faultyhandle(ctx, team, handle, token):
     await ctx.send(text)
     if os.path.isfile(filename):
         os.remove(filename)
-    if token:
-        print_log(f"found {str(len(cheaters))} Cheater in Team {str(team)}")
-        count_cheater = 0
-        for cheater in cheaters:
-            request = function.kick(team.lower(), cheater, token)
-            print_log("Request for Cheater " + str(count_cheater +
-                      1) + " '" + cheater + "' returns " + str(request))
-            if not function.check(request):
-                status = function.status(request)
-                text = f"The kick process was cancelled due to the following error:\n" \
-                       f"**{status}**\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
-                print_log(f"Request failed with {status}")
-                await ctx.send(text)
-                return False
-            print_log("with success")
-            count_cheater += 1
-        if count_cheater == 1:
-            text = "There was 1 flagged user kicked\n" \
-                   " - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
-        else:
-            text = f"There were {str(count_cheater)} flagged users kicked\n" \
-                   f" - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
-        await ctx.send(text)
-        id_ref.__delitem__(handle)
-        return False
     id_ref[handle][3] = 2
+    return cheaters, handle
+
+
+async def run_kick(ctx, team, handle, cheaters, token):
+    print_log(f"found {str(len(cheaters))} Cheater in Team {str(team)}")
+    count_cheater = 0
+    for cheater in cheaters:
+        request = function.kick(team.lower(), cheater, token)
+        print_log("Request for Cheater " + str(count_cheater +
+                    1) + " '" + cheater + "' returns " + str(request))
+        if not function.check(request):
+            status = function.status(request)
+            text = f"The kick process was cancelled due to the following error:\n" \
+                    f"**{status}**\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+            print_log(f"Request failed with {status}")
+            await ctx.send(text)
+            return False
+        print_log("with success")
+        count_cheater += 1
+    if count_cheater == 1:
+        text = "There was 1 flagged user kicked\n" \
+                " - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+    else:
+        text = f"There were {str(count_cheater)} flagged users kicked\n" \
+                f" - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+    await ctx.send(text)
+    id_ref.__delitem__(handle)
+    return False
 
 
 # Uploads the files to the FTP server.
