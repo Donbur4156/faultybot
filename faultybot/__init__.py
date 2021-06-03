@@ -6,7 +6,7 @@ import asyncio
 from concurrent.futures import ThreadPoolExecutor
 import discord
 from discord.ext import commands
-import lichesspy.api as api
+import lichesspy.api
 import config
 import function
 
@@ -93,7 +93,7 @@ async def faultyhandle(ctx, team, handle):
     try:
         loop = asyncio.get_event_loop()
         cheaters = await loop.run_in_executor(ThreadPoolExecutor(), function.analyse_team, team)
-    except api.ApiHttpError:
+    except lichesspy.api.ApiHttpError:
         text = f"- - - - - - - - - - - - - - - - - - - - - - - - - - - -\n" \
                f"The queried team **{team}** apparently does not exist! \n" \
                f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - "

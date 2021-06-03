@@ -1,6 +1,6 @@
 # Imports
 import time
-import lichess.api
+import lichesspy.api
 import requests
 
 
@@ -10,7 +10,7 @@ def check_user(username):
     flag = False
     try:
         # The system marks such players with a TOS mark. This can be obtained as an array from the API.
-        flag = lichess.api.user(username)['tosViolation']
+        flag = lichesspy.api.user(username)['tosViolation']
     except:
         # Since it is either there or not, the try catch block is misused as an if statement
         flag = False
@@ -32,7 +32,7 @@ def analyse_team(teamname):
     cheaters = []
     # The wrapper classes are used, because the PyPi functions have a wrong scope.
     # Please note the commit time.
-    users = lichess.api.users_by_team(teamname)
+    users = lichesspy.api.users_by_team(teamname)
     for i in users:
         username = i.get('username')
         is_cheater = i.get('tosViolation')
@@ -91,7 +91,7 @@ def clear_team(team, token):
     try:
         # The bot just goes through them all. With normal teams,
         # lichess does not block the IP address either.
-        for i in lichess.api.users_by_team(team):
+        for i in lichesspy.api.users_by_team(team):
             username = i.get('username').lower()
             url = 'https://lichess.org/team/' + team + '/kick/' + username
             header = {'Authorization': 'Bearer ' + token}
