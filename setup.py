@@ -3,9 +3,8 @@ import os
 import setuptools
 
 
-url = ".github/Readme.md"
-
 def read_description():
+    url = ".github/Readme.md"
     """ Read and Return the description """
     return io.open(os.path.join(os.path.dirname(__file__), url), encoding="utf-8").read()
 
