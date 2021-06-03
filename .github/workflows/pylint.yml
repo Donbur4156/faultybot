@@ -20,5 +20,5 @@ jobs:
     - name: Analysing the code with pylint
       working-directory: ./faultybot
       run: |
-        wget https://raw.githubusercontent.com/jplight/faultybot/.pylintrc
+        wget https://raw.githubusercontent.com/jplight/faultybot/main/.pylintrc
         pylint --rcfile=.pylintrc `ls -R|grep .py$|xargs`
