@@ -1,5 +1,4 @@
 # Imports
-import time
 import lichesspy.api
 import requests
 
