@@ -9,10 +9,13 @@ def check_user(username):
     """ Check User """
     flag = False
     try:
-        # The system marks such players with a TOS mark. This can be obtained as an array from the API.
+        # The system marks such players with a TOS mark.
+        # This can be obtained as an array from the API.
         flag = lichesspy.api.user(username)['tosViolation']
-    except:
+    except lichesspy.api.ApiError():
         # Since it is either there or not, the try catch block is misused as an if statement
+        flag = False
+    else:
         flag = False
     return flag
 
@@ -22,9 +25,8 @@ def check_user(username):
 def check_user_ausgabe(username):
     """ Check User Ausgabe """
     if check_user(username):
-        return "True"
-    else:
-        return "False"
+        return True
+    return False
 
 
 # The function checks all players of a team and returns a list of all cheaters.
@@ -51,15 +53,8 @@ def kick(team, user, token):
     header = {'Authorization': 'Bearer ' + token}
     # The Lichess API accepts the request as a POST request.
     # Therefore all data must be in the header.
-    r = requests.post(url, headers=header)
-    return r
-
-
-# The function kicks all cheaters from the desired team.
-def runner(team, token):
-    # This is actually the complete backend for the kickfaulty
-    for c in analyse_team(team.lower()):
-        kick(team.lower(), c, token)
+    request = requests.post(url, headers=header)
+    return request
 
 
 # Unfortunately, the API returns only an array.
@@ -67,10 +62,7 @@ def runner(team, token):
 def check(level):
     """ check """
     # Since it is a request response, it cannot be interpreted as a string.
-    if "true" in level.text:
-        return True
-    else:
-        return False
+    return bool("true" in level.text)
 
 
 # The function investigates why a request failed.
@@ -85,26 +77,6 @@ def status(level):
     return "No Error"
 
 
-# This function kicks all people out of the team. No matter if they cheat or not.
-# This function is usually only used for YouTube teams.
-def clear_team(team, token):
-    try:
-        # The bot just goes through them all. With normal teams,
-        # lichess does not block the IP address either.
-        for i in lichesspy.api.users_by_team(team):
-            username = i.get('username').lower()
-            url = 'https://lichess.org/team/' + team + '/kick/' + username
-            header = {'Authorization': 'Bearer ' + token}
-            requests.post(url, headers=header)
-            # So that lichess doesn't think we're about to launch a DDOS attack,
-            # we give them some time to catch their breath.
-            time.sleep(1)
-    except Exception as error:
-        print(error)
-        return False
-    return True
-
-
 # If anyone operates the bot incorrectly, it will be checked again for errors here.
 def check_team_name(team):
     # The program uses the static links from lichess
@@ -114,10 +86,7 @@ def check_team_name(team):
             # Lichess cannot process teams with the "/" character for syntax reasons.
             # Therefore there are no such teams.
             if "/" in team[-runner::]:
-                runner = runner - 1
+                runner -= 1
             else:
                 return team[-runner::]
-    else:
-        return team
-    # The false can never be reached. It stands so that it looks better
-    return False
+    return team
