@@ -28,3 +28,6 @@ venv/
 
 # Example
 !*.example
+
+# teamlist to check by cron
+faultybot/teams_to_check.json

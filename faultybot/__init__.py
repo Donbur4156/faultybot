@@ -28,6 +28,14 @@ async def on_ready():
     print_log("I am online!")
 
 
+@bot.event
+async def on_message(ctx):
+    if ctx.content.startswith('>'):
+        user = "<@" + str(ctx.author.id) + ">"
+        await ctx.channel.send(f'{user}, the Prefix of the bot was changed to "!"')
+    await bot.process_commands(ctx)
+
+
 @bot.command(aliases=['Kickfaulty'])
 async def kickfaulty(ctx, *args):
     channel = ctx.guild
