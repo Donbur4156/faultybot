@@ -18,13 +18,18 @@ intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)
 
 id_ref = []
-TEAM_FILE = "faultybot/teams_to_check.json"
+TEAM_FILE = "./teams_to_check.json"
 
 
 # Test function to see if the bot is online.
 @bot.event
 async def on_ready():
     print_log("I am online!")
+
+
+@bot.event
+async def on_message(ctx):
+    pass
 
 
 @bot.command(aliases=['Kickfaulty'])
