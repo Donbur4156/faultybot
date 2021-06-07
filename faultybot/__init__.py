@@ -2,6 +2,8 @@ import asyncio
 import datetime
 import ftplib
 import os
+import os.path
+import sys
 import uuid
 import json
 from concurrent.futures import ThreadPoolExecutor
@@ -18,8 +20,7 @@ intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)
 
 id_ref = []
-TEAM_FILE = "./teams_to_check.json"
-
+TEAM_FILE = os.path.join(sys.path[0], "teams_to_check.json")
 
 # Test function to see if the bot is online.
 @bot.event
