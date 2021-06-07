@@ -28,11 +28,6 @@ async def on_ready():
     print_log("I am online!")
 
 
-@bot.event
-async def on_message(ctx):
-    pass
-
-
 @bot.command(aliases=['Kickfaulty'])
 async def kickfaulty(ctx, *args):
     channel = ctx.guild
