@@ -143,7 +143,7 @@ async def faultyhandle(ctx, team, handle):
     with open(filename, 'w') as file:
         file.write(f"{id_ref[handle][2]}\n{id_ref[handle][1]}\n")
         file.write(data)
-    await upload(id_ref[handle][2])
+    upload(id_ref[handle][2])
     link = f"http://www.donbotti.de/?token={id_ref[handle][2]}"
     text = f"- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nIn the team **{team}**, " \
            f"users were marked by Lichess as having violated the terms of use. " \
@@ -184,7 +184,7 @@ async def run_kick(ctx, team, handle, cheaters, token):
 
 
 # Uploads the files to the FTP server.
-async def upload(file_id):
+def upload(file_id):
     # Lima City hosts the server for us. But you can also use another provider.
     ftp = ftplib.FTP()
     host = config.url
@@ -201,6 +201,16 @@ async def upload(file_id):
         ftp.quit()
     except ftplib.all_errors:
         print("No logging possible!")
+
+
+def write_file(handle, cheaters):
+    marker = "\n"
+    data = marker.join(cheaters)
+    filename = id_ref[handle][2] + ".flag"
+    with open(filename, 'w') as file:
+        file.write(f"{id_ref[handle][2]}\n{id_ref[handle][1]}\n")
+        file.write(data)
+    return filename
 
 
 async def datahandle(team, new=True):
@@ -232,43 +242,39 @@ async def crown_faulty():
     print("start Crown")
     with open(TEAM_FILE, 'r') as json_file:
         json_data = json.load(json_file)
-        for team in json_data['teams']:
-            teamname = team['teamname']
-            print(teamname)
-            userlist = team['user']
-            print(userlist)
-            handle = await datahandle(teamname)
-            try:
-                loop = asyncio.get_event_loop()
-                cheaters = await loop.run_in_executor(ThreadPoolExecutor(),
-                function.analyse_team, teamname)
-            except lichesspy.api.ApiHttpError:
-                id_ref[handle][3] = 4
-                return False
-            if cheaters:
-                print("cheater found: in team" + teamname)
-                print(cheaters)
-                marker = "\n"
-                data = marker.join(cheaters)
-                filename = id_ref[handle][2] + ".flag"
-                with open(filename, 'w') as file:
-                    file.write(f"{id_ref[handle][2]}\n{id_ref[handle][1]}\n")
-                    file.write(data)
-                await upload(id_ref[handle][2])
-                user_mention = ""
-                for user in userlist:
-                    user_mention += "<@" + str(user) + "> "
-                link = f"http://www.donbotti.de/?token={id_ref[handle][2]}"
-                text = f"- - - - - - - - - - - - - - - - - - - - - - - - - - - -\n" \
-                    f"{user_mention}\nIn the team **{teamname}**, " \
-                    f"users were marked by Lichess as having violated the terms of use. " \
-                    f"You can find the list via this link:\n--->{link}<---\n" \
-                    f" - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
-                request_channel = bot.get_channel(814566650345947177)
-                await request_channel.send(text)
-                if os.path.isfile(filename):
-                    os.remove(filename)
-                id_ref[handle][3] = 2
+    for team in json_data['teams']:
+        teamname = team['teamname']
+        print(teamname)
+        userlist = team['user']
+        print(userlist)
+        handle = await datahandle(teamname)
+        try:
+            loop = asyncio.get_event_loop()
+            cheaters = await loop.run_in_executor(ThreadPoolExecutor(),
+            function.analyse_team, teamname)
+        except lichesspy.api.ApiHttpError:
+            id_ref[handle][3] = 4
+            return False
+        if cheaters:
+            print("cheater found: in team" + teamname)
+            print(cheaters)
+            filename = write_file(handle, cheaters)
+            upload(id_ref[handle][2])
+            user_mention = ""
+            for user in userlist:
+                user_mention += "<@" + str(user) + "> "
+            link = f"http://www.donbotti.de/?token={id_ref[handle][2]}"
+            text = f"- - - - - - - - - - - - - - - - - - - - - - - - - - - -\n" \
+                f"{user_mention}\nIn the team **{teamname}**, " \
+                f"users were marked by Lichess as having violated the terms of use. " \
+                f"You can find the list via this link:\n--->{link}<---\n" \
+                f" - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+            request_channel = bot.get_channel(814566650345947177)
+            await request_channel.send(text)
+            if os.path.isfile(filename):
+                os.remove(filename)
+            id_ref[handle][3] = 2
+    print("end Corwn")
 
 
 def create_teamlist():
