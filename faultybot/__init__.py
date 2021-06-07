@@ -1,12 +1,14 @@
-import uuid
+import asyncio
+import datetime
 import ftplib
 import os
-import datetime
-import asyncio
+import uuid
+import json
 from concurrent.futures import ThreadPoolExecutor
+import aiocron
 import discord
-from discord.ext import commands
 import lichesspy.api
+from discord.ext import commands
 import config
 import function
 
@@ -16,6 +18,7 @@ intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)
 
 id_ref = []
+TEAM_FILE = "teams_to_check.json"
 
 
 # Test function to see if the bot is online.
@@ -40,9 +43,7 @@ async def kickfaulty(ctx, *args):
         return False
     team = function.check_team_name(args[0].lower())
     lichess_token = args[1]
-    file_id = str(uuid.uuid4().hex)
-    new = True
-    handle = await datahandle(team, file_id, new)
+    handle = await datahandle(team)
     text = f"The data of the team **{team}** is downloaded and checked! This can take several " \
            f"minutes depending on the size of the team. Per 1000 members approx 1 minute!"
     await ctx.send(text)
@@ -62,8 +63,7 @@ async def faulty(ctx, *args):
     team = function.check_team_name(args[0].lower())
     if len(args) > 1 and args[1] == "new":
         new = True
-    file_id = str(uuid.uuid4().hex)
-    handle = await datahandle(team, file_id, new)
+    handle = await datahandle(team, new)
     # handle = [now, team, file_id, status]
     if id_ref[handle][3] == 1:  # team neu
         text = f"The data of the team **{team}** is downloaded and checked! " \
@@ -87,6 +87,36 @@ async def faulty(ctx, *args):
                f"The query of the team **{team}**  apparently does not exist! \n" \
                f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
+
+
+@bot.command()
+@commands.has_role(802626303958188122)
+async def add(ctx, teamname, userid):
+    print(teamname)
+    print(userid)
+    with open(TEAM_FILE, 'r') as json_file:
+        json_data = json.load(json_file)
+    teamnew = True
+    for team in json_data['teams']:
+        if team['teamname'] == teamname:
+            if userid not in team['user']:
+                team['user'].append(userid)
+            teamnew = False
+            break
+    if teamnew:
+        json_data['teams'].append({
+            'teamname': teamname,
+            'user': [userid]
+        })
+    with open(TEAM_FILE, 'w') as json_file:
+        json.dump(json_data, json_file)
+    await ctx.send(f"das Team {teamname} ist nun mit dem User mit der ID {userid} verknüpft.")
+
+
+@add.error
+async def add_error(ctx, error):
+    if isinstance(error, discord.ext.commands.MissingRole):
+        await ctx.send("Du hast nicht die benötigten Rechte um diesen Command auszuführen!")
 
 
 async def faultyhandle(ctx, team, handle):
@@ -113,7 +143,7 @@ async def faultyhandle(ctx, team, handle):
     with open(filename, 'w') as file:
         file.write(f"{id_ref[handle][2]}\n{id_ref[handle][1]}\n")
         file.write(data)
-    await upload(id_ref[handle][2])
+    upload(id_ref[handle][2])
     link = f"http://www.donbotti.de/?token={id_ref[handle][2]}"
     text = f"- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nIn the team **{team}**, " \
            f"users were marked by Lichess as having violated the terms of use. " \
@@ -154,7 +184,7 @@ async def run_kick(ctx, team, handle, cheaters, token):
 
 
 # Uploads the files to the FTP server.
-async def upload(file_id):
+def upload(file_id):
     # Lima City hosts the server for us. But you can also use another provider.
     ftp = ftplib.FTP()
     host = config.url
@@ -173,7 +203,18 @@ async def upload(file_id):
         print("No logging possible!")
 
 
-async def datahandle(team, file_id, new):
+def write_file(handle, cheaters):
+    marker = "\n"
+    data = marker.join(cheaters)
+    filename = id_ref[handle][2] + ".flag"
+    with open(filename, 'w') as file:
+        file.write(f"{id_ref[handle][2]}\n{id_ref[handle][1]}\n")
+        file.write(data)
+    return filename
+
+
+async def datahandle(team, new=True):
+    file_id = str(uuid.uuid4().hex)
     now = datetime.datetime.utcnow()
     for i in id_ref:
         delta = now - i[0]
@@ -195,6 +236,55 @@ def print_log(text):
     print(str(now) + ": " + str(text))
 
 
+# Cronjob every day at 02:00 for every team in database
+@aiocron.crontab('0 2 * * *')
+async def crown_faulty():
+    print("start Crown")
+    with open(TEAM_FILE, 'r') as json_file:
+        json_data = json.load(json_file)
+    for team in json_data['teams']:
+        teamname = team['teamname']
+        print(teamname)
+        userlist = team['user']
+        print(userlist)
+        handle = await datahandle(teamname)
+        try:
+            loop = asyncio.get_event_loop()
+            cheaters = await loop.run_in_executor(ThreadPoolExecutor(),
+            function.analyse_team, teamname)
+        except lichesspy.api.ApiHttpError:
+            id_ref[handle][3] = 4
+            return False
+        if cheaters:
+            print("cheater found: in team" + teamname)
+            print(cheaters)
+            filename = write_file(handle, cheaters)
+            upload(id_ref[handle][2])
+            user_mention = ""
+            for user in userlist:
+                user_mention += "<@" + str(user) + "> "
+            link = f"http://www.donbotti.de/?token={id_ref[handle][2]}"
+            text = f"- - - - - - - - - - - - - - - - - - - - - - - - - - - -\n" \
+                f"{user_mention}\nIn the team **{teamname}**, " \
+                f"users were marked by Lichess as having violated the terms of use. " \
+                f"You can find the list via this link:\n--->{link}<---\n" \
+                f" - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+            request_channel = bot.get_channel(814566650345947177)
+            await request_channel.send(text)
+            if os.path.isfile(filename):
+                os.remove(filename)
+            id_ref[handle][3] = 2
+    print("end Corwn")
+
+
+def create_teamlist():
+    if not os.path.isfile(TEAM_FILE):
+        with open(TEAM_FILE, 'w') as jsonfile:
+            data = {'teams': []}
+            json.dump(data, jsonfile)
+
+
 # Starting from the Await Client
 if __name__ == "__main__":
+    create_teamlist()
     bot.run(bot_token)
