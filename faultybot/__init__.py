@@ -119,7 +119,9 @@ async def add(ctx, teamname, userid):
     with open(TEAM_FILE, 'w') as json_file:
         json.dump(json_data, json_file)
     mention = "<@" + str(userid) + "> "
-    await ctx.send(f"das Team {teamname} ist nun mit dem User mit dem User {mention} (ID:{userid}) verknüpft.")
+    text = f"das Team {teamname} ist nun mit dem User mit dem User {mention} " \
+            f"(ID:{userid}) verknüpft."
+    await ctx.send(text)
 
 
 @bot.command()
@@ -131,7 +133,7 @@ async def get(ctx):
         userlist = team['user']
         text = f'Das Team {teamname} ist mit diesen Usern verknüpft:\n'
         for user in userlist:
-            text += f"<@{str(userid)}>; "
+            text += f"<@{str(user)}>; "
         await ctx.send(text)
 
 
