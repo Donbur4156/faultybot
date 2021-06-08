@@ -101,8 +101,7 @@ async def faulty(ctx, *args):
 @bot.command()
 @commands.has_role(802626303958188122)
 async def add(ctx, teamname, userid):
-    print(teamname)
-    print(userid)
+    print_log(f'Team {teamname} for User {userid}')
     with open(TEAM_FILE, 'r') as json_file:
         json_data = json.load(json_file)
     teamnew = True
@@ -119,7 +118,21 @@ async def add(ctx, teamname, userid):
         })
     with open(TEAM_FILE, 'w') as json_file:
         json.dump(json_data, json_file)
-    await ctx.send(f"das Team {teamname} ist nun mit dem User mit der ID {userid} verknüpft.")
+    mention = "<@" + str(userid) + "> "
+    await ctx.send(f"das Team {teamname} ist nun mit dem User mit dem User {mention} (ID:{userid}) verknüpft.")
+
+
+@bot.command()
+async def get(ctx):
+    with open(TEAM_FILE, 'r') as json_file:
+        json_data = json.load(json_file)
+    for team in json_data['teams']:
+        teamname = team['teamname']
+        userlist = team['user']
+        text = f'Das Team {teamname} ist mit diesen Usern verknüpft:\n'
+        for user in userlist:
+            text += f"<@{str(userid)}>; "
+        await ctx.send(text)
 
 
 @add.error
@@ -209,7 +222,7 @@ def upload(file_id):
             print_log(f"Upload of the file {filename} is successfully completed.")
         ftp.quit()
     except ftplib.all_errors:
-        print("No logging possible!")
+        print_log("No logging possible!")
 
 
 def write_file(handle, cheaters):
@@ -248,14 +261,14 @@ def print_log(text):
 # Cronjob every day at 02:00 for every team in database
 @aiocron.crontab('0 2 * * *')
 async def crown_faulty():
-    print("start Crown")
+    print_log("start Crown")
     with open(TEAM_FILE, 'r') as json_file:
         json_data = json.load(json_file)
     for team in json_data['teams']:
         teamname = team['teamname']
-        print(teamname)
+        print_log(teamname)
         userlist = team['user']
-        print(userlist)
+        print_log(userlist)
         handle = await datahandle(teamname)
         try:
             loop = asyncio.get_event_loop()
@@ -265,8 +278,8 @@ async def crown_faulty():
             id_ref[handle][3] = 4
             return False
         if cheaters:
-            print("cheater found: in team" + teamname)
-            print(cheaters)
+            print_log(f'{str(len(cheaters))}cheater found: in team {teamname}')
+            print_log(cheaters)
             filename = write_file(handle, cheaters)
             upload(id_ref[handle][2])
             user_mention = ""
@@ -283,7 +296,7 @@ async def crown_faulty():
             if os.path.isfile(filename):
                 os.remove(filename)
             id_ref[handle][3] = 2
-    print("end Corwn")
+    print_log("end Crown")
 
 
 def create_teamlist():
