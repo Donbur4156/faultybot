@@ -9,20 +9,16 @@ def read_description():
     return io.open(os.path.join(os.path.dirname(__file__), url), encoding="utf-8").read()
 
 
-def read_pip():
-    """ Read and Return the pip dependencies """
-    datei = open('requirements.txt', 'r')
-    output_stream = []
-    for zeile in datei:
-        zeile = zeile.replace("\n", "")
-        output_stream.append(zeile)
-    datei.close()
-    return output_stream
+def def_requirements():
+    """ Check PIP Requirements """
+    with open('requirements.txt') as file_content:
+        pip_lines = file_content.read().splitlines()
+    return pip_lines
 
 
 setuptools.setup(
     name="faultybot",
-    version='0.0.2',
+    version='0.0.3',
     description='Faultybot Discord Handler',
     long_description=read_description(),
     long_description_content_type="text/markdown",
@@ -30,10 +26,10 @@ setuptools.setup(
     keywords="Python Discord Faultybot ",
     url="https://github.com/jplight/faultybot",
     packages=["faultybot"],
-    install_requires=read_pip(),
+    install_requires=def_requirements(),
     python_requires=">=3.8.*",
     classifiers=[
-        "Development Status :: 1 - Planning",
+        "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
         "Intended Audience :: Science/Research",
         "License :: OSI Approved :: MIT License",

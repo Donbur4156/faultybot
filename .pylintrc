@@ -4,4 +4,5 @@ disable=
     C0116, # missing-function-docstring
     E0401, # import-error
     R1723, # no-else-break
+    W0105, # pointless string
     
