@@ -1,6 +1,9 @@
 # Zeyecx
 *test*.py
 
+dist
+faultybot.*
+
 # Server
 *.flag
 
