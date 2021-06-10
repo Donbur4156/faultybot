@@ -153,14 +153,14 @@ async def faultyhandle(ctx, team, handle):
                f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
         id_ref[handle][3] = 4
-        return False
+        return None, None
     if not cheaters:
         text = f"- - - - - - - - - - - - - - - - - - - - - - - - - - - -\n" \
                f"The queried team **{team}** does not include flagged users!\n" \
                f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
         id_ref[handle][3] = 3
-        return False
+        return None, None
     marker = "\n"
     data = marker.join(cheaters)
     filename = id_ref[handle][2] + ".flag"
