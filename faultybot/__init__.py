@@ -268,9 +268,8 @@ async def crown_faulty():
         json_data = json.load(json_file)
     for team in json_data['teams']:
         teamname = team['teamname']
-        print_log(teamname)
         userlist = team['user']
-        print_log(userlist)
+        print_log(f'Team "{teamname}" for {userlist}')
         handle = await datahandle(teamname)
         try:
             loop = asyncio.get_event_loop()
@@ -280,8 +279,7 @@ async def crown_faulty():
             id_ref[handle][3] = 4
             return False
         if cheaters:
-            print_log(f'{str(len(cheaters))}cheater found: in team {teamname}')
-            print_log(cheaters)
+            print_log(f'{str(len(cheaters))} cheater found in team "{teamname}": {cheaters}')
             filename = write_file(handle, cheaters)
             upload(id_ref[handle][2])
             user_mention = ""
