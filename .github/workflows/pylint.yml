@@ -24,9 +24,7 @@ jobs:
       - name: Analyse the Faultybot Project
         working-directory: ./faultybot
         run: |
-          wget https://raw.githubusercontent.com/jplight/faultybot/main/.pylintrc
-          pylint --rcfile=.pylintrc `ls -R|grep .py$|xargs`
+          pylint --rcfile="../.pylintrc" `ls -R|grep .py$|xargs`
       - name: Analysing the Package
         run: |
-          wget https://raw.githubusercontent.com/jplight/faultybot/main/.pylintrc
           pylint --rcfile=.pylintrc `ls |grep .py$|xargs`

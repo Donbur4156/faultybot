@@ -35,5 +35,5 @@ venv/
 # teamlist to check by cron
 faultybot/teams_to_check.json
 
-# vsc
-.vscode/settings.json
+# VSCode
+.vscode/
