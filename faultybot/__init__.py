@@ -23,6 +23,8 @@ id_ref = []
 TEAM_FILE = os.path.join(sys.path[0], "teams_to_check.json")
 
 # Test function to see if the bot is online.
+
+
 @bot.event
 async def on_ready():
     print_log("I am online!")
@@ -63,7 +65,7 @@ async def kickfaulty(ctx, *args):
 
 @bot.command(aliases=['Faulty'])
 async def faulty(ctx, *args):
-    if len(args) <1 or len(args) >2:
+    if len(args) < 1 or len(args) > 2:
         text = "The command ``>faulty`` requires at least 1 argument: " \
                "1. ``team name``; 2. ``optional: new [if you want a new request]``"
         await ctx.send(text)
@@ -82,9 +84,9 @@ async def faulty(ctx, *args):
         await faultyhandle(ctx, team, handle)
     elif id_ref[handle][3] == 2:  # Team mit faulty user
         link = "http://www.donbotti.de/?token=" + id_ref[handle][2]
-        text = f"- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe query of the team " \
-               f"{team} has already been made in the last 4 hours. You can find the list via this" \
-               f" link:\n--->{link}<---\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+        text = f"- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe query of the team "\
+               f"{team} has already been made in the last 4 hours. You can find the list via this"\
+               f" link:\n---> {link} <---\n - - - - - -  - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
     elif id_ref[handle][3] == 3:  # Team ohne faulty user
         text = f"- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe query of the team " \
@@ -120,7 +122,7 @@ async def add(ctx, teamname, userid):
         json.dump(json_data, json_file)
     mention = "<@" + str(userid) + "> "
     text = f"das Team {teamname} ist nun mit dem User mit dem User {mention} " \
-            f"(ID:{userid}) verknüpft."
+        f"(ID:{userid}) verknüpft."
     await ctx.send(text)
 
 
@@ -171,7 +173,7 @@ async def faultyhandle(ctx, team, handle):
     link = f"http://www.donbotti.de/?token={id_ref[handle][2]}"
     text = f"- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nIn the team **{team}**, " \
            f"users were marked by Lichess as having violated the terms of use. " \
-           f"You can find the list via this link:\n--->{link}<---\n" \
+           f"You can find the list via this link:\n---> {link} <---\n" \
            f" - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
     await ctx.send(text)
     if os.path.isfile(filename):
@@ -186,11 +188,11 @@ async def run_kick(ctx, team, handle, cheaters, token):
     for cheater in cheaters:
         request = function.kick(team.lower(), cheater, token)
         print_log("Request for Cheater " + str(count_cheater +
-                    1) + " '" + cheater + "' returns " + str(request))
+                                               1) + " '" + cheater + "' returns " + str(request))
         if not function.check(request):
             status = function.status(request)
             text = f"The kick process was cancelled due to the following error:\n" \
-                    f"**{status}**\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+                f"**{status}**\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
             print_log(f"Request failed with {status}")
             await ctx.send(text)
             return False
@@ -198,10 +200,10 @@ async def run_kick(ctx, team, handle, cheaters, token):
         count_cheater += 1
     if count_cheater == 1:
         text = "There was 1 flagged user kicked\n" \
-                " - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+            " - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
     else:
         text = f"There were {str(count_cheater)} flagged users kicked\n" \
-                f" - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+            f" - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
     await ctx.send(text)
     id_ref.__delitem__(handle)
     return False
@@ -221,7 +223,8 @@ def upload(file_id):
         filename = f"{file_id}.flag"
         with open(filename, "rb") as file:
             ftp.storbinary(f"STOR {filename}", file)
-            print_log(f"Upload of the file {filename} is successfully completed.")
+            print_log(
+                f"Upload of the file {filename} is successfully completed.")
         ftp.quit()
     except ftplib.all_errors:
         print_log("No logging possible!")
@@ -274,12 +277,13 @@ async def crown_faulty():
         try:
             loop = asyncio.get_event_loop()
             cheaters = await loop.run_in_executor(ThreadPoolExecutor(),
-            function.analyse_team, teamname)
+                                                  function.analyse_team, teamname)
         except lichesspy.api.ApiHttpError:
             id_ref[handle][3] = 4
             return False
         if cheaters:
-            print_log(f'{str(len(cheaters))} cheater found in team "{teamname}": {cheaters}')
+            print_log(
+                f'{str(len(cheaters))} cheater found in team "{teamname}": {cheaters}')
             filename = write_file(handle, cheaters)
             upload(id_ref[handle][2])
             user_mention = ""
