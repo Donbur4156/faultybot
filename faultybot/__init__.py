@@ -84,7 +84,7 @@ async def faulty(ctx, *args):
         link = "http://www.donbotti.de/?token=" + id_ref[handle][2]
         text = f"- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe query of the team " \
                f"{team} has already been made in the last 4 hours. You can find the list via this" \
-               f" link:\n--->{link}<---\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+               f" link:\n---> {link} <---\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
         await ctx.send(text)
     elif id_ref[handle][3] == 3:  # Team ohne faulty user
         text = f"- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nThe query of the team " \
@@ -171,7 +171,7 @@ async def faultyhandle(ctx, team, handle):
     link = f"http://www.donbotti.de/?token={id_ref[handle][2]}"
     text = f"- - - - - - - - - - - - - - - - - - - - - - - - - - - -\nIn the team **{team}**, " \
            f"users were marked by Lichess as having violated the terms of use. " \
-           f"You can find the list via this link:\n--->{link}<---\n" \
+           f"You can find the list via this link:\n---> {link} <---\n" \
            f" - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
     await ctx.send(text)
     if os.path.isfile(filename):
