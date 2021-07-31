@@ -72,7 +72,7 @@ def status(level: str) -> str:
         # Therefore either the token is wrong or the error is about one meter behind the screen.
         if "No such token" in level.text:
             return "Invalid Token! (Wrong Token or not authorized)"
-        return "Unkown Error!"
+        return "Undefined Error!"
     return "No Error"
 
 
