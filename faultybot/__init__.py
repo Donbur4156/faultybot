@@ -191,22 +191,22 @@ async def run_kick(ctx, team, handle, cheaters, token):
                                                1) + " '" + cheater + "' returns " + str(request))
         if not function.check(request):
             status = function.status(request)
-            text = f"The kick process was cancelled due to the following error:\n" \
-                f"**{status}**\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
-            print_log(f"Request failed with {status}")
+            text = f"The kick process was cancelled due to the following error:\n**{status}**" \
+                    "\nFor further information, please contact donbur#4156 on discord!" \
+                    "\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+            print_log(f"Request failed with {status}: ({request.text})")
             await ctx.send(text)
-            return False
+            break
         print_log("with success")
         count_cheater += 1
     if count_cheater == 1:
-        text = "There was 1 flagged user kicked\n" \
-            " - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+        text = f"There was 1 of {str(len(cheaters))} flagged user kicked\n" \
+                " - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
     else:
-        text = f"There were {str(count_cheater)} flagged users kicked\n" \
-            f" - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+        text = f"There were {str(count_cheater)} of {str(len(cheaters))} flagged users kicked" \
+                f"\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
     await ctx.send(text)
     id_ref.__delitem__(handle)
-    return False
 
 
 # Uploads the files to the FTP server.
