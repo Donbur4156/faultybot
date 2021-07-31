@@ -189,34 +189,20 @@ async def run_kick(ctx, team, handle, cheaters, token):
                     1) + " '" + cheater + "' returns " + str(request))
         if not function.check(request):
             status = function.status(request)
-<<<<<<< HEAD
             text = f"The kick process was cancelled due to the following error:\n**{status}**" \
                     "\nFor further information, please contact donbur#4156 on discord!" \
                     "\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
             print_log(f"Request failed with {status}: ({request.text})")
-=======
-            text = f"The kick process was cancelled due to the following error:\n" \
-                    f"**{status}**\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
-            print_log(f"Request failed with {status}")
->>>>>>> parent of 55a3c60 (Typisierung)
             await ctx.send(text)
             break
         print_log("with success")
         count_cheater += 1
     if count_cheater == 1:
-<<<<<<< HEAD
         text = f"There was 1 of {str(len(cheaters))} flagged user kicked\n" \
                 " - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
     else:
         text = f"There were {str(count_cheater)} of {str(len(cheaters))} flagged users kicked" \
                 f"\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
-=======
-        text = "There was 1 flagged user kicked\n" \
-                " - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
-    else:
-        text = f"There were {str(count_cheater)} flagged users kicked\n" \
-                f" - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
->>>>>>> parent of 55a3c60 (Typisierung)
     await ctx.send(text)
     id_ref.__delitem__(handle)
 
