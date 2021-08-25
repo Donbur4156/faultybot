@@ -7,3 +7,4 @@ disable=
     W0105, # pointless string
     R1732, # with Statement
     C0301, # line-too-long
+    W1514, # bad-indentation
