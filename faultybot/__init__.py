@@ -144,9 +144,10 @@ async def add_error(ctx, error):
 
 
 async def faultyhandle(ctx, team, handle):
+    ignore_user = config.ignore_user
     try:
         loop = asyncio.get_event_loop()
-        cheaters = await loop.run_in_executor(ThreadPoolExecutor(), function.analyse_team, team)
+        cheaters = await loop.run_in_executor(ThreadPoolExecutor(), function.analyse_team, team, ignore_user)
     except lichesspy.api.ApiHttpError:
         text = f"- - - - - - - - - - - - - - - - - - - - - - - - - - - -\n" \
                f"The queried team **{team}** apparently does not exist! \n" \

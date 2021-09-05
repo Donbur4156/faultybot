@@ -29,15 +29,17 @@ def check_user_ausgabe(username: str) -> str:
 
 
 # The function checks all players of a team and returns a list of all cheaters.
-def analyse_team(teamname: str) -> list:
+def analyse_team(teamname: str, ignore_user: list) -> list:
     cheaters = []
     # The wrapper classes are used, because the PyPi functions have a wrong scope.
     # Please note the commit time.
     users = lichesspy.api.users_by_team(teamname)
     for i in users:
-        username = i.get('username')
         is_cheater = i.get('tosViolation')
         if is_cheater:
+            username = i.get('username')
+            if username in ignore_user:
+                continue
             cheaters.append(username)
     return cheaters
 
