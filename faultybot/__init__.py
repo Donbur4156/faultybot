@@ -265,6 +265,7 @@ def print_log(text):
 @aiocron.crontab('0 2 * * *')
 async def crown_faulty():
     print_log("start Crown")
+    ignore_user = config.ignore_user
     with open(TEAM_FILE, 'r') as json_file:
         json_data = json.load(json_file)
     for team in json_data['teams']:
@@ -275,7 +276,7 @@ async def crown_faulty():
         try:
             loop = asyncio.get_event_loop()
             cheaters = await loop.run_in_executor(ThreadPoolExecutor(),
-            function.analyse_team, teamname)
+            function.analyse_team, teamname, ignore_user)
         except lichesspy.api.ApiHttpError:
             id_ref[handle][3] = 4
             return False
