@@ -11,7 +11,7 @@ def read_description():
 
 def def_requirements():
     """ Check PIP Requirements """
-    with open('requirements.txt') as file_content:
+    with open('requirements.txt', encoding='utf-8') as file_content:
         pip_lines = file_content.read().splitlines()
     return pip_lines
 
