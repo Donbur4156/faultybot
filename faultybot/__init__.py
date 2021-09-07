@@ -102,7 +102,7 @@ async def faulty(ctx, *args):
 @commands.has_role(802626303958188122)
 async def add(ctx, teamname, userid):
     print_log(f'Team {teamname} for User {userid}')
-    with open(TEAM_FILE, 'r') as json_file:
+    with open(TEAM_FILE, 'r', encoding='utf-8') as json_file:
         json_data = json.load(json_file)
     teamnew = True
     for team in json_data['teams']:
@@ -116,7 +116,7 @@ async def add(ctx, teamname, userid):
             'teamname': teamname,
             'user': [userid]
         })
-    with open(TEAM_FILE, 'w') as json_file:
+    with open(TEAM_FILE, 'w', encoding='utf-8') as json_file:
         json.dump(json_data, json_file)
     mention = "<@" + str(userid) + "> "
     text = f"das Team {teamname} ist nun mit dem User mit dem User {mention} " \
@@ -126,7 +126,7 @@ async def add(ctx, teamname, userid):
 
 @bot.command()
 async def get(ctx):
-    with open(TEAM_FILE, 'r') as json_file:
+    with open(TEAM_FILE, 'r', encoding='utf-8') as json_file:
         json_data = json.load(json_file)
     for team in json_data['teams']:
         teamname = team['teamname']
@@ -165,7 +165,7 @@ async def faultyhandle(ctx, team, handle):
     marker = "\n"
     data = marker.join(cheaters)
     filename = id_ref[handle][2] + ".flag"
-    with open(filename, 'w') as file:
+    with open(filename, 'w', encoding='utf-8') as file:
         file.write(f"{id_ref[handle][2]}\n{id_ref[handle][1]}\n")
         file.write(data)
     upload(id_ref[handle][2])
@@ -220,7 +220,7 @@ def upload(file_id):
         ftp_pw = config.pwd
         ftp.login(ftpuser, ftp_pw)
         filename = f"{file_id}.flag"
-        with open(filename, "rb") as file:
+        with open(filename, "rb", encoding='utf-8') as file:
             ftp.storbinary(f"STOR {filename}", file)
             print_log(f"Upload of the file {filename} is successfully completed.")
         ftp.quit()
@@ -232,7 +232,7 @@ def write_file(handle, cheaters):
     marker = "\n"
     data = marker.join(cheaters)
     filename = id_ref[handle][2] + ".flag"
-    with open(filename, 'w') as file:
+    with open(filename, 'w', encoding='utf-8') as file:
         file.write(f"{id_ref[handle][2]}\n{id_ref[handle][1]}\n")
         file.write(data)
     return filename
@@ -266,7 +266,7 @@ def print_log(text):
 async def crown_faulty():
     print_log("start Crown")
     ignore_user = config.ignore_user
-    with open(TEAM_FILE, 'r') as json_file:
+    with open(TEAM_FILE, 'r', encoding='utf-8') as json_file:
         json_data = json.load(json_file)
     for team in json_data['teams']:
         teamname = team['teamname']
@@ -303,7 +303,7 @@ async def crown_faulty():
 
 def create_teamlist():
     if not os.path.isfile(TEAM_FILE):
-        with open(TEAM_FILE, 'w') as jsonfile:
+        with open(TEAM_FILE, 'w', encoding='utf-8') as jsonfile:
             data = {'teams': []}
             json.dump(data, jsonfile)
 
