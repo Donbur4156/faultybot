@@ -2,33 +2,9 @@
 import lichesspy.api
 import requests
 
-
-# Checks if a player has violated the rules of Lichess.
-def check_user(username: str) -> bool:
-    """ Check User """
-    flag = False
-    try:
-        # The system marks such players with a TOS mark.
-        # This can be obtained as an array from the API.
-        flag = lichesspy.api.user(username)['tosViolation']
-    except lichesspy.api.ApiError():
-        # Since it is either there or not, the try catch block is misused as an if statement
-        flag = False
-    else:
-        flag = False
-    return flag
-
-
-# Checks the user and outputs whether he has cheated.
-# Since python has a problem with boolean values, this function outputs them as strings.
-def check_user_ausgabe(username: str) -> str:
-    """ Check User Ausgabe """
-    if check_user(username):
-        return True
-    return False
-
-
 # The function checks all players of a team and returns a list of all cheaters.
+
+
 def analyse_team(teamname: str, ignore_user: list) -> list:
     cheaters = []
     # The wrapper classes are used, because the PyPi functions have a wrong scope.
@@ -41,12 +17,20 @@ def analyse_team(teamname: str, ignore_user: list) -> list:
             if username in ignore_user:
                 continue
             cheaters.append(username)
+    for i in users:
+        is_cheater = i.get('closed')
+        if is_cheater:
+            username = i.get('username')
+            if username in ignore_user:
+                continue
+            if username not in cheaters:
+                cheaters.append(username)
     return cheaters
 
 
 # The function kicks the specified player from the team.
 # The bot token is required for this.
-def kick(team: str, user: str, token:str) -> bool:
+def kick(team: str, user: str, token: str) -> bool:
     user = user.lower()
     # The token is the one from the bot account.
     # The bot must also be a team leader to be able to kick people.
@@ -79,7 +63,7 @@ def status(level: str) -> str:
 
 
 # If anyone operates the bot incorrectly, it will be checked again for errors here.
-def check_team_name(team : str) -> bool:
+def check_team_name(team: str) -> bool:
     # The program uses the static links from lichess
     if "/team/" in team:
         runner = len(team)
