@@ -12,19 +12,12 @@ def analyse_team(teamname: str, ignore_user: list) -> list:
     users = lichesspy.api.users_by_team(teamname)
     for i in users:
         is_cheater = i.get('tosViolation')
-        if is_cheater:
+        is_closed = i.get('closed')
+        if is_cheater or is_closed:
             username = i.get('username')
             if username in ignore_user:
                 continue
             cheaters.append(username)
-    for i in users:
-        is_cheater = i.get('closed')
-        if is_cheater:
-            username = i.get('username')
-            if username in ignore_user:
-                continue
-            if username not in cheaters:
-                cheaters.append(username)
     return cheaters
 
 
