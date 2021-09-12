@@ -220,7 +220,7 @@ def upload(file_id):
         ftp_pw = config.pwd
         ftp.login(ftpuser, ftp_pw)
         filename = f"{file_id}.flag"
-        with open(filename, "rb", encoding='utf-8') as file:
+        with open(filename, "rb") as file:
             ftp.storbinary(f"STOR {filename}", file)
             print_log(f"Upload of the file {filename} is successfully completed.")
         ftp.quit()
