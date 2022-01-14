@@ -17,7 +17,7 @@ import function
 # Build the bot according to the Discord syntax
 bot_token = config.bot_token
 intents = discord.Intents.all()
-bot = commands.Bot(command_prefix='!', intents=intents)
+bot = commands.Bot(command_prefix='/', intents=intents)
 
 id_ref = []
 TEAM_FILE = os.path.join(sys.path[0], "teams_to_check.json")

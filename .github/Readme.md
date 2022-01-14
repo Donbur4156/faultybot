@@ -80,13 +80,13 @@ To view all players who have violated the TOS, write the following in the chat w
 The bot only searches for new cheaters every 4 hours after the last call. That would otherwise generate too much traffic. The flag "new" can be used to circumvent this.
 
 ```PowerShell
->faulty >>TEAM-ID<< 
+/faulty >>TEAM-ID<< 
 ```
 
 However, if they want to kick players, write the following:
 
 ```PowerShell
->kickfaulty >>TEAM-ID<< >>TOKEN<< 
+/kickfaulty >>TEAM-ID<< >>TOKEN<< 
 ```
 
 Please note that only one token can be uniquely assigned to a bot at a time. This bot must then also be TeamLeader in the desired team. This means that you cannot kick people all over the place. You can only do that in your teams.
