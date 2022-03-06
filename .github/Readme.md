@@ -5,10 +5,6 @@
 
 ![Git](https://img.shields.io/badge/-Git-%23F05032?logo=git&logoColor=%23ffffff)
 
-<a href="https://github.com/jplight/faultybot">
-  <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=jplight&repo=faultybot&theme=algolia" />
-</a>
-
 
 ## Technical fundamentals
 To use the bot you need a Discord bot and a Lichess account.
