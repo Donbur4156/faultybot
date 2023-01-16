@@ -20,7 +20,7 @@ def analyse_team(teamname: str, ignore_user: list) -> list:
 
 # The function kicks the specified player from the team.
 # The bot token is required for this.
-def kick(team: str, user: str, token: str) -> bool:
+def kick(team: str, user: str, token: str) -> requests.Response:
     user = user.lower()
     # The token is the one from the bot account.
     # The bot must also be a team leader to be able to kick people.
@@ -28,8 +28,7 @@ def kick(team: str, user: str, token: str) -> bool:
     header = {'Authorization': 'Bearer ' + token}
     # The Lichess API accepts the request as a POST request.
     # Therefore all data must be in the header.
-    request = requests.post(url, headers=header)
-    return request
+    return requests.post(url, headers=header)
 
 
 # Unfortunately, the API returns only an array.
@@ -41,13 +40,15 @@ def check(level: str) -> bool:
 
 
 # The function investigates why a request failed.
-def status(level: str) -> str:
+def status(level: requests.Response) -> str:
     """ get status """
     if "true" not in level.text:
         # The Lichess API actually works very well.
         # Therefore either the token is wrong or the error is about one meter behind the screen.
         if "No such token" in level.text:
             return "Invalid Token! (Wrong Token or not authorized)"
+        if "Not your team" in level.text:
+            return "Invalid Token! (Not your Team)"
         return "Undefined Error!"
     return "No Error"
 

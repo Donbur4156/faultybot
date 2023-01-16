@@ -38,3 +38,5 @@ faultybot/teams_to_check.json
 # VSCode
 .vscode/
 .vs/
+.venv
+faultybot/logs/*
