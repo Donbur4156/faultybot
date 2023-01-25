@@ -145,6 +145,7 @@ async def run_kick(ctx: di.CommandContext, team: str, cheaters: list, token: str
 @aiocron.crontab('0 2 * * *')
 async def crown_faulty():
     logging.info("start Crown")
+    request_channel: di.Channel = await di.get(client=bot, obj=di.Channel, object_id=814566650345947177)
     with open(TEAM_FILE, 'r', encoding='utf-8') as json_file:
         json_data = json.load(json_file)
     for team in json_data['teams']:
@@ -162,14 +163,11 @@ async def crown_faulty():
         if cheaters:
             data = "\n".join([f"[{cheater}](https://lichess.org/@/{cheater})" for cheater in cheaters])
             logging.info(f'{str(len(cheaters))} cheater found in team "{teamname}": {cheaters}')
-            user_mentions = ""
-            for user in userlist:
-                user_mentions += f"<@{user}> "
+            user_mentions = ", ".join([f'<@{user}>' for user in userlist])
             text = f"- - - - - - - - - - - - - - - - - - - - - - - - - - - -\n" \
                 f"{user_mentions}\nIn the team **{teamname}**, " \
                 f"following users were marked by Lichess as having violated the terms of use:\n{data}\n" \
                 f" - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
-            request_channel: di.Channel = di.get(client=bot, obj=di.Channel, object_id=814566650345947177)
             await request_channel.send(text)
     logging.info("end Crown")
 
