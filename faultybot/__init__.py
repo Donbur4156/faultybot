@@ -57,7 +57,7 @@ async def cron(ctx: di.CommandContext):
 @cron.subcommand(name="add", description="add a team to cron list")
 @di.option(description="team which should be checked daily")
 @di.option(description="user who will be pinged")
-async def add(ctx: di.CommandContext, teamname: str, user: di.Member):
+async def crone_add(ctx: di.CommandContext, teamname: str, user: di.Member):
     logging.info(f'Team {teamname} for User {user.id}')
     with open(TEAM_FILE, 'r', encoding='utf-8') as json_file:
         json_data: dict[str, list[dict[str, list[str]]]] = json.load(json_file)
@@ -80,7 +80,7 @@ async def add(ctx: di.CommandContext, teamname: str, user: di.Member):
 
 
 @cron.subcommand(name="get_cron_teams", description="get all teams which are checked daily")
-async def get(ctx: di.CommandContext):
+async def cron_get(ctx: di.CommandContext):
     with open(TEAM_FILE, 'r', encoding='utf-8') as json_file:
         json_data = json.load(json_file)
     for team in json_data['teams']:
@@ -143,9 +143,9 @@ async def run_kick(ctx: di.CommandContext, team: str, cheaters: list, token: str
 
 # Cronjob every day at 02:00 for every team in database
 @aiocron.crontab('0 2 * * *')
-async def crown_faulty():
+async def cron_faulty():
     logging.info("start Crown")
-    request_channel: di.Channel = await di.get(client=bot, obj=di.Channel, object_id=814566650345947177)
+    request_channel: di.Channel = await di.get(client=bot, obj=di.Channel, object_id=c.cron_channel)
     with open(TEAM_FILE, 'r', encoding='utf-8') as json_file:
         json_data = json.load(json_file)
     for team in json_data['teams']:
@@ -161,14 +161,15 @@ async def crown_faulty():
             logging.warn(f"Cron Request for Team {teamname} failed.")
             return False
         if cheaters:
-            data = "\n".join([f"[{cheater}](https://lichess.org/@/{cheater})" for cheater in cheaters])
+            data = "\n".join([f"{cheater} https://lichess.org/@/{cheater}" for cheater in cheaters])
             logging.info(f'{str(len(cheaters))} cheater found in team "{teamname}": {cheaters}')
             user_mentions = ", ".join([f'<@{user}>' for user in userlist])
             text = f"- - - - - - - - - - - - - - - - - - - - - - - - - - - -\n" \
                 f"{user_mentions}\nIn the team **{teamname}**, " \
                 f"following users were marked by Lichess as having violated the terms of use:\n{data}\n" \
                 f" - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
-            await request_channel.send(text)
+            msg = await request_channel.send(text)
+            await msg.edit(suppress_embeds=True)
     logging.info("end Crown")
 
 
