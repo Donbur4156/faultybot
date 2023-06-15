@@ -16,7 +16,7 @@ from util.color import Colors
 from util.decorator import teamname_option
 from util.logger import create_logger
 
-di_logger = create_logger(file_name=c.logdir + "interactions.log", log_name="interactions_logger", log_level=logging.DEBUG)
+di_logger = create_logger(file_name=c.logdir + "interactions.log", log_name="interactions_logger")
 bot_logger = create_logger(file_name=c.logdir + c.logfilename, log_name="bot_logger")
 
 # Build the bot according to the Discord syntax
