@@ -33,10 +33,10 @@ venv/
 !*.example
 
 # teamlist to check by cron
-faultybot/teams_to_check.json
+*teams_to_check.json
 
 # VSCode
 .vscode/
 .vs/
 .venv
-faultybot/logs/*
+*/logs/*
