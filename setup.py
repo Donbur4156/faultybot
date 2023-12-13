@@ -24,7 +24,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     license="MIT",
     keywords="Python Discord Faultybot ",
-    url="https://github.com/jplight/faultybot",
+    url="https://github.com/Donbur4156/faultybot",
     packages=["faultybot"],
     install_requires=def_requirements(),
     python_requires=">=3.8.*",

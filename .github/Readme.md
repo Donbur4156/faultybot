@@ -26,7 +26,7 @@ team:write
 You can download the git simply by using the command git clone. Please use the master branch
 
 ```GIT
-git clone https://github.com/jplight/faultybot.git
+git clone https://github.com/Donbur4156/faultybot.git
 ```
 
 ### Pip install 
