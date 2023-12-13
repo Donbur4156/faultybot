@@ -1,7 +1,7 @@
 # FTP Access data
 user = ""
 pwd = ""
-port = 21
+port = :21
 url = ""
 
 # Discord Bot data
