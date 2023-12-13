@@ -1,5 +1,5 @@
 from enum import Enum
-from interactions import Color
+from interactions import Color # pkg: pip install discord-py-interactions
 
 
 class Colors(Color, Enum):
