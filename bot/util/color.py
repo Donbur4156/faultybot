@@ -1,6 +1,7 @@
 from enum import Enum
 from interactions import Color
 
+
 class Colors(Color, Enum):
     RED = 0xCE3636
     ORANGE = 0xF48942

@@ -1,5 +1,5 @@
 # Faultybot
-![Python](https://img.shields.io/badge/-Python-3776AB?logo=python&logoColor=ffffff) ![JavaScript](https://img.shields.io/badge/-JavaScript-F7DF1E?&logo=javascript&logoColor=000000) ![PHP](https://img.shields.io/badge/-PHP-BB4444?logo=PHP&logoColor=000000)
+![Python](https://img.shields.io/badge/-Python-3776AB?logo=python&logoColor=ffffff) 
 
 ![VS Code](https://img.shields.io/badge/VSCode-%23007ACC?logo=Visual-studio-code) ![Pycharm](https://img.shields.io/badge/PyCharm-green?logo=PyCharm) 
 
@@ -26,7 +26,7 @@ team:write
 You can download the git simply by using the command git clone. Please use the master branch
 
 ```GIT
-git clone https://github.com/jplight/faultybot.git
+git clone https://github.com/Donbur4156/faultybot.git
 ```
 
 ### Pip install 
