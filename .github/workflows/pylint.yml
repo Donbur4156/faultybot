@@ -22,7 +22,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install pylint
       - name: Analyse the Faultybot Project
-        working-directory: ./faultybot
+        working-directory: faultybot
         run: |
           pylint --rcfile="../.pylintrc" `ls -R|grep .py$|xargs`
       - name: Analysing the Package
