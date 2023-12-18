@@ -40,7 +40,7 @@ python get-pip.py
 ### Installation of the pip suspensions
 This is also done with a simple console input. 
 ```PowerShell
-pip install -r client\requirements.txt 
+pip install -r requirements.txt 
 ```
 Please note that the requirements file is located in the subfolder client.
 
