@@ -1,9 +1,0 @@
-[MASTER]
-disable=
-    C0114, # missing-module-docstring
-    C0116, # missing-function-docstring
-    E0401, # import-error
-    R1723, # no-else-break
-    W0105, # pointless string
-    R1732, # with Statement
-    C0301, # line-too-long
