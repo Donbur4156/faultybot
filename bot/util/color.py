@@ -1,6 +1,5 @@
 from enum import Enum
-from interactions import Color  # pkg: pip install discord-py-interactions
-
+from interactions import Color  # Paket: pip install discord-py-interactions
 
 class Colors(Color, Enum):
     RED = 0xCE3636
