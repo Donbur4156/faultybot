@@ -7,45 +7,48 @@
 
 
 ## Technical fundamentals
-To use the bot you need a Discord bot and a Lichess account.
-We recommend creating another new account for this purpose. The account is only important if you want to kick people. Otherwise you don't need a Lichess account.  The presence of Python is required.
+To use the bot, you need a Discord bot and a Lichess account. We recommend creating a new account specifically for this purpose. The account is only essential if you want to kick people; otherwise, you don't need a Lichess account. Python is a required dependency.
+
 
 ### Create a Discord bot
-Lichess bots can be created on the [Discord Developer](https://discord.com/developers/) page. Since this is a different topic, we recommend the video from freeCodeCamp. It is linked at the end of this text. Of course, the bot must also be invited to their server and be able to write there. But this is your responsibility.  [YouTube Video about Discord Bots](https://youtu.be/SPTfmiYiuok?t=3)
+Lichess bots can be created on the [Discord Developer](https://discord.com/developers/) page. For details on creating Discord bots, you can refer to the video linked at the end of this part. Inviting the bot to your server and granting necessary permissions are your responsibilities. [YouTube Video about Discord Bots](https://youtu.be/SPTfmiYiuok?t=3)
 
 ### Lichess Bot
-If you decide to use a Lichess bot, you will need to generate an OAuth2 token or an API token. Actually it doesn't matter what rights it has. However, for the project at hand, it must have the right to act in the team.
+If you choose to use a Lichess bot, you'll need to generate an OAuth2 token or an API token. The specific permissions required for the project are as follows:
 
-```Log
+```bash
 team:write
 ```
 
 ## Installing the bot
 
 ### Clone git
-You can download the git simply by using the command git clone. Please use the master branch
+Download the repository using the git clone command. Make sure to use the master branch.
 
-```GIT
+```bash
 git clone https://github.com/Donbur4156/faultybot.git
 ```
 
-### Pip install 
-Actually, pip should already be there. If this is not the case, I will give a short instruction here. Simply copy the following commands into a shell or CMD. The instructions are only for Windows users. Linux and Mac users know everything better and therefore don't need them. 
+### Install Dependencies with Pip
 
-```PowerShell
+Pip should already be installed. If not, follow the instructions:
+
+```bash
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 python get-pip.py
 ```
 
-### Installation of the pip suspensions
-This is also done with a simple console input. 
-```PowerShell
-pip install -r requirements.txt 
+Install the required dependencies with:
+
+```bash
+pip install -r requirements.txt
+
 ```
-Please note that the requirements file is located in the subfolder client.
 
 ### Creating the Config File
-Create a file named ftpdata.py in the subfolder client. Please use the syntax below and enter your values. You can obtain the FTP data from your website hoster. They are needed to transfer the cheater lists to the server.
+Create a file named ``ftpdata.py`` in the subfolder client and enter your values following the syntax below. FTP data is needed to transfer cheater lists to the server.
+
+
 
 ```Python
 # FTP 
@@ -58,33 +61,17 @@ url = "DATA"
 bot_token = "DATA"
 ```
 
-## Server Config
-I assume at this point that you own a web server and know how to use it.
+## Usage
+To view all players who have violated the Terms of Service (TOS), type the following in the chat with the bot. The bot only searches for new cheaters every 4 hours after the last call. The "new" flag can be used to circumvent this.
 
-### Upload Files
-Please upload the files from the Server folder to the Web Server.  PHP7 (, JavaScript and CSS as well as SCSS) are required there. However, this is by far not a special feature. I write the JS files here because there are hosters who reject these file formats. I am aware that CSS and JS are executed locally. 
-
-
-### FTP scope
-Create another FTP account. This should only have access to the flag folder. 
-This data is important for the config file created earlier. The bot then creates a *.txt file and writes it to the server via FTP. This would otherwise be too much for the output.
-That's about it. The bot automatically generates the links and then sends them to the user via a message.
-
-
-## How to use the bot
-To view all players who have violated the TOS, write the following in the chat with the bot.
-The bot only searches for new cheaters every 4 hours after the last call. That would otherwise generate too much traffic. The flag "new" can be used to circumvent this.
-
-```PowerShell
+```bash
 /faulty >>TEAM-ID<< 
 ```
 
-However, if they want to kick players, write the following:
+To kick players, use the following:
 
-```PowerShell
+```bash
 /kickfaulty >>TEAM-ID<< >>TOKEN<< 
 ```
 
-Please note that only one token can be uniquely assigned to a bot at a time. This bot must then also be TeamLeader in the desired team. This means that you cannot kick people all over the place. You can only do that in your teams.
-
-## Have Fun
+Note that only one token can be assigned to a bot at a time. The bot must also be a Team Leader in the desired team to kick players.
