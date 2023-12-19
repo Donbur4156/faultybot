@@ -1,3 +1,17 @@
+"""
+bot.py
+
+Main script for a Discord bot that interacts with the Lichess API.
+
+...
+
+Attributes:
+    TEAM_FILE (str): Path to the file storing information about teams to check.
+    di_logger (logging.Logger): Logger for Discord interactions.
+    bot_logger (logging.Logger): Logger for the bot.
+    client (di.Client): Discord client for interactions.
+"""
+
 import asyncio
 import json
 import logging
@@ -37,6 +51,10 @@ TEAM_FILE = os.path.join(sys.path[0], "teams_to_check.json")
 # Test function to see if the bot is online.
 @listen()
 async def on_startup():
+    """
+    A listener that runs when the bot starts up.
+    Logs a message indicating that the bot has started.
+    """
     bot_logger.info("Bot started!")
     cron_faulty.start()
 
@@ -47,6 +65,17 @@ async def on_startup():
     name="oauth", description="OAuth Code", opt_type=di.OptionType.STRING, required=True
 )
 async def kickfaulty(ctx: SlashContext, teamname: str, oauth: str):
+    """
+    Command to kick flagged users from a Lichess team.
+
+    Args:
+        ctx (SlashContext): The context of the command.
+        teamname (str): The name of the Lichess team.
+        oauth (str): The OAuth code for authentication.
+
+    Returns:
+        None
+    """
     teamname = function.check_team_name(teamname.lower())
     text = (
         f"The data of the team **{teamname}** is downloaded and checked!\nThis can take several "
@@ -62,6 +91,16 @@ async def kickfaulty(ctx: SlashContext, teamname: str, oauth: str):
 @slash_command(description="return a list with faulty user of a team")
 @teamname_option()
 async def faulty(ctx: SlashContext, teamname: str):
+    """
+    Command to return a list of flagged users in a Lichess team.
+
+    Args:
+        ctx (SlashContext): The context of the command.
+        teamname (str): The name of the Lichess team.
+
+    Returns:
+        None
+    """
     teamname = function.check_team_name(teamname.lower())
     text = (
         f"The data of the team **{teamname}** is downloaded and checked!\n"
@@ -85,6 +124,17 @@ cron_cmds = di.SlashCommand(name="cron", description="Commands für den Cronjob"
     required=True,
 )
 async def crone_add(ctx: SlashContext, teamname: str, user: di.Member):
+    """
+    Subcommand to add a team to the cron list.
+
+    Args:
+        ctx (SlashContext): The context of the command.
+        teamname (str): The name of the Lichess team.
+        user (di.Member): The Discord user to be pinged.
+
+    Returns:
+        None
+    """
     teamname = function.check_team_name(teamname.lower())
     bot_logger.info(f"Team {teamname} for User {user.id}")
     with open(TEAM_FILE, "r", encoding="utf-8") as json_file:
@@ -109,6 +159,15 @@ async def crone_add(ctx: SlashContext, teamname: str, user: di.Member):
     sub_cmd_description="get all teams which are checked daily",
 )
 async def cron_get(ctx: SlashContext):
+    """
+    Subcommand to get all teams that are checked daily.
+
+    Args:
+        ctx (SlashContext): The context of the command.
+
+    Returns:
+        None
+    """
     with open(TEAM_FILE, "r", encoding="utf-8") as json_file:
         json_data = json.load(json_file)
     text = ""
@@ -122,6 +181,15 @@ async def cron_get(ctx: SlashContext):
 
 
 async def faultyhandle(team: str):
+    """
+    Helper function to handle the faulty users in a Lichess team.
+
+    Args:
+        team (str): The name of the Lichess team.
+
+    Returns:
+        Tuple[Embed, Optional[List[str]]]: A tuple containing an embed message and a list of cheaters.
+    """
     try:
         loop = asyncio.get_event_loop()
         cheaters = await loop.run_in_executor(
@@ -148,6 +216,18 @@ async def faultyhandle(team: str):
 
 
 async def run_kick(ctx: SlashContext, team: str, cheaters: list, token: str):
+    """
+    Function to kick flagged users from a Lichess team.
+
+    Args:
+        ctx (SlashContext): The context of the command.
+        team (str): The name of the Lichess team.
+        cheaters (list): List of cheaters.
+        token (str): OAuth token for authentication.
+
+    Returns:
+        None
+    """
     bot_logger.info(f"found {str(len(cheaters))} Cheater in Team {str(team)}")
     count_cheater = 0
     for cheater in cheaters:
@@ -176,6 +256,15 @@ async def run_kick(ctx: SlashContext, team: str, cheaters: list, token: str):
 # Cronjob every day at 02:00 for every team in database
 @Task.create(TimeTrigger(hour=2, utc=False))
 async def cron_faulty():
+    """
+    Cron job to check teams for flagged users daily.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     bot_logger.info("start Crown")
     request_channel = await client.fetch_channel(channel_id=c.cron_channel)
     with open(TEAM_FILE, "r", encoding="utf-8") as json_file:
@@ -214,6 +303,15 @@ async def cron_faulty():
 
 
 def create_teamlist():
+    """
+    Function to create a team list file if it doesn't exist.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     if not os.path.isfile(TEAM_FILE):
         with open(TEAM_FILE, "w", encoding="utf-8") as jsonfile:
             data = {"teams": []}
@@ -221,6 +319,16 @@ def create_teamlist():
 
 
 def _embed(text, color=Colors.GREEN):
+    """
+    Helper function to create an embed message.
+
+    Args:
+        text (str): The text content of the embed.
+        color (int): The color of the embed.
+
+    Returns:
+        di.Embed: The created embed message.
+    """
     return di.Embed(description=text, color=color)
 
 
