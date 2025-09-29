@@ -40,7 +40,7 @@ def kick(team: str, user: str, token: str) -> requests.Response:
     """
     user = user.lower()
     # Construct the URL for kicking the user from the team
-    url = f"https://lichess.org/team/{team}/kick/{user}"
+    url = f"https://lichess.org/api/team/{team}/kick/{user}"
     header = {"Authorization": f"Bearer {token}"}
     # Send a POST request to the Lichess API to kick the user
     return requests.post(url, headers=header)
