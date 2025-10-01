@@ -16,7 +16,9 @@ def analyse_team(teamname: str, ignore_user: list) -> list:
     cheaters = []
     # Get the list of users in the specified team
     users = lichesspy.api.users_by_team(teamname)
-    for i in users:
+    userlist = [u.get("id") for u in users]
+    userlist = lichesspy.api.users_by_ids(userlist)
+    for i in userlist:
         # Check for TOS violations or closed accounts
         if i.get("tosViolation") or i.get("closed"):
             username = i.get("username")

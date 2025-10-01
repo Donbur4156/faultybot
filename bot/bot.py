@@ -37,9 +37,7 @@ from util.color import Colors
 from util.decorator import teamname_option
 from util.logger import create_logger
 
-di_logger = create_logger(
-    file_name=c.logdir + "interactions.log", log_name="interactions_logger"
-)
+di_logger = create_logger(file_name=c.logdir + "interactions.log", log_name="interactions_logger")
 bot_logger = create_logger(file_name=c.logdir + c.logfilename, log_name="bot_logger")
 
 # Build the bot according to the Discord syntax
@@ -82,10 +80,11 @@ async def kickfaulty(ctx: SlashContext, teamname: str, oauth: str):
         f"minutes depending on the size of the team.\nPer 1000 members approx 1 minute!"
     )
     await ctx.send(embed=_embed(text), ephemeral=True)
-    embed, cheaters = await faultyhandle(teamname)
-    await ctx.send(embed=embed, ephemeral=True)
+    embeds, cheaters = await faultyhandle(teamname)
     if cheaters:
         await run_kick(ctx, teamname, cheaters, oauth)
+    else:
+        await ctx.send(embed=embeds[0], ephemeral=True)
 
 
 @slash_command(description="return a list with faulty user of a team")
@@ -107,10 +106,23 @@ async def faulty(ctx: SlashContext, teamname: str):
         "This can take several minutes depending on the size of the team.\n"
         "Per 1000 members approx 1 minute!"
     )
-    await ctx.send(embed=_embed(text, Colors.YELLOW))
-    embed, cheaters = await faultyhandle(teamname)
-    await ctx.send(embed=embed)
+    msg_wait = await ctx.send(embed=_embed(text, Colors.YELLOW))
+    embeds, _ = await faultyhandle(teamname)
+    await send_embeds(msg_wait, embeds)
 
+async def send_embeds(msg: di.Message, embeds: list[di.Embed]):
+    """
+    Helper function to send multiple embeds in a message.
+
+    Args:
+        msg (di.Message): The message to reply to.
+        embeds (list[di.Embed]): List of embeds to send.
+
+    Returns:
+        None
+    """
+    for embed in embeds:
+        await msg.reply(embed=embed)
 
 cron_cmds = di.SlashCommand(name="cron", description="Commands für den Cronjob")
 
@@ -203,17 +215,38 @@ async def faultyhandle(team: str):
         text = f"The queried team **{team}** does not include flagged users!\n"
         embed = _embed(text)
         return embed, None
-    data = "\n".join(
-        [f"[{cheater}](https://lichess.org/@/{cheater})" for cheater in cheaters]
-    )
+
     text = (
         f"In the team **{team}**, "
-        f"following users were marked by Lichess as having violated the terms of use:\n"
-        f"{data}\n"
+        f"following users were marked by Lichess as having violated the terms of use:"
     )
+    fields = create_cheater_fields(cheaters)
     embed = _embed(text, Colors.ORANGE)
-    return embed, cheaters
+    embed.add_fields(*fields[:5])
+    embeds = [embed]
+    fields = fields[5:]
+    while fields:
+        embeds.append(di.Embed(color=Colors.ORANGE, fields=fields[:5]))
+        fields = fields[5:]
+    return embeds, cheaters
 
+def create_cheater_fields(cheaters: list) -> list:
+    """
+    Helper function to create fields for cheaters in an embed message.
+
+    Args:
+        cheaters (list): List of cheaters.
+
+    Returns:
+        list: List of dictionaries representing embed fields.
+    """
+    cheater_data = [f"[{cheater}](https://lichess.org/@/{cheater})" for cheater in cheaters]
+    fields = []
+    while cheater_data:
+        cheater_chunk = cheater_data[:15]
+        fields.append(di.EmbedField(name="\u200b", value="\n".join(cheater_chunk))) 
+        cheater_data = cheater_data[15:]
+    return fields
 
 async def run_kick(ctx: SlashContext, team: str, cheaters: list, token: str):
     """
