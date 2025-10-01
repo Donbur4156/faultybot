@@ -210,11 +210,11 @@ async def faultyhandle(team: str):
     except lichesspy.api.ApiHttpError:
         text = f"The queried team **{team}** apparently does not exist! \n"
         embed = _embed(text, Colors.RED)
-        return embed, None
+        return [embed], None
     if not cheaters:
         text = f"The queried team **{team}** does not include flagged users!\n"
         embed = _embed(text)
-        return embed, None
+        return [embed], None
 
     text = (
         f"In the team **{team}**, "
